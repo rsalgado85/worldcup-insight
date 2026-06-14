@@ -34,6 +34,7 @@ interface Boss {
   icon: React.ComponentType<{ size?: number; className?: string }>;
   accentColor: string; // tailwind color class
   description: string;
+  image: string;
 }
 
 const bosses: Boss[] = [
@@ -49,6 +50,7 @@ const bosses: Boss[] = [
     accentColor: '#C6A15B',
     description:
       'The Demon King in his most terrifying form — a towering beast wielding twin blades forged in darkness, the final obstacle between Link and the salvation of Hyrule.',
+    image: '/bosses/ganon.png',
   },
   {
     id: 2,
@@ -62,6 +64,7 @@ const bosses: Boss[] = [
     accentColor: '#E85D3A',
     description:
       'An ancient dragon revived by Ganondorf to terrorize the Gorons. It emerges from lava pits and attacks with fiery breath and whipping strikes.',
+    image: '/bosses/volvagia.png',
   },
   {
     id: 3,
@@ -75,6 +78,7 @@ const bosses: Boss[] = [
     accentColor: '#3B82F6',
     description:
       'A massive amoebic entity controlling the waters of the Water Temple. It manipulates water tentacles from a central nucleus with lethal precision.',
+    image: '/bosses/morpha.png',
   },
   {
     id: 4,
@@ -88,6 +92,7 @@ const bosses: Boss[] = [
     accentColor: '#8B5CF6',
     description:
       'A disembodied spirit with two massive hands that pound the drum-like arena. An invisible horror that lurks in the darkness of the Shadow Temple.',
+    image: '/bosses/bongo_bongo.png',
   },
   {
     id: 5,
@@ -101,6 +106,7 @@ const bosses: Boss[] = [
     accentColor: '#F59E0B',
     description:
       'Kotake and Koume — the twin Gerudo sorceresses who merge into Twinrova. Masters of fire and ice magic who raised Ganondorf himself.',
+    image: '/bosses/twinrova.png',
   },
   {
     id: 6,
@@ -114,6 +120,7 @@ const bosses: Boss[] = [
     accentColor: '#DC2626',
     description:
       'The colossal ruler of the Dodongos, capable of inhaling everything in its path and unleashing devastating fire breath across the cavern.',
+    image: '/bosses/king_dodongo.png',
   },
   {
     id: 7,
@@ -127,6 +134,7 @@ const bosses: Boss[] = [
     accentColor: '#EC4899',
     description:
       'A parasitic bio-electric creature that attached itself to Lord Jabu-Jabu. It spins and releases electric tendrils to shock its prey.',
+    image: '/bosses/barinade.png',
   },
   {
     id: 8,
@@ -140,6 +148,7 @@ const bosses: Boss[] = [
     accentColor: '#6B7280',
     description:
       'A phantom specter of Ganondorf that haunts the Forest Temple. It rides through paintings and strikes with dark lightning from its spectral steed.',
+    image: '/bosses/phantom_ganon.png',
   },
   {
     id: 9,
@@ -153,6 +162,7 @@ const bosses: Boss[] = [
     accentColor: '#374151',
     description:
       "Link's own shadow given form — a perfect mirror that copies every move. The most personal and psychologically terrifying battle in the series.",
+    image: '/bosses/dark_link.png',
   },
   {
     id: 10,
@@ -166,6 +176,7 @@ const bosses: Boss[] = [
     accentColor: '#D97706',
     description:
       'A colossal sand-dwelling worm that burrows beneath the Wind Temple arena. It spawns larvae and erupts from the sand with devastating lunges.',
+    image: '/bosses/molgera.png',
   },
   {
     id: 11,
@@ -179,6 +190,7 @@ const bosses: Boss[] = [
     accentColor: '#92400E',
     description:
       'A reanimated skeletal dragon unearthed in the ancient prison. Its massive skull crashes down as it summons undead minions from the sand.',
+    image: '/bosses/stallord.png',
   },
   {
     id: 12,
@@ -192,6 +204,7 @@ const bosses: Boss[] = [
     accentColor: '#A16207',
     description:
       'A massive golden automaton with six arms wielding colossal blades. One of the most visually spectacular and mechanically complex boss fights.',
+    image: '/bosses/koloktos.png',
   },
 ];
 
@@ -398,6 +411,32 @@ export function BossesPage() {
                           {boss.titleKey}
                         </p>
                       </div>
+                    </div>
+
+                    {/* ── Boss Image ── */}
+                    <div className="flex justify-center">
+                      <motion.div
+                        className="relative w-full h-36 sm:h-44 rounded-xl overflow-hidden"
+                        style={{
+                          background: `linear-gradient(135deg, ${boss.accentColor}12 0%, ${boss.accentColor}06 100%)`,
+                          border: `1px solid ${boss.accentColor}20`,
+                        }}
+                        whileHover={{ scale: 1.03 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <img
+                          src={boss.image}
+                          alt={boss.name}
+                          className="w-full h-full object-contain p-2"
+                          loading="lazy"
+                        />
+                        <div
+                          className="absolute inset-x-0 bottom-0 h-8"
+                          style={{
+                            background: `linear-gradient(to top, ${boss.accentColor}10, transparent)`,
+                          }}
+                        />
+                      </motion.div>
                     </div>
 
                     {/* ── Meta: Dungeon + Game ── */}
