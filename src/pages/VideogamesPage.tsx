@@ -223,7 +223,7 @@ export function VideogamesPage() {
               return (
                 <button key={pageNum} onClick={() => setPage(pageNum)}
                   className="w-9 h-9 rounded-xl text-xs font-bold transition-all"
-                  style={{ color: page === pageNum ? '#ffffff' : isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)', background: page === pageNum ? 'linear-gradient(90deg, #ff4d6d, #d946ef)' : isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', border: `1px solid ${page === pageNum ? 'transparent' : isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
+                  style={{ color: page === pageNum ? '#ffffff' : isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)', background: page === pageNum ? 'linear-gradient(90deg, #C6A15B, #3E6B48)' : isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', border: `1px solid ${page === pageNum ? 'transparent' : isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
                   {pageNum}
                 </button>
               );
