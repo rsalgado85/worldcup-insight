@@ -5,7 +5,7 @@ import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import { useAppStore } from '@/store/useAppStore';
 import { useProgressivePokemon } from '@/hooks/useProgressiveLoader';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, LayoutDashboard, Users, Skull, Package, Map, User } from 'lucide-react';
+import { Menu, LayoutDashboard, Users, Skull, Package, Map, Bug, User } from 'lucide-react';
 
 const MOBILE_NAV_ITEMS = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -13,6 +13,7 @@ const MOBILE_NAV_ITEMS = [
   { path: '/bosses', icon: Skull, label: 'Bosses' },
   { path: '/items', icon: Package, label: 'Items' },
   { path: '/maps', icon: Map, label: 'Maps' },
+  { path: '/creatures', icon: Bug, label: 'Creatures' },
   { path: '/about', icon: User, label: 'About' },
 ];
 

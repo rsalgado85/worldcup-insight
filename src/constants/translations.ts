@@ -10,6 +10,7 @@ export const translations = {
     'nav.bosses': 'Bosses',
     'nav.items': 'Items',
     'nav.maps': 'Maps',
+    'nav.creatures': 'Creatures',
     'nav.dungeons': 'Timeline',
     'nav.lore': 'Lore',
     'nav.weapons': 'Weapons',
@@ -287,6 +288,10 @@ export const translations = {
     'items.title': 'Items of Hyrule',
     'items.subtitle': 'Explore iconic items from across The Legend of Zelda series',
 
+    // Creatures Page
+    'creatures.title': 'Creatures of Hyrule',
+    'creatures.subtitle': 'Browse all creatures and monsters from the Hyrule Compendium — animals, beasts, and enemies from Breath of the Wild and Tears of the Kingdom',
+
     // Maps Page
     'maps.title': 'Maps of Hyrule',
     'maps.subtitle': 'Explore the complete maps of every Zelda game era — from the original 8-bit Hyrule to the vast open world of Tears of the Kingdom',
@@ -346,6 +351,7 @@ export const translations = {
     'nav.bosses': 'Jefes',
     'nav.items': 'Objetos',
     'nav.maps': 'Mapas',
+    'nav.creatures': 'Criaturas',
     'nav.dungeons': 'Línea de tiempo',
     'nav.lore': 'Historia',
     'nav.weapons': 'Armas',
@@ -622,6 +628,10 @@ export const translations = {
     // Items Page
     'items.title': 'Objetos de Hyrule',
     'items.subtitle': 'Explora objetos icónicos de la serie The Legend of Zelda',
+
+    // Creatures Page
+    'creatures.title': 'Criaturas de Hyrule',
+    'creatures.subtitle': 'Explora todas las criaturas y monstruos del Compendio de Hyrule — animales, bestias y enemigos de Breath of the Wild y Tears of the Kingdom',
 
     // Maps Page
     'maps.title': 'Mapas de Hyrule',

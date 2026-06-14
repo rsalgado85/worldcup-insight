@@ -84,6 +84,7 @@ export const ROUTES = {
   WEAPONS: '/weapons',
   GAMES: '/games',
   MAPS: '/maps',
+  CREATURES: '/creatures',
   FAVORITES: '/favorites',
   ABOUT: '/about',
 } as const;
@@ -94,6 +95,7 @@ export const NAV_ITEMS = [
   { label: 'Bosses', path: ROUTES.BOSSES, icon: 'Skull' },
   { label: 'Items', path: ROUTES.ITEMS, icon: 'Package' },
   { label: 'Maps', path: ROUTES.MAPS, icon: 'Map' },
+  { label: 'Creatures', path: ROUTES.CREATURES, icon: 'Bug' },
   { label: 'Dungeons', path: ROUTES.DUNGEONS, icon: 'Clock' },
   { label: 'Lore', path: ROUTES.LORE, icon: 'BookOpen' },
   { label: 'Weapons', path: ROUTES.WEAPONS, icon: 'Swords' },
