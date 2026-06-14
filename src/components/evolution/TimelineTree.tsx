@@ -141,7 +141,7 @@ export function TimelineTree({ speciesId, characterImages, characterTypes }: Tim
   const { data: chain, isLoading, error } = useTimelineChainBySpecies(speciesId);
 
   const handleNavigate = (id: number) => {
-    navigate(`/character/${id}`);
+    navigate('/characters');
   };
 
   if (isLoading) {

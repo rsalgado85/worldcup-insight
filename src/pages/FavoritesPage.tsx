@@ -86,7 +86,7 @@ export function FavoritesPage() {
           <h2 className="text-base sm:text-lg font-semibold text-text-primary mb-1 sm:mb-2">{t('favorites.empty', language)}</h2>
           <p className="text-xs sm:text-sm text-text-secondary mb-4 sm:mb-6">{t('favorites.emptyDesc', language)}</p>
           <button
-            onClick={() => navigate('/explorer')}
+            onClick={() => navigate('/characters')}
             className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-accent text-white text-xs sm:text-sm font-semibold hover:bg-accent-light transition-colors"
           >
             {t('favorites.explore', language)}
@@ -101,7 +101,7 @@ export function FavoritesPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: (index % ITEMS_PER_PAGE) * 0.03 }}
-                onClick={() => navigate(`/character/${pokemon.id}`)}
+                onClick={() => navigate('/characters')}
                 className="glass-card-hover p-3 sm:p-4 text-left w-full cursor-pointer group relative"
               >
                 {/* Generation Badge */}

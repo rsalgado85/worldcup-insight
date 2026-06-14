@@ -42,7 +42,7 @@ function RankingRow({ pokemon, rank, statKey, statLabel, language }: {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: (rank % ITEMS_PER_PAGE) * 0.02 }}
-      onClick={() => navigate(`/character/${pokemon.id}`)}
+      onClick={() => navigate('/characters')}
       className="w-full glass-card-hover p-3 sm:p-4 text-left cursor-pointer group"
     >
       <div className="flex items-center gap-3 sm:gap-4">

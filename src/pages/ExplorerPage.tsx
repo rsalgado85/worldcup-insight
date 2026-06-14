@@ -254,7 +254,7 @@ export function ExplorerPage() {
             key={pokemon.id}
             pokemon={pokemon}
             index={index}
-            onClick={() => navigate(`/character/${pokemon.id}`)}
+            onClick={() => navigate('/characters')}
             language={language}
           />
         ))}

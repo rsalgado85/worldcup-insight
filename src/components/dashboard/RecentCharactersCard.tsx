@@ -85,7 +85,7 @@ export function RecentCharactersCard() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
-                onClick={() => navigate(`/character/${character.id}`)}
+                onClick={() => navigate('/characters')}
                 className="relative overflow-hidden rounded-2xl p-3 text-left group"
                 style={{
                   backgroundColor: `${typeColor}11`,

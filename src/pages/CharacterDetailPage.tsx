@@ -245,7 +245,7 @@ export function CharacterDetailPage() {
               <div key={evo.id} className="flex items-center gap-4">
                 {/* Evolution card */}
                 <button
-                  onClick={() => navigate(`/character/${evo.id}`)}
+                  onClick={() => navigate('/characters')}
                   className={`flex flex-col items-center gap-1.5 p-4 rounded-xl transition-all hover:scale-105 min-w-[130px] ${
                     evo.id === pokemon.id
                       ? 'bg-accent/15 border border-accent/30 ring-1 ring-accent/20'

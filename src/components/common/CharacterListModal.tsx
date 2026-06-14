@@ -113,7 +113,7 @@ export function CharacterListModal({ isOpen, onClose, title, pokemon, statLabel,
                       <button
                         key={p.id}
                         onClick={() => {
-                          navigate(`/character/${p.id}`);
+                          navigate('/characters');
                           onClose();
                         }}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-left group"
