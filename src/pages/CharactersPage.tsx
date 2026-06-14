@@ -471,12 +471,14 @@ function CharacterCard({
   language,
   isExpanded,
   onToggle,
+  onRaceClick,
 }: {
   character: CharacterData;
   index: number;
   language: 'en' | 'es';
   isExpanded: boolean;
   onToggle: () => void;
+  onRaceClick: (race: string) => void;
 }) {
   const { theme, isFavorite, toggleFavorite } = useAppStore();
   const isDark = theme === 'dark';
@@ -555,17 +557,21 @@ function CharacterCard({
           </button>
           </div>
 
-          {/* Race badge */}
-          <motion.span
-            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"
+          {/* Race badge — clickable to filter */}
+          <motion.button
+            onClick={(e) => { e.stopPropagation(); onRaceClick(character.race); }}
+            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider cursor-pointer transition-all hover:scale-105"
             style={{
               backgroundColor: `${raceColor}20`,
               color: raceColor,
               border: `1px solid ${raceColor}35`,
             }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            title={language === 'es' ? `Filtrar por ${raceLabel}` : `Filter by ${raceLabel}`}
           >
             {raceLabel}
-          </motion.span>
+          </motion.button>
         </div>
 
         {/* Name */}
@@ -699,19 +705,31 @@ export function CharactersPage() {
   const { language, theme } = useAppStore();
   const isDark = theme === 'dark';
   const [search, setSearch] = useState('');
+  const [selectedRace, setSelectedRace] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const filteredCharacters = useMemo(() => {
-    if (!search.trim()) return CHARACTERS;
-    const query = search.toLowerCase();
-    return CHARACTERS.filter(
-      (c) =>
-        c.name.toLowerCase().includes(query) ||
-        c.race.toLowerCase().includes(query) ||
-        c.description.toLowerCase().includes(query) ||
-        c.descriptionEs.toLowerCase().includes(query)
-    );
-  }, [search]);
+    let chars = CHARACTERS;
+    
+    // Filter by selected race
+    if (selectedRace) {
+      chars = chars.filter((c) => c.race === selectedRace);
+    }
+    
+    // Filter by search
+    if (search.trim()) {
+      const query = search.toLowerCase();
+      chars = chars.filter(
+        (c) =>
+          c.name.toLowerCase().includes(query) ||
+          c.race.toLowerCase().includes(query) ||
+          c.description.toLowerCase().includes(query) ||
+          c.descriptionEs.toLowerCase().includes(query)
+      );
+    }
+    
+    return chars;
+  }, [search, selectedRace]);
 
   // Race count summary
   const raceCounts = useMemo(() => {
@@ -830,24 +848,42 @@ export function CharactersPage() {
             <Filter size={11} />
             {language === 'es' ? 'Razas' : 'Races'}
           </span>
+          {/* Clear filter button */}
+          {selectedRace && (
+            <button
+              onClick={() => setSelectedRace(null)}
+              className="px-2 py-1 rounded-full text-[10px] font-semibold transition-all"
+              style={{
+                backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              }}
+            >
+              ✕ {language === 'es' ? 'Todas' : 'All'}
+            </button>
+          )}
           {Object.entries(raceCounts)
             .sort(([, a], [, b]) => b - a)
             .map(([race, count]) => {
               const color = RACE_COLORS[race] || '#C6A15B';
               const label = RACE_LABELS[race]?.[language] || race;
+              const isActive = selectedRace === race;
               return (
-                <motion.span
+                <motion.button
                   key={race}
-                  className="px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider cursor-default"
+                  onClick={() => setSelectedRace(isActive ? null : race)}
+                  className="px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider cursor-pointer transition-all"
                   style={{
-                    backgroundColor: `${color}18`,
-                    color: color,
-                    border: `1px solid ${color}30`,
+                    backgroundColor: isActive ? color : `${color}18`,
+                    color: isActive ? '#ffffff' : color,
+                    border: `1px solid ${isActive ? color : `${color}30`}`,
+                    boxShadow: isActive ? `0 0 12px ${color}44` : 'none',
                   }}
                   whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {label} · {count}
-                </motion.span>
+                </motion.button>
               );
             })}
         </div>
@@ -901,6 +937,7 @@ export function CharactersPage() {
                 language={language}
                 isExpanded={expandedId === character.id}
                 onToggle={() => setExpandedId(expandedId === character.id ? null : character.id)}
+                onRaceClick={(race) => setSelectedRace(race)}
               />
             ))}
           </motion.div>
