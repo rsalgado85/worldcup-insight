@@ -37,6 +37,18 @@
   --color-glass-hover: rgba(255, 255, 255, 0.9);
 }
 
+::selection {
+  background-color: rgba(198, 161, 91, 0.3);
+  color: #ffffff;
+}
+::moz-selection {
+  background-color: rgba(198, 161, 91, 0.3);
+  color: #ffffff;
+}
+:root {
+  accent-color: #C6A15B;
+}
+
 .light body {
   background-color: #F5F0E8;
 }

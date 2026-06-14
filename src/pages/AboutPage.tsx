@@ -124,7 +124,7 @@ export function AboutPage() {
             transition={{ duration: 0.5 }}
             className="relative flex-shrink-0"
           >
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-[#ff4d6d] to-[#d946ef] p-[3px] shadow-xl shadow-[#ff4d6d]/20">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-[#C6A15B] to-[#3E6B48] p-[3px] shadow-xl shadow-[#C6A15B]/20">
               <div className="w-full h-full rounded-2xl bg-dark-card flex items-center justify-center overflow-hidden">
                 <img
                   src="/avatar.png"
