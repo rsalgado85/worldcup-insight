@@ -402,6 +402,7 @@ export const translations = {
     'weapons.title': 'Legendary Weapons',
     'weapons.subtitle': 'The most powerful weapons wielded by the Hero of Hyrule',
     'weapons.attack': 'ATK',
+    'weapons.defense': 'DEF',
     'weapons.type': 'Type',
 
     // Lore Page
@@ -845,6 +846,7 @@ export const translations = {
     'weapons.title': 'Armas Legendarias',
     'weapons.subtitle': 'Las armas más poderosas empuñadas por el Héroe de Hyrule',
     'weapons.attack': 'ATQ',
+    'weapons.defense': 'DEF',
     'weapons.type': 'Tipo',
 
     // Lore Page

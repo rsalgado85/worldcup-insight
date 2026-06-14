@@ -9,19 +9,22 @@ import {
   Zap,
   Anchor,
   Gavel,
+  Droplets,
+  Eye,
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { t } from '@/constants/translations';
 
 // ─── Weapon data ─────────────────────────────────────────────────────────────
 
-type WeaponCategory = 'Sword' | 'Bow' | 'Other';
+type WeaponCategory = 'Sword' | 'Bow' | 'Shield' | 'Armor' | 'Other';
 
 interface WeaponData {
   id: string;
   name: string;
   nameEs: string;
   atk: number;
+  def?: number;
   type: string;
   typeEs: string;
   description: string;
@@ -219,6 +222,421 @@ const WEAPONS: WeaponData[] = [
     icon: Zap,
     image: '/weapons/boomerang.png',
   },
+
+  // ── Swords (9 new) ──────────────────────────────────────────────────────
+  {
+    id: 'white-sword',
+    name: 'White Sword',
+    nameEs: 'Espada Blanca',
+    atk: 40,
+    type: 'Sacred Steel',
+    typeEs: 'Acero Sagrado',
+    description: 'Ancient blade upgraded by the Old Man in the original Legend of Zelda',
+    descriptionEs: 'Hoja ancestral mejorada por el Anciano en el Legend of Zelda original',
+    category: 'Sword',
+    icon: Sword,
+    image: '/weapons/white_sword.png',
+  },
+  {
+    id: 'magic-sword',
+    name: 'Magic Sword',
+    nameEs: 'Espada Mágica',
+    atk: 55,
+    type: 'Enchanted Blade',
+    typeEs: 'Hoja Encantada',
+    description: 'The strongest sword in the original Legend of Zelda, infused with ancient magic',
+    descriptionEs: 'La espada más fuerte del Legend of Zelda original, imbuida con magia ancestral',
+    category: 'Sword',
+    icon: Zap,
+    image: '/weapons/magic_sword.png',
+  },
+  {
+    id: 'kokiri-sword',
+    name: 'Kokiri Sword',
+    nameEs: 'Espada Kokiri',
+    atk: 15,
+    type: 'Training Sword',
+    typeEs: 'Espada de Entrenamiento',
+    description: 'The treasured blade of the Kokiri, given to Link before his great adventure',
+    descriptionEs: 'La preciada hoja de los Kokiri, entregada a Link antes de su gran aventura',
+    category: 'Sword',
+    icon: Sword,
+    image: '/weapons/kokiri_sword.png',
+  },
+  {
+    id: 'gilded-sword',
+    name: 'Gilded Sword',
+    nameEs: 'Espada Dorada',
+    atk: 58,
+    type: 'Forged Gold',
+    typeEs: 'Oro Forjado',
+    description: 'Razor Sword reforged with Gold Dust by the Goron smiths of Termina',
+    descriptionEs: 'Espada Afilada reforjada con Polvo de Oro por los herreros Goron de Términa',
+    category: 'Sword',
+    icon: Flame,
+    image: '/weapons/gilded_sword.png',
+  },
+  {
+    id: 'phantom-sword',
+    name: 'Phantom Sword',
+    nameEs: 'Espada Espectral',
+    atk: 65,
+    type: 'Spirit Blade',
+    typeEs: 'Hoja Espectral',
+    description: 'Forged from the purified Phantom Hourglass, this blade can freeze time itself',
+    descriptionEs: 'Forjada del Reloj de Arena Espectral purificado, puede congelar el tiempo mismo',
+    category: 'Sword',
+    icon: Zap,
+    image: '/weapons/phantom_sword.png',
+  },
+  {
+    id: 'golden-sword',
+    name: 'Golden Sword',
+    nameEs: 'Espada Dorada',
+    atk: 75,
+    type: 'Tempered Masterwork',
+    typeEs: 'Obra Maestra Templada',
+    description: 'The ultimate upgrade in A Link to the Past, tempered by the Dwarven Swordsmiths',
+    descriptionEs: 'La mejora definitiva en A Link to the Past, templada por los Herreros Enanos',
+    category: 'Sword',
+    icon: Swords,
+    image: '/weapons/golden_sword.png',
+  },
+  {
+    id: 'scimitar-of-the-seven',
+    name: 'Scimitar of the Seven',
+    nameEs: 'Cimitarra de los Siete',
+    atk: 62,
+    type: 'Gerudo Royal Blade',
+    typeEs: 'Hoja Real Gerudo',
+    description: 'Legendary blade wielded by the Gerudo Champion Urbosa, crackling with lightning',
+    descriptionEs: 'Hoja legendaria empuñada por la Campeona Gerudo Urbosa, crepitante de relámpagos',
+    category: 'Sword',
+    icon: Zap,
+    image: '/weapons/scimitar_seven.png',
+  },
+  {
+    id: 'zora-sword',
+    name: 'Zora Sword',
+    nameEs: 'Espada Zora',
+    atk: 35,
+    type: 'Aquatic Blade',
+    typeEs: 'Hoja Acuática',
+    description: 'Elegant silver blade crafted by the finest Zora smiths of Lanayru',
+    descriptionEs: 'Elegante hoja plateada forjada por los mejores herreros Zora de Lanayru',
+    category: 'Sword',
+    icon: Droplets,
+    image: '/weapons/zora_sword.png',
+  },
+  {
+    id: 'gerudo-scimitar',
+    name: 'Gerudo Scimitar',
+    nameEs: 'Cimitarra Gerudo',
+    atk: 38,
+    type: 'Desert Blade',
+    typeEs: 'Hoja del Desierto',
+    description: 'Curved blade favored by the warriors of the Gerudo Desert',
+    descriptionEs: 'Hoja curva preferida por los guerreros del Desierto Gerudo',
+    category: 'Sword',
+    icon: Sword,
+    image: '/weapons/gerudo_scimitar.png',
+  },
+
+  // ── Shields (7) ─────────────────────────────────────────────────────────
+  {
+    id: 'hylian-shield',
+    name: 'Hylian Shield',
+    nameEs: 'Escudo Hyliano',
+    atk: 0,
+    def: 90,
+    type: 'Legendary Shield',
+    typeEs: 'Escudo Legendario',
+    description: 'The indestructible shield of legend, emblazoned with the Triforce and Crimson Loftwing',
+    descriptionEs: 'El escudo indestructible de la leyenda, blasonado con la Trifuerza y el Loftwing Carmesí',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/hylian_shield.png',
+  },
+  {
+    id: 'mirror-shield',
+    name: 'Mirror Shield',
+    nameEs: 'Escudo Espejo',
+    atk: 0,
+    def: 75,
+    type: 'Reflective Shield',
+    typeEs: 'Escudo Reflectante',
+    description: 'Polished surface that reflects light and magic — essential for solving puzzles and defeating darkness',
+    descriptionEs: 'Superficie pulida que refleja luz y magia — esencial para resolver acertijos y derrotar la oscuridad',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/mirror_shield.png',
+  },
+  {
+    id: 'heros-shield',
+    name: "Hero's Shield",
+    nameEs: 'Escudo del Héroe',
+    atk: 0,
+    def: 55,
+    type: 'Classic Shield',
+    typeEs: 'Escudo Clásico',
+    description: 'The standard shield of the Hero, reliable protection throughout the ages',
+    descriptionEs: 'El escudo estándar del Héroe, protección confiable a través de las eras',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/heros_shield.png',
+  },
+  {
+    id: 'deku-shield',
+    name: 'Deku Shield',
+    nameEs: 'Escudo Deku',
+    atk: 0,
+    def: 25,
+    type: 'Wooden Shield',
+    typeEs: 'Escudo de Madera',
+    description: 'Lightweight wooden shield sold at the Kokiri Shop. Flammable but affordable',
+    descriptionEs: 'Escudo ligero de madera vendido en la Tienda Kokiri. Inflamable pero económico',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/deku_shield.png',
+  },
+  {
+    id: 'guardian-shield',
+    name: 'Guardian Shield',
+    nameEs: 'Escudo Guardián',
+    atk: 0,
+    def: 65,
+    type: 'Ancient Tech',
+    typeEs: 'Tecnología Ancestral',
+    description: 'Shield crafted from ancient Guardian parts. Automatically deflects Guardian lasers',
+    descriptionEs: 'Escudo fabricado con partes ancestrales de Guardián. Desvía automáticamente los láseres',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/guardian_shield.png',
+  },
+  {
+    id: 'royal-shield',
+    name: 'Royal Shield',
+    nameEs: 'Escudo Real',
+    atk: 0,
+    def: 70,
+    type: 'Royal Guard Gear',
+    typeEs: 'Equipo de la Guardia Real',
+    description: 'Ornate shield issued to the Royal Guard of Hyrule Castle',
+    descriptionEs: 'Escudo ornamentado otorgado a la Guardia Real del Castillo de Hyrule',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/royal_shield.png',
+  },
+  {
+    id: 'daybreaker',
+    name: "Daybreaker",
+    nameEs: 'Rompealbas',
+    atk: 0,
+    def: 80,
+    type: "Champion's Shield",
+    typeEs: 'Escudo de Campeona',
+    description: "The golden shield of the Gerudo Champion Urbosa, said to break the dawn itself",
+    descriptionEs: 'El escudo dorado de la Campeona Gerudo Urbosa, se dice que rompe el amanecer mismo',
+    category: 'Shield',
+    icon: Shield,
+    image: '/weapons/daybreaker.png',
+  },
+
+  // ── Bows (4 new) ────────────────────────────────────────────────────────
+  {
+    id: 'falcon-bow',
+    name: 'Falcon Bow',
+    nameEs: 'Arco de Halcón',
+    atk: 52,
+    type: 'Rito Warbow',
+    typeEs: 'Arco de Guerra Rito',
+    description: 'Revali\'s signature bow, crafted by the finest Rito fletchers for aerial combat',
+    descriptionEs: 'El arco característico de Revali, fabricado por los mejores flecheros Rito para combate aéreo',
+    category: 'Bow',
+    icon: Crosshair,
+    image: '/weapons/falcon_bow.png',
+  },
+  {
+    id: 'savage-lynel-bow',
+    name: 'Savage Lynel Bow',
+    nameEs: 'Arco Salvaje de Lynel',
+    atk: 68,
+    type: 'Multi-shot Bow',
+    typeEs: 'Arco de Disparo Múltiple',
+    description: 'Fearsome multi-shot bow wielded by the strongest Lynels. Fires a volley of arrows',
+    descriptionEs: 'Temible arco de disparo múltiple empuñado por los Lynels más fuertes. Dispara una ráfaga de flechas',
+    category: 'Bow',
+    icon: Crosshair,
+    image: '/weapons/savage_lynel_bow.png',
+  },
+  {
+    id: 'ancient-bow',
+    name: 'Ancient Bow',
+    nameEs: 'Arco Ancestral',
+    atk: 60,
+    type: 'Sheikah Tech',
+    typeEs: 'Tecnología Sheikah',
+    description: 'High-tech bow from the Akkala Ancient Tech Lab. Fires arrows in perfectly straight lines',
+    descriptionEs: 'Arco de alta tecnología del Laboratorio Ancestral de Akkala. Dispara flechas en líneas perfectamente rectas',
+    category: 'Bow',
+    icon: Crosshair,
+    image: '/weapons/ancient_bow.png',
+  },
+  {
+    id: 'royal-bow',
+    name: 'Royal Bow',
+    nameEs: 'Arco Real',
+    atk: 45,
+    type: 'Royal Armament',
+    typeEs: 'Armamento Real',
+    description: 'Elegant bow issued to Hyrule\'s Royal Guard, balancing power and precision',
+    descriptionEs: 'Arco elegante otorgado a la Guardia Real de Hyrule, equilibrando potencia y precisión',
+    category: 'Bow',
+    icon: Crosshair,
+    image: '/weapons/royal_bow.png',
+  },
+
+  // ── Armor & Outfits (10) ─────────────────────────────────────────────────
+  {
+    id: 'champions-tunic',
+    name: "Champion's Tunic",
+    nameEs: 'Túnica del Campeón',
+    atk: 10,
+    def: 50,
+    type: 'Hero\'s Garb',
+    typeEs: 'Atuendo del Héroe',
+    description: 'Traditional Hylian blue tunic worn by the Champion of Hyrule. Reveals enemy health',
+    descriptionEs: 'Túnica azul tradicional Hyliana del Campeón de Hyrule. Revela la salud del enemigo',
+    category: 'Armor',
+    icon: Shield,
+    image: '/weapons/champions_tunic.png',
+  },
+  {
+    id: 'zora-armor',
+    name: 'Zora Armor',
+    nameEs: 'Armadura Zora',
+    atk: 5,
+    def: 40,
+    type: 'Aquatic Gear',
+    typeEs: 'Equipo Acuático',
+    description: 'Handcrafted by the Zora, this armor lets Link swim up waterfalls and breathe underwater',
+    descriptionEs: 'Hecha a mano por los Zora, permite a Link nadar por cascadas y respirar bajo el agua',
+    category: 'Armor',
+    icon: Droplets,
+    image: '/weapons/zora_armor.png',
+  },
+  {
+    id: 'goron-tunic',
+    name: 'Goron Tunic',
+    nameEs: 'Túnica Goron',
+    atk: 5,
+    def: 45,
+    type: 'Heat-Resistant',
+    typeEs: 'Resistente al Calor',
+    description: 'Fireproof tunic woven by the Gorons. Essential for surviving Death Mountain',
+    descriptionEs: 'Túnica ignífuga tejida por los Gorons. Esencial para sobrevivir en la Montaña de la Muerte',
+    category: 'Armor',
+    icon: Flame,
+    image: '/weapons/goron_tunic.png',
+  },
+  {
+    id: 'hero-of-time-set',
+    name: 'Hero of Time Set',
+    nameEs: 'Conjunto del Héroe del Tiempo',
+    atk: 8,
+    def: 42,
+    type: 'Classic Garb',
+    typeEs: 'Atuendo Clásico',
+    description: 'The iconic green tunic and cap of the Hero of Time, legendary across all eras',
+    descriptionEs: 'La icónica túnica verde y gorro del Héroe del Tiempo, legendaria en todas las eras',
+    category: 'Armor',
+    icon: Sword,
+    image: '/weapons/hero_of_time.png',
+  },
+  {
+    id: 'sheikah-set',
+    name: 'Sheikah Set',
+    nameEs: 'Conjunto Sheikah',
+    atk: 8,
+    def: 32,
+    type: 'Stealth Gear',
+    typeEs: 'Equipo de Sigilo',
+    description: 'Traditional Sheikah stealth suit that muffles footsteps and increases night speed',
+    descriptionEs: 'Traje de sigilo tradicional Sheikah que amortigua pisadas y aumenta velocidad nocturna',
+    category: 'Armor',
+    icon: Eye,
+    image: '/weapons/sheikah_set.png',
+  },
+  {
+    id: 'barbarian-set',
+    name: 'Barbarian Set',
+    nameEs: 'Conjunto Bárbaro',
+    atk: 20,
+    def: 30,
+    type: 'War Paint',
+    typeEs: 'Pintura de Guerra',
+    description: 'Fierce war paint and furs of an ancient warlike tribe. Boosts attack power',
+    descriptionEs: 'Feroz pintura de guerra y pieles de una antigua tribu guerrera. Aumenta el poder de ataque',
+    category: 'Armor',
+    icon: Flame,
+    image: '/weapons/barbarian_set.png',
+  },
+  {
+    id: 'dark-link',
+    name: 'Dark Link Armor',
+    nameEs: 'Armadura de Link Oscuro',
+    atk: 12,
+    def: 38,
+    type: 'Shadow Garb',
+    typeEs: 'Atuendo Sombrío',
+    description: 'Shadowy armor that embodies the darkness within the Hero. Increases night speed',
+    descriptionEs: 'Armadura sombría que encarna la oscuridad dentro del Héroe. Aumenta velocidad nocturna',
+    category: 'Armor',
+    icon: Eye,
+    image: '/weapons/dark_link_armor.png',
+  },
+  {
+    id: 'fierce-deity-armor',
+    name: 'Fierce Deity Armor',
+    nameEs: 'Armadura de la Deidad Feroz',
+    atk: 25,
+    def: 45,
+    type: 'Godly Power',
+    typeEs: 'Poder Divino',
+    description: 'The legendary armor of the Fierce Deity, transforming Link into a god-like warrior',
+    descriptionEs: 'La legendaria armadura de la Deidad Feroz, transformando a Link en un guerrero divino',
+    category: 'Armor',
+    icon: Zap,
+    image: '/weapons/fierce_deity_armor.png',
+  },
+  {
+    id: 'climbing-gear',
+    name: 'Climbing Gear',
+    nameEs: 'Equipo de Escalada',
+    atk: 3,
+    def: 20,
+    type: 'Mobility',
+    typeEs: 'Movilidad',
+    description: 'Lightweight bandana and gear that dramatically increases climbing speed',
+    descriptionEs: 'Bandana y equipo ligero que aumenta drásticamente la velocidad de escalada',
+    category: 'Armor',
+    icon: Sword,
+    image: '/weapons/climbing_gear.png',
+  },
+  {
+    id: 'royal-guard-uniform',
+    name: 'Royal Guard Uniform',
+    nameEs: 'Uniforme de Guardia Real',
+    atk: 6,
+    def: 48,
+    type: 'Ceremonial Armor',
+    typeEs: 'Armadura Ceremonial',
+    description: 'Pristine uniform of Hyrule\'s elite Royal Guard. High defense but fragile durability',
+    descriptionEs: 'Uniforme impecable de la élite de la Guardia Real de Hyrule. Alta defensa pero frágil',
+    category: 'Armor',
+    icon: Shield,
+    image: '/weapons/royal_guard_set.png',
+  },
 ];
 
 // ─── Category metadata ──────────────────────────────────────────────────────
@@ -263,6 +681,32 @@ const CATEGORIES: CategoryMeta[] = [
     borderColor: 'rgba(62, 107, 72, 0.25)',
     gradientStart: '#6BAF7A',
     gradientEnd: '#3E6B48',
+  },
+  {
+    key: 'Shield',
+    labelEn: 'Shields',
+    labelEs: 'Escudos',
+    accentColor: '#3B82F6',
+    badgeBg: 'rgba(59, 130, 246, 0.15)',
+    badgeText: '#7BA8F8',
+    iconBg: 'rgba(59, 130, 246, 0.1)',
+    iconColor: '#3B82F6',
+    borderColor: 'rgba(59, 130, 246, 0.25)',
+    gradientStart: '#7BA8F8',
+    gradientEnd: '#3B82F6',
+  },
+  {
+    key: 'Armor',
+    labelEn: 'Armor & Outfits',
+    labelEs: 'Armaduras y Trajes',
+    accentColor: '#8B5CF6',
+    badgeBg: 'rgba(139, 92, 246, 0.15)',
+    badgeText: '#B794F6',
+    iconBg: 'rgba(139, 92, 246, 0.1)',
+    iconColor: '#8B5CF6',
+    borderColor: 'rgba(139, 92, 246, 0.25)',
+    gradientStart: '#B794F6',
+    gradientEnd: '#8B5CF6',
   },
   {
     key: 'Other',
@@ -463,6 +907,45 @@ export function WeaponsPage() {
                           />
                         </div>
                       </div>
+
+                      {/* DEF stat — only for shields and armor */}
+                      {weapon.def != null && weapon.def > 0 && (
+                        <div className="mt-2 space-y-1">
+                          <div className="flex items-center justify-between text-[10px] sm:text-xs">
+                            <span
+                              className="font-semibold"
+                              style={{ color: category.accentColor }}
+                            >
+                              {t('weapons.defense', language)}
+                            </span>
+                            <span className="font-bold text-text-primary">
+                              {weapon.def}
+                            </span>
+                          </div>
+                          <div
+                            className="h-1.5 sm:h-2 rounded-full overflow-hidden"
+                            style={{
+                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            }}
+                          >
+                            <motion.div
+                              className="h-full rounded-full"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${Math.min((weapon.def / 100) * 100, 100)}%` }}
+                              transition={{
+                                delay:
+                                  0.5 + catIndex * 0.12 + index * 0.05,
+                                duration: 0.8,
+                                ease: 'easeOut',
+                              }}
+                              style={{
+                                background: `linear-gradient(90deg, ${category.gradientStart}, ${category.gradientEnd})`,
+                                boxShadow: `0 0 6px ${category.accentColor}40`,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
