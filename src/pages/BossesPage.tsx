@@ -31,6 +31,10 @@ export interface Boss {
   dungeon: string;
   game: string;
   difficulty: number; // 1-5
+  hp: number;
+  atk: number;
+  def: number;
+  spd: number;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   accentColor: string; // tailwind color class
   description: string;
@@ -46,6 +50,10 @@ export const bosses: Boss[] = [
     dungeon: "Ganon's Castle",
     game: 'Ocarina of Time',
     difficulty: 5,
+    hp: 95,
+    atk: 98,
+    def: 90,
+    spd: 70,
     icon: Crown,
     accentColor: '#C6A15B',
     description:
@@ -60,6 +68,10 @@ export const bosses: Boss[] = [
     dungeon: 'Fire Temple',
     game: 'Ocarina of Time',
     difficulty: 4,
+    hp: 80,
+    atk: 85,
+    def: 70,
+    spd: 75,
     icon: Flame,
     accentColor: '#E85D3A',
     description:
@@ -74,6 +86,10 @@ export const bosses: Boss[] = [
     dungeon: 'Water Temple',
     game: 'Ocarina of Time',
     difficulty: 3,
+    hp: 65,
+    atk: 60,
+    def: 50,
+    spd: 40,
     icon: Droplets,
     accentColor: '#3B82F6',
     description:
@@ -88,6 +104,10 @@ export const bosses: Boss[] = [
     dungeon: 'Shadow Temple',
     game: 'Ocarina of Time',
     difficulty: 4,
+    hp: 75,
+    atk: 80,
+    def: 45,
+    spd: 85,
     icon: Ghost,
     accentColor: '#8B5CF6',
     description:
@@ -102,6 +122,10 @@ export const bosses: Boss[] = [
     dungeon: 'Spirit Temple',
     game: 'Ocarina of Time',
     difficulty: 4,
+    hp: 70,
+    atk: 88,
+    def: 60,
+    spd: 78,
     icon: Zap,
     accentColor: '#F59E0B',
     description:
@@ -116,6 +140,10 @@ export const bosses: Boss[] = [
     dungeon: "Dodongo's Cavern",
     game: 'Ocarina of Time',
     difficulty: 2,
+    hp: 70,
+    atk: 72,
+    def: 75,
+    spd: 30,
     icon: Flame,
     accentColor: '#DC2626',
     description:
@@ -130,6 +158,10 @@ export const bosses: Boss[] = [
     dungeon: "Inside Jabu-Jabu's Belly",
     game: 'Ocarina of Time',
     difficulty: 3,
+    hp: 60,
+    atk: 65,
+    def: 45,
+    spd: 55,
     icon: Zap,
     accentColor: '#EC4899',
     description:
@@ -144,6 +176,10 @@ export const bosses: Boss[] = [
     dungeon: 'Forest Temple',
     game: 'Ocarina of Time',
     difficulty: 3,
+    hp: 72,
+    atk: 82,
+    def: 55,
+    spd: 80,
     icon: Ghost,
     accentColor: '#6B7280',
     description:
@@ -158,6 +194,10 @@ export const bosses: Boss[] = [
     dungeon: 'Water Temple',
     game: 'Ocarina of Time',
     difficulty: 5,
+    hp: 78,
+    atk: 92,
+    def: 75,
+    spd: 95,
     icon: Eye,
     accentColor: '#374151',
     description:
@@ -172,6 +212,10 @@ export const bosses: Boss[] = [
     dungeon: 'Wind Temple',
     game: 'Wind Waker',
     difficulty: 4,
+    hp: 82,
+    atk: 78,
+    def: 60,
+    spd: 70,
     icon: Wind,
     accentColor: '#D97706',
     description:
@@ -186,6 +230,10 @@ export const bosses: Boss[] = [
     dungeon: "Arbiter's Grounds",
     game: 'Twilight Princess',
     difficulty: 4,
+    hp: 85,
+    atk: 80,
+    def: 65,
+    spd: 60,
     icon: Bone,
     accentColor: '#92400E',
     description:
@@ -200,6 +248,10 @@ export const bosses: Boss[] = [
     dungeon: 'Ancient Cistern',
     game: 'Skyward Sword',
     difficulty: 4,
+    hp: 88,
+    atk: 90,
+    def: 80,
+    spd: 50,
     icon: Cog,
     accentColor: '#A16207',
     description:
@@ -449,6 +501,31 @@ export function BossesPage() {
                         <Gamepad2 size={12} className="flex-shrink-0 text-text-secondary/40" />
                         <span className="truncate">{boss.game}</span>
                       </div>
+                    </div>
+
+                    {/* ── Stat Bars ── */}
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                      {[
+                        { label: '❤️', value: boss.hp, color: '#3E6B48' },
+                        { label: '⚔️', value: boss.atk, color: '#8B3A3A' },
+                        { label: '🛡️', value: boss.def, color: '#5B8A9E' },
+                        { label: '⚡', value: boss.spd, color: '#C6A15B' },
+                      ].map((stat) => (
+                        <div key={stat.label} className="flex items-center gap-1.5">
+                          <span className="text-xs w-5">{stat.label}</span>
+                          <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                            <motion.div
+                              className="h-full rounded-full"
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${stat.value}%` }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6, delay: 0.2 }}
+                              style={{ backgroundColor: stat.color }}
+                            />
+                          </div>
+                          <span className="text-[9px] font-mono text-text-secondary/50 w-6 text-right">{stat.value}</span>
+                        </div>
+                      ))}
                     </div>
 
                     {/* ── Difficulty ── */}
