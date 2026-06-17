@@ -95,21 +95,9 @@ export function getCrestFallback(fifaCode: string): string {
   return `/images/crests/${name}.png`;
 }
 
-/**
- * Get the local flag path for a team by its FIFA code.
- * Flags are pre-downloaded to /public/images/flags/{FIFA_CODE}.png
- * Falls back to flagcdn.com via getFlagUrl(iso2) if no local flag.
- */
 export function getLocalFlag(fifaCode: string): string {
   if (!fifaCode) return "";
   return `/images/flags/${fifaCode.toUpperCase()}.png`;
 }
 
-/**
- * Get the flag CDN URL for a team by its ISO2 code.
- * Used as fallback when local flag is not available.
- */
-export function getFlagUrl(iso2: string): string {
-  if (!iso2) return "";
-  return `https://flagcdn.com/w80/${iso2.toLowerCase()}.png`;
-}
+

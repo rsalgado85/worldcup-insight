@@ -9,6 +9,8 @@ import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEE
 import { t } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
+import { usePlayerModalStore } from '@/store/playerModalStore';
+import { getPlayerAvatar } from '@/constants';
 import type { Player } from '@/types/worldcup';
 
 function ScorerRow({ player, rank, highlight, language }: { player: Player & { cleanSheets?: number }; rank: number; highlight?: 'goals' | 'assists' | 'rating' | 'cleanSheets'; language: 'en' | 'es' }) {
@@ -29,9 +31,23 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
           <span className="text-sm font-black text-text-muted">{rank}</span>
         )}
       </div>
-      <span className="text-xl"><FlagImage flag={player.flag} size="md" /></span>
+      <span className="text-xl"><FlagImage flag={player.avatar || player.flag} size="md" /></span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-text truncate">{player.name}</p>
+        <button
+          onClick={() => usePlayerModalStore.getState().open({
+            name: player.name,
+            team: player.team,
+            flag: player.flag,
+            avatar: getPlayerAvatar(player.team),
+            goals: player.goals,
+            assists: player.assists,
+            rating: player.rating,
+            cleanSheets: (player as any).cleanSheets,
+          })}
+          className="text-sm font-bold text-text truncate text-left hover:text-primary-light transition-colors cursor-pointer"
+        >
+          {player.name}
+        </button>
         <p className="text-[10px] text-text-secondary">{player.team}</p>
       </div>
       <div className="flex items-center gap-4 text-right flex-shrink-0">
@@ -182,9 +198,22 @@ export function TopScorersPage() {
                 </div>
               )}
               <div className="w-16 h-16 mx-auto mt-2 rounded-2xl bg-primary-subtle flex items-center justify-center">
-                <span className="text-3xl"><FlagImage flag={p.flag} size="xl" /></span>
+                <span className="text-3xl"><FlagImage flag={p.avatar || p.flag} size="xl" /></span>
               </div>
-              <h3 className="text-lg font-black text-text mt-3">{p.name}</h3>
+              <button
+                onClick={() => usePlayerModalStore.getState().open({
+                  name: p.name,
+                  team: p.team,
+                  flag: p.flag,
+                  avatar: getPlayerAvatar(p.team),
+                  goals: p.goals,
+                  assists: p.assists,
+                  rating: p.rating,
+                })}
+                className="text-lg font-black text-text mt-3 text-left hover:text-primary-light transition-colors cursor-pointer"
+              >
+                {p.name}
+              </button>
               <p className="text-xs text-text-secondary mb-3">{p.team}</p>
               <div className="flex items-center justify-center gap-5">
                 <div className="text-center">

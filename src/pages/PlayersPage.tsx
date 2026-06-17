@@ -8,6 +8,8 @@ import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import { fmtDateCompact } from '@/utils/dates';
+import { usePlayerModalStore } from '@/store/playerModalStore';
+import { getPlayerAvatar } from '@/constants';
 import type { Player, Match } from '@/types/worldcup';
 
 /* ─── Player Match Stats ────────────────────────── */
@@ -127,7 +129,20 @@ export function PlayersPage() {
                     <FlagImage flag={player.flag} size="md" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-black text-text truncate">{player.name}</h3>
+                    <button
+                      onClick={() => usePlayerModalStore.getState().open({
+                        name: player.name,
+                        team: player.team,
+                        flag: player.flag,
+                        avatar: getPlayerAvatar(player.team),
+                        goals: player.goals,
+                        assists: player.assists,
+                        rating: player.rating,
+                      })}
+                      className="text-sm font-black text-text truncate text-left hover:text-primary-light transition-colors cursor-pointer"
+                    >
+                      {player.name}
+                    </button>
                     <p className="text-[10px] text-text-secondary">{player.team}</p>
                   </div>
                 </div>

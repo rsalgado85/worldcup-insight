@@ -7,7 +7,8 @@ import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getLocalFlag } from '@/constants/crests';
-import { TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
+import { TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS, getPlayerAvatar } from '@/constants';
+import { usePlayerModalStore } from '@/store/playerModalStore';
 import { t, tf } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
 import { fmtTime } from '@/utils/dates';
@@ -40,9 +41,23 @@ function TrendingPlayerRow({ player, rank, stat, statColor }: { player: PlayerDa
   return (
     <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary-subtle transition-colors">
       <span className="text-[10px] font-black text-text-muted w-4 text-right">{rank}</span>
-      <span className="text-base">{player.flag}</span>
+      <FlagImage flag={player.flag} size="md" />
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold text-text truncate">{player.name}</p>
+        <button
+          onClick={() => usePlayerModalStore.getState().open({
+            name: player.name,
+            team: player.team,
+            flag: player.flag,
+            avatar: getPlayerAvatar(player.team),
+            goals: player.goals,
+            assists: player.assists,
+            rating: player.rating,
+            cleanSheets: player.cleanSheets,
+          })}
+          className="text-xs font-bold text-text truncate text-left hover:text-primary-light transition-colors cursor-pointer"
+        >
+          {player.name}
+        </button>
         <p className="text-[9px] text-text-muted">{player.team}</p>
       </div>
       {stat !== undefined && <span className="text-sm font-black text-right min-w-[2rem]" style={{color: statColor}}>{stat}</span>}
@@ -128,8 +143,14 @@ export function HomePage() {
       <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.4}}
         className="relative overflow-hidden rounded-2xl p-6 sm:p-8"
         style={{background:'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)'}}>
-        <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
-        <div className="absolute right-12 top-4 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
+        {/* Background player illustration — right-aligned, merging into the card */}
+        {featured.avatar && (
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 sm:w-2/5 overflow-hidden">
+            <img src={featured.avatar} alt=""
+              className="absolute right-0 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-none object-cover"
+              style={{maskImage:'linear-gradient(to left, black 30%, transparent 100%)',WebkitMaskImage:'linear-gradient(to left, black 30%, transparent 100%)'}} />
+          </div>
+        )}
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
             <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-4xl shadow-lg overflow-hidden p-1">
@@ -138,7 +159,20 @@ export function HomePage() {
             <span className="badge text-[9px] px-2 py-0.5 bg-white/20 text-white backdrop-blur font-semibold">{t('home.playerOfTournament', language)}</span>
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-1">{featured.name}</h2>
+            <button
+              onClick={() => usePlayerModalStore.getState().open({
+                name: featured.name,
+                team: featured.team,
+                flag: featured.flag,
+                avatar: getPlayerAvatar(featured.team),
+                goals: featured.goals,
+                assists: featured.assists,
+                rating: featured.rating,
+              })}
+              className="text-2xl sm:text-3xl font-black text-white mb-1 text-left hover:opacity-80 transition-opacity cursor-pointer"
+            >
+              {featured.name}
+            </button>
             <p className="text-sm text-white/70 mb-4">{featured.team}</p>
             <div className="flex flex-wrap gap-3">
               {[{l:t('home.goals',language),v:featured.goals},{l:t('home.assists',language),v:featured.assists},{l:t('home.rating',language),v:featured.rating}].map(s=>(

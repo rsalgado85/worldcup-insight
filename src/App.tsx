@@ -3,6 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { router } from '@/routes';
+import { PlayerModal } from '@/components/modals/PlayerModal';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ export default function App() {
       onSuccess={() => queryClient.resumePausedMutations()}
     >
       <RouterProvider router={router} />
+      <PlayerModal />
     </PersistQueryClientProvider>
   );
 }

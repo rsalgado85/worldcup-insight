@@ -68,38 +68,83 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const FEATURED_PLAYERS = [
-  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', goals: 8, assists: 2, rating: 9.2 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', goals: 7, assists: 3, rating: 9.1 },
-  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: 'https://flagcdn.com/w160/no.png', goals: 9, assists: 1, rating: 8.9 },
-  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', goals: 5, assists: 4, rating: 8.8 },
-  { id: 5, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', goals: 4, assists: 3, rating: 8.7 },
+  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: '/images/flags/FRA.png', avatar: '/images/players/france-mbappe.jpg', goals: 8, assists: 2, rating: 9.2 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '/images/flags/ARG.png', avatar: '/images/players/argentina-messi.jpg', goals: 7, assists: 3, rating: 9.1 },
+  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: '/images/flags/NOR.png', avatar: '/images/players/norway-9.jpg', goals: 9, assists: 1, rating: 8.9 },
+  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: '/images/flags/BRA.png', goals: 5, assists: 4, rating: 8.8 },
+  { id: 5, name: 'Jude Bellingham', team: 'England', flag: '/images/flags/ENG.png', goals: 4, assists: 3, rating: 8.7 },
 ];
 
 export const TOP_SCORERS = [
   ...FEATURED_PLAYERS,
-  { id: 6, name: 'Harry Kane', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', goals: 6, assists: 1, rating: 8.5 },
+  { id: 6, name: 'Harry Kane', team: 'England', flag: '/images/flags/ENG.png', goals: 6, assists: 1, rating: 8.5 },
 ];
 
 export const TOP_ASSISTS = [
-  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: 'https://flagcdn.com/w160/be.png', value: 5 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 4 },
-  { id: 3, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 4 },
-  { id: 4, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', value: 3 },
-  { id: 5, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 3 },
+  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: '/images/flags/BEL.png', avatar: '/images/players/belgium-7.jpg', value: 5 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '/images/flags/ARG.png', avatar: '/images/players/argentina-messi.jpg', value: 4 },
+  { id: 3, name: 'Vinícius Jr.', team: 'Brazil', flag: '/images/flags/BRA.png', value: 4 },
+  { id: 4, name: 'Jude Bellingham', team: 'England', flag: '/images/flags/ENG.png', value: 3 },
+  { id: 5, name: 'Kylian Mbappé', team: 'France', flag: '/images/flags/FRA.png', avatar: '/images/players/france-mbappe.jpg', value: 3 },
 ];
 
 export const TOP_RATINGS = [
-  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 9.2 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 9.1 },
-  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: 'https://flagcdn.com/w160/no.png', value: 8.9 },
-  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 8.8 },
-  { id: 5, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', value: 8.7 },
+  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: '/images/flags/FRA.png', avatar: '/images/players/france-mbappe.jpg', value: 9.2 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '/images/flags/ARG.png', avatar: '/images/players/argentina-messi.jpg', value: 9.1 },
+  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: '/images/flags/NOR.png', avatar: '/images/players/norway-9.jpg', value: 8.9 },
+  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: '/images/flags/BRA.png', value: 8.8 },
+  { id: 5, name: 'Jude Bellingham', team: 'England', flag: '/images/flags/ENG.png', value: 8.7 },
 ];
 
 export const TOP_CLEAN_SHEETS = [
-  { id: 1, name: 'Alisson Becker', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 4 },
-  { id: 2, name: 'Thibaut Courtois', team: 'Belgium', flag: 'https://flagcdn.com/w160/be.png', value: 3 },
-  { id: 3, name: 'Emiliano Martínez', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 3 },
-  { id: 4, name: 'Manuel Neuer', team: 'Germany', flag: 'https://flagcdn.com/w160/de.png', value: 2 },
-  { id: 5, name: 'Mike Maignan', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 2 },
+  { id: 1, name: 'Alisson Becker', team: 'Brazil', flag: '/images/flags/BRA.png', value: 4 },
+  { id: 2, name: 'Thibaut Courtois', team: 'Belgium', flag: '/images/flags/BEL.png', avatar: '/images/players/belgium-7.jpg', value: 3 },
+  { id: 3, name: 'Emiliano Martínez', team: 'Argentina', flag: '/images/flags/ARG.png', avatar: '/images/players/argentina-messi.jpg', value: 3 },
+  { id: 4, name: 'Manuel Neuer', team: 'Germany', flag: '/images/flags/GER.png', avatar: '/images/players/germany-8.jpg', value: 2 },
+  { id: 5, name: 'Mike Maignan', team: 'France', flag: '/images/flags/FRA.png', avatar: '/images/players/france-mbappe.jpg', value: 2 },
 ];
+
+export const AVATAR_BY_TEAM: Record<string, string> = {
+  France: '/images/players/france-mbappe.jpg',
+  Argentina: '/images/players/argentina-messi.jpg',
+  Ecuador: '/images/players/ecuador-10.jpg',
+  Colombia: '/images/players/colombia-10.jpg',
+  Portugal: '/images/players/portugal-7.jpg',
+  Brazil: '/images/players/brazil-10.jpg',
+  Sweden: '/images/players/sweden-10.jpg',
+  England: '/images/players/england-10.jpg',
+  Norway: '/images/players/norway-9.jpg',
+  Mexico: '/images/players/mexico-10.jpg',
+  Germany: '/images/players/germany-8.jpg',
+  Croatia: '/images/players/croatia-10.jpg',
+  Panama: '/images/players/panama-10.jpg',
+  Ghana: '/images/players/ghana-10.jpg',
+  'United States': '/images/players/usa-10.jpg',
+  Uruguay: '/images/players/uruguay-15.jpg',
+  Spain: '/images/players/spain-19.jpg',
+  Netherlands: '/images/players/netherlands-4.jpg',
+  Japan: '/images/players/japan-7.jpg',
+  Belgium: '/images/players/belgium-7.jpg',
+  Morocco: '/images/players/morocco-2.jpg',
+  Senegal: '/images/players/senegal-10.jpg',
+  Canada: '/images/players/canada-19.jpg',
+  'South Korea': '/images/players/korea-7.jpg',
+  'Korea Republic': '/images/players/korea-7.jpg',
+  Paraguay: '/images/players/paraguay-10.jpg',
+  Switzerland: '/images/players/switzerland-5.jpg',
+  Turkey: '/images/players/turkey-8.jpg',
+  Türkiye: '/images/players/turkey-8.jpg',
+  Australia: '/images/players/australia-15.jpg',
+  'South Africa': '/images/players/southafrica-10.jpg',
+  Scotland: '/images/players/scotland-7.jpg',
+  "Côte d'Ivoire": '/images/players/ivorycoast-11.jpg',
+  'Costa de Marfil': '/images/players/ivorycoast-11.jpg',
+  Egypt: '/images/players/egypt-10.jpg',
+  Iran: '/images/players/iran-20.jpg',
+  'Saudi Arabia': '/images/players/saudiarabia-10.jpg',
+  'Arabia Saudita': '/images/players/saudiarabia-10.jpg',
+};
+
+export function getPlayerAvatar(team: string): string | undefined {
+  return AVATAR_BY_TEAM[team];
+}

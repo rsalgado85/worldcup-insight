@@ -68,6 +68,7 @@ export interface Player {
   name: string;
   team: string;
   flag: string;
+  avatar?: string;
   goals?: number;
   assists?: number;
   rating?: number;
