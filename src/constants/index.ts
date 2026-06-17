@@ -69,38 +69,38 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const FEATURED_PLAYERS = [
-  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: '🇫🇷', goals: 8, assists: 2, rating: 9.2 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', goals: 7, assists: 3, rating: 9.1 },
-  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: '🇳🇴', goals: 9, assists: 1, rating: 8.9 },
-  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', goals: 5, assists: 4, rating: 8.8 },
-  { id: 5, name: 'Jude Bellingham', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals: 4, assists: 3, rating: 8.7 },
+  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', goals: 8, assists: 2, rating: 9.2 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', goals: 7, assists: 3, rating: 9.1 },
+  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: 'https://flagcdn.com/w160/no.png', goals: 9, assists: 1, rating: 8.9 },
+  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', goals: 5, assists: 4, rating: 8.8 },
+  { id: 5, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', goals: 4, assists: 3, rating: 8.7 },
 ];
 
 export const TOP_SCORERS = [
   ...FEATURED_PLAYERS,
-  { id: 6, name: 'Harry Kane', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals: 6, assists: 1, rating: 8.5 },
+  { id: 6, name: 'Harry Kane', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', goals: 6, assists: 1, rating: 8.5 },
 ];
 
 export const TOP_ASSISTS = [
-  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: '🇧🇪', value: 5 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', value: 4 },
-  { id: 3, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', value: 4 },
-  { id: 4, name: 'Jude Bellingham', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', value: 3 },
-  { id: 5, name: 'Kylian Mbappé', team: 'France', flag: '🇫🇷', value: 3 },
+  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: 'https://flagcdn.com/w160/be.png', value: 5 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 4 },
+  { id: 3, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 4 },
+  { id: 4, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', value: 3 },
+  { id: 5, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 3 },
 ];
 
 export const TOP_RATINGS = [
-  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: '🇫🇷', value: 9.2 },
-  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', value: 9.1 },
-  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: '🇳🇴', value: 8.9 },
-  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', value: 8.8 },
-  { id: 5, name: 'Jude Bellingham', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', value: 8.7 },
+  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 9.2 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 9.1 },
+  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: 'https://flagcdn.com/w160/no.png', value: 8.9 },
+  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 8.8 },
+  { id: 5, name: 'Jude Bellingham', team: 'England', flag: 'https://flagcdn.com/w160/gb-eng.png', value: 8.7 },
 ];
 
 export const TOP_CLEAN_SHEETS = [
-  { id: 1, name: 'Alisson Becker', team: 'Brazil', flag: '🇧🇷', value: 4 },
-  { id: 2, name: 'Thibaut Courtois', team: 'Belgium', flag: '🇧🇪', value: 3 },
-  { id: 3, name: 'Emiliano Martínez', team: 'Argentina', flag: '🇦🇷', value: 3 },
-  { id: 4, name: 'Manuel Neuer', team: 'Germany', flag: '🇩🇪', value: 2 },
-  { id: 5, name: 'Mike Maignan', team: 'France', flag: '🇫🇷', value: 2 },
+  { id: 1, name: 'Alisson Becker', team: 'Brazil', flag: 'https://flagcdn.com/w160/br.png', value: 4 },
+  { id: 2, name: 'Thibaut Courtois', team: 'Belgium', flag: 'https://flagcdn.com/w160/be.png', value: 3 },
+  { id: 3, name: 'Emiliano Martínez', team: 'Argentina', flag: 'https://flagcdn.com/w160/ar.png', value: 3 },
+  { id: 4, name: 'Manuel Neuer', team: 'Germany', flag: 'https://flagcdn.com/w160/de.png', value: 2 },
+  { id: 5, name: 'Mike Maignan', team: 'France', flag: 'https://flagcdn.com/w160/fr.png', value: 2 },
 ];
