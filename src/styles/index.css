@@ -1,202 +1,408 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── FIFA World Cup 2026 Colors ────────────────── */
-  --color-wc-blue: #0033A0;
-  --color-wc-red: #E4002B;
-  --color-wc-green: #00A859;
-  --color-wc-gold: #F2A900;
-  --color-wc-navy: #001B44;
-  
-  /* ─── Theme Colors ─────────────────────────────── */
-  --color-bg: #F8FAFC;
-  --color-card: #FFFFFF;
-  --color-border: #E2E8F0;
-  --color-text: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-accent: #0033A0;
-  --color-accent-light: #1E5FD9;
-  --color-success: #00A859;
-  --color-warning: #F2A900;
-  --color-danger: #E4002B;
-  --color-info: #3B82F6;
-  --color-glass: rgba(255, 255, 255, 0.7);
-  --color-glass-border: rgba(0, 51, 160, 0.1);
-  --color-glass-hover: rgba(255, 255, 255, 0.9);
+  /* ═══════════════════════════════════════════════════
+     WORLD CUP INSIGHT v2 — Premium Palette
+     Sr. UX/UI Design System
+     ═══════════════════════════════════════════════════ */
+
+  /* ─── Brand ────────────────────────────────────── */
+  --color-primary: #1A3D7F;        /* French Blue — authority, trust */
+  --color-primary-light: #4583CA;  /* Steel Blue — interactive, links */
+  --color-primary-dark: #0F2557;   /* Deeper navy for hover states */
+  --color-primary-subtle: rgba(26, 61, 127, 0.06);
+
+  /* ─── Secondary ────────────────────────────────── */
+  --color-secondary: #42679A;       /* Baltic Blue — cards, surfaces */
+  --color-secondary-light: rgba(66, 103, 154, 0.08);
+  --color-secondary-hover: rgba(66, 103, 154, 0.15);
+
+  /* ─── Accent ───────────────────────────────────── */
+  --color-accent: #412C49;          /* Vintage Grape — premium, hero */
+  --color-accent-light: rgba(65, 44, 73, 0.08);
+  --color-accent-hover: rgba(65, 44, 73, 0.15);
+
+  /* ─── Warm ─────────────────────────────────────── */
+  --color-warm: #CCBA8C;            /* Sand — borders, badges, warmth */
+  --color-warm-subtle: rgba(204, 186, 140, 0.15);
+  --color-warm-hover: rgba(204, 186, 140, 0.25);
+
+  /* ─── Semantic ─────────────────────────────────── */
+  --color-success: #419050;         /* Sea Green — wins, positive KPIs */
+  --color-success-subtle: rgba(65, 144, 80, 0.08);
+  --color-live: #9D302D;            /* Brown Red — LIVE indicator, urgency */
+  --color-live-pulse: rgba(157, 48, 45, 0.3);
+  --color-warning: #CCBA8C;
+  --color-info: #4583CA;
+
+  /* ─── Surfaces ─────────────────────────────────── */
+  --color-bg: #FEFEFE;              /* White */
+  --color-card: #FEFEFE;
+  --color-card-hover: #F8F9FB;
+  --color-border: rgba(26, 61, 127, 0.08);
+  --color-border-strong: rgba(26, 61, 127, 0.15);
+  --color-divider: rgba(26, 61, 127, 0.05);
+
+  /* ─── Text ─────────────────────────────────────── */
+  --color-text: #0F1A30;            /* Near-black with navy undertone */
+  --color-text-secondary: #42679A;  /* Baltic Blue */
+  --color-text-muted: rgba(66, 103, 154, 0.6);
+  --color-text-on-primary: #FEFEFE;
+  --color-text-on-accent: #FEFEFE;
+
+  /* ─── Glass ────────────────────────────────────── */
+  --color-glass: rgba(254, 254, 254, 0.85);
+  --color-glass-border: rgba(26, 61, 127, 0.06);
+  --color-glass-hover: rgba(254, 254, 254, 0.95);
+
+  /* ─── Shadows ──────────────────────────────────── */
+  --shadow-card: 0 1px 3px rgba(15, 26, 48, 0.04), 0 1px 2px rgba(15, 26, 48, 0.06);
+  --shadow-card-hover: 0 4px 12px rgba(15, 26, 48, 0.06), 0 2px 4px rgba(15, 26, 48, 0.08);
+  --shadow-elevated: 0 8px 24px rgba(15, 26, 48, 0.08), 0 4px 8px rgba(15, 26, 48, 0.06);
+  --shadow-glow: 0 0 20px rgba(157, 48, 45, 0.15);
+
+  /* ─── Radii ────────────────────────────────────── */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
 }
 
-/* Dark theme */
-.dark {
-  --color-bg: #0F172A;
-  --color-card: #1E293B;
-  --color-border: #334155;
-  --color-text: #F1F5F9;
-  --color-text-secondary: #94A3B8;
-  --color-glass: rgba(30, 41, 59, 0.7);
-  --color-glass-border: rgba(0, 51, 160, 0.2);
-  --color-glass-hover: rgba(30, 41, 59, 0.9);
-}
-
+/* ═══════════════════════════════════════════════════
+   BASE LAYER
+   ═══════════════════════════════════════════════════ */
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--color-border);
   }
 
   body {
-    @apply bg-bg text-text antialiased;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-bg;
-  }
-
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-text-secondary;
+    background: var(--color-text-muted);
   }
 }
 
+/* ═══════════════════════════════════════════════════
+   COMPONENT LAYER — Design tokens as utility classes
+   ═══════════════════════════════════════════════════ */
 @layer components {
-  .glass-card {
-    background-color: var(--color-glass);
+  /* ─── Cards ────────────────────────────────────── */
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all 200ms ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-strong);
+  }
+
+  .card-glass {
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--color-glass-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1rem;
+    border-radius: var(--radius-lg);
+  }
+  .card-glass:hover {
+    background: var(--color-glass-hover);
   }
 
-  .glass-card-hover {
-    background-color: var(--color-glass);
-    border: 1px solid var(--color-glass-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1rem;
-    transition: all 0.3s;
-  }
-
-  .glass-card-hover:hover {
-    background-color: var(--color-glass-hover);
-    border-color: rgba(0, 51, 160, 0.25);
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, var(--color-wc-blue), var(--color-wc-red));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .wc-gradient {
-    background: linear-gradient(135deg, var(--color-wc-navy) 0%, var(--color-wc-blue) 100%);
-  }
-
-  .wc-gradient-hero {
-    background: linear-gradient(135deg, var(--color-wc-navy) 0%, #002266 40%, var(--color-wc-blue) 100%);
-  }
-
-  .skeleton {
-    background-color: var(--color-border);
-    border-radius: 0.5rem;
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
-  }
-
+  /* ─── KPI Cards ────────────────────────────────── */
   .kpi-card {
-    background-color: var(--color-glass);
-    border: 1px solid var(--color-glass-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1rem;
     padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all 200ms ease;
+  }
+  .kpi-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
-  .kpi-value {
-    font-size: 1.75rem;
-    line-height: 1.25;
-    font-weight: 800;
-    color: var(--color-text);
-  }
-
-  .kpi-label {
-    font-size: 0.8125rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-  }
-
-  .status-badge {
+  /* ─── Buttons ──────────────────────────────────── */
+  .btn-primary {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 150ms ease;
+    box-shadow: 0 1px 2px rgba(26, 61, 127, 0.2);
+  }
+  .btn-primary:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 4px 12px rgba(26, 61, 127, 0.25);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: var(--color-secondary-light);
+    color: var(--color-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 150ms ease;
+  }
+  .btn-secondary:hover {
+    background: var(--color-secondary-hover);
+    border-color: var(--color-secondary);
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    transition: all 150ms ease;
+  }
+  .btn-ghost:hover {
+    background: var(--color-primary-subtle);
+    color: var(--color-primary);
+  }
+
+  /* ─── Badges ────────────────────────────────────── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-full);
     font-size: 0.75rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.025em;
   }
-
-  .status-live {
-    background-color: rgba(228, 0, 43, 0.1);
-    color: #E4002B;
+  .badge-live {
+    background: var(--color-live);
+    color: #FEFEFE;
+    animation: pulse-live 2s ease-in-out infinite;
+  }
+  .badge-finished {
+    background: var(--color-text-muted);
+    color: var(--color-text-on-primary);
+  }
+  .badge-upcoming {
+    background: var(--color-warm-subtle);
+    color: #8B6914;
+  }
+  .badge-success {
+    background: var(--color-success-subtle);
+    color: var(--color-success);
+  }
+  .badge-premium {
+    background: var(--color-accent-light);
+    color: var(--color-accent);
   }
 
-  .status-finished {
-    background-color: rgba(0, 168, 89, 0.1);
-    color: #00A859;
-  }
-
-  .status-upcoming {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #3B82F6;
-  }
-
-  .status-ht {
-    background-color: rgba(242, 169, 0, 0.1);
-    color: #F2A900;
-  }
-
-  .wc-table {
+  /* ─── Form elements ─────────────────────────────── */
+  .input-field {
     width: 100%;
-    border-collapse: collapse;
+    padding: 0.625rem 0.875rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    transition: all 150ms ease;
+  }
+  .input-field::placeholder { color: var(--color-text-muted); }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px rgba(69, 131, 202, 0.15);
   }
 
-  .wc-table th {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-secondary);
-    padding: 0.625rem 0.5rem;
-    text-align: left;
-    border-bottom: 2px solid var(--color-border);
-  }
-
-  .wc-table td {
+  .filter-pill {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
     font-size: 0.8125rem;
-    padding: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-card);
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .filter-pill:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+  .filter-pill.active {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-primary);
   }
 
-  .wc-table tr:hover {
-    background-color: rgba(0, 51, 160, 0.03);
+  /* ─── Skeleton loading ──────────────────────────── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-border) 25%,
+      var(--color-primary-subtle) 50%,
+      var(--color-border) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-sm);
   }
+
+  /* ─── Stat bars ─────────────────────────────────── */
+  .stat-bar {
+    height: 0.375rem;
+    border-radius: var(--radius-full);
+    background: var(--color-border);
+    overflow: hidden;
+  }
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+    transition: width 600ms ease;
+  }
+
+  /* ─── Nav ───────────────────────────────────────── */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 150ms ease;
+  }
+  .nav-item:hover {
+    background: var(--color-primary-subtle);
+    color: var(--color-primary);
+  }
+  .nav-item.active {
+    background: var(--color-primary-subtle);
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* ─── Group tabs ────────────────────────────────── */
+  .group-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    background: var(--color-card);
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .group-tab:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+  .group-tab.active {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-primary);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY
+   ═══════════════════════════════════════════════════ */
+@utility animate-fade-in {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+@utility animate-scale-in {
+  animation: scaleIn 0.3s ease-out both;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-live {
+  box-shadow: 0 0 0 3px var(--color-live-pulse);
+  animation: pulse-live 2s ease-in-out infinite;
 }

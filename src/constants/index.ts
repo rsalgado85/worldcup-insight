@@ -8,29 +8,36 @@ export const ATTRIBUTE_NAMES: Record<string, string> = {};
 export const RACE_COLORS: Record<string, string> = {};
 
 export const WC_COLORS = {
-  blue: '#0033A0',
-  red: '#E4002B',
-  green: '#00A859',
-  gold: '#F2A900',
-  navy: '#001B44',
-  bg: '#F8FAFC',
+  primary: '#1A3D7F',       // French Blue
+  primaryLight: '#4583CA',  // Steel Blue
+  secondary: '#42679A',     // Baltic Blue
+  accent: '#412C49',        // Vintage Grape
+  warm: '#CCBA8C',          // Sand
+  success: '#419050',       // Sea Green
+  live: '#9D302D',          // Brown Red
+  hunter: '#346344',        // Hunter Green
+  bg: '#FEFEFE',            // White
+  card: '#FEFEFE',
+  text: '#0F1A30',
+  textSecondary: '#42679A',
+  border: 'rgba(26, 61, 127, 0.08)',
 } as const;
 
 export const GROUPS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'] as const;
 
 export const GROUP_COLORS: Record<string, string> = {
-  A: '#0033A0',
-  B: '#E4002B',
-  C: '#00A859',
-  D: '#F2A900',
-  E: '#6366F1',
-  F: '#EC4899',
-  G: '#14B8A6',
-  H: '#F97316',
-  I: '#8B5CF6',
-  J: '#06B6D4',
-  K: '#EF4444',
-  L: '#84CC16',
+  A: '#1A3D7F',  // French Blue
+  B: '#9D302D',  // Brown Red
+  C: '#419050',  // Sea Green
+  D: '#CCBA8C',  // Sand
+  E: '#4583CA',  // Steel Blue
+  F: '#412C49',  // Vintage Grape
+  G: '#346344',  // Hunter Green
+  H: '#42679A',  // Baltic Blue
+  I: '#1A3D7F',  // French Blue
+  J: '#9D302D',  // Brown Red
+  K: '#419050',  // Sea Green
+  L: '#4583CA',  // Steel Blue
 };
 
 export const ROUTES = {
@@ -78,28 +85,28 @@ export const FEATURED_PLAYERS = [
 export const TOP_SCORERS = [
   ...FEATURED_PLAYERS,
   { id: 6, name: 'Harry Kane', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals: 6, assists: 1, rating: 8.5 },
-  { id: 7, name: 'Lautaro Martínez', team: 'Argentina', flag: '🇦🇷', goals: 5, assists: 2, rating: 8.3 },
-  { id: 8, name: 'Bukayo Saka', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals: 4, assists: 3, rating: 8.4 },
 ];
 
 export const TOP_ASSISTS = [
-  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: '🇧🇪', goals: 2, assists: 6, rating: 8.9 },
-  { id: 2, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', goals: 5, assists: 4, rating: 8.8 },
-  { id: 3, name: 'Bruno Fernandes', team: 'Portugal', flag: '🇵🇹', goals: 3, assists: 4, rating: 8.5 },
-  { id: 4, name: 'Bukayo Saka', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals: 4, assists: 3, rating: 8.4 },
-  { id: 5, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', goals: 7, assists: 3, rating: 9.1 },
+  { id: 1, name: 'Kevin De Bruyne', team: 'Belgium', flag: '🇧🇪', value: 5 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', value: 4 },
+  { id: 3, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', value: 4 },
+  { id: 4, name: 'Jude Bellingham', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', value: 3 },
+  { id: 5, name: 'Kylian Mbappé', team: 'France', flag: '🇫🇷', value: 3 },
 ];
 
 export const TOP_RATINGS = [
-  ...FEATURED_PLAYERS,
-  { id: 6, name: 'Rodri', team: 'Spain', flag: '🇪🇸', goals: 1, assists: 2, rating: 8.6 },
-  { id: 7, name: 'Jamal Musiala', team: 'Germany', flag: '🇩🇪', goals: 3, assists: 2, rating: 8.5 },
+  { id: 1, name: 'Kylian Mbappé', team: 'France', flag: '🇫🇷', value: 9.2 },
+  { id: 2, name: 'Lionel Messi', team: 'Argentina', flag: '🇦🇷', value: 9.1 },
+  { id: 3, name: 'Erling Haaland', team: 'Norway', flag: '🇳🇴', value: 8.9 },
+  { id: 4, name: 'Vinícius Jr.', team: 'Brazil', flag: '🇧🇷', value: 8.8 },
+  { id: 5, name: 'Jude Bellingham', team: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', value: 8.7 },
 ];
 
 export const TOP_CLEAN_SHEETS = [
-  { id: 1, name: 'Emiliano Martínez', team: 'Argentina', flag: '🇦🇷', goals: 0, assists: 0, rating: 8.8, cleanSheets: 5 },
-  { id: 2, name: 'Alisson Becker', team: 'Brazil', flag: '🇧🇷', goals: 0, assists: 0, rating: 8.5, cleanSheets: 4 },
-  { id: 3, name: 'Thibaut Courtois', team: 'Belgium', flag: '🇧🇪', goals: 0, assists: 0, rating: 8.6, cleanSheets: 4 },
-  { id: 4, name: 'Mike Maignan', team: 'France', flag: '🇫🇷', goals: 0, assists: 0, rating: 8.3, cleanSheets: 3 },
-  { id: 5, name: 'Manuel Neuer', team: 'Germany', flag: '🇩🇪', goals: 0, assists: 0, rating: 8.2, cleanSheets: 3 },
+  { id: 1, name: 'Alisson Becker', team: 'Brazil', flag: '🇧🇷', value: 4 },
+  { id: 2, name: 'Thibaut Courtois', team: 'Belgium', flag: '🇧🇪', value: 3 },
+  { id: 3, name: 'Emiliano Martínez', team: 'Argentina', flag: '🇦🇷', value: 3 },
+  { id: 4, name: 'Manuel Neuer', team: 'Germany', flag: '🇩🇪', value: 2 },
+  { id: 5, name: 'Mike Maignan', team: 'France', flag: '🇫🇷', value: 2 },
 ];

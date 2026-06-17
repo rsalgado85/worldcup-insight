@@ -46,7 +46,7 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
         )}
         <div>
           <span className="text-sm font-black text-wc-gold">
-            {highlight === 'cleanSheets' ? player.cleanSheets : player.rating.toFixed(1)}
+            {highlight === 'cleanSheets' ? player.cleanSheets : (player.rating?.toFixed(1) ?? '-')}
           </span>
           <span className="text-[9px] text-text-secondary ml-0.5">
             {highlight === 'cleanSheets' ? 'CS' : 'R'}
@@ -63,9 +63,9 @@ export function TopScorersPage() {
 
   const sortedPlayers = useMemo(() => {
     if (!players || players.length === 0) return null;
-    const byGoals = [...players].sort((a, b) => b.goals - a.goals || b.assists - a.assists);
-    const byAssists = [...players].sort((a, b) => b.assists - a.assists || b.goals - a.goals);
-    const byRating = [...players].sort((a, b) => b.rating - a.rating);
+    const byGoals = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0) || (b.assists || 0) - (a.assists || 0));
+    const byAssists = [...players].sort((a, b) => (b.assists || 0) - (a.assists || 0) || (b.goals || 0) - (a.goals || 0));
+    const byRating = [...players].sort((a, b) => (b.rating || 0) - (a.rating || 0));
     return { byGoals, byAssists, byRating };
   }, [players]);
 

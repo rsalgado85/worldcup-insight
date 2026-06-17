@@ -32,7 +32,7 @@ function formatDate(dateStr: string): string {
   catch { return dateStr; }
 }
 
-interface PlayerData { id: number; name: string; team: string; flag: string; goals: number; assists: number; rating: number; cleanSheets?: number }
+interface PlayerData { id: number; name: string; team: string; flag: string; goals?: number; assists?: number; rating?: number; cleanSheets?: number; value?: number }
 
 function TrendingPlayerRow({ player, rank }: { player: PlayerData; rank: number }) {
   return (
