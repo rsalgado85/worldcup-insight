@@ -5,6 +5,7 @@ import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Team } from '@/types/worldcup';
 
@@ -121,7 +122,7 @@ export function TeamsPage() {
                 className="glass-card-hover p-5"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{team.flag || '🏳'}</span>
+                  <span className="text-3xl">{<FlagImage flag={team.flag} size="md" />}</span>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-bold text-text truncate">{team.name_en}</h3>
                     <p className="text-[10px] font-semibold text-wc-blue uppercase">{team.fifa_code}</p>

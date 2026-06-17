@@ -4,6 +4,7 @@ import { Search, UserRound, Goal, Zap, Star, X } from 'lucide-react';
 import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Player } from '@/types/worldcup';
 
@@ -123,7 +124,7 @@ export function PlayersPage() {
                 className="glass-card-hover p-4"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{player.flag || '👤'}</span>
+                  <span className="text-2xl">{<FlagImage flag={player.flag} size="md" />}</span>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-bold text-text truncate">{player.name}</h3>
                     <p className="text-[10px] text-text-secondary">{player.team}</p>

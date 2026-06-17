@@ -6,6 +6,7 @@ import { useTeams } from '@/hooks/useTeams';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { getCrestPath, getFlagUrl } from '@/constants/crests';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
 
@@ -286,7 +287,7 @@ export function MatchesPage() {
                           />
                         ) : (
                           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-subtle flex items-center justify-center text-lg">
-                            {homeTeam?.flag ?? '🏳'}
+                            {<FlagImage flag={homeTeam?.flag} size="md" />}
                           </div>
                         )}
                       </div>
@@ -329,7 +330,7 @@ export function MatchesPage() {
                           />
                         ) : (
                           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-subtle flex items-center justify-center text-lg">
-                            {awayTeam?.flag ?? '🏳'}
+                            {<FlagImage flag={awayTeam?.flag} size="md" />}
                           </div>
                         )}
                       </div>

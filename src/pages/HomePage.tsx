@@ -11,6 +11,7 @@ import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
 
@@ -38,7 +39,7 @@ function TrendingPlayerRow({ player, rank }: { player: PlayerData; rank: number 
   return (
     <div className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-wc-blue/[0.03] transition-colors">
       <span className="text-xs font-bold text-text-secondary w-5">{rank}</span>
-      <span className="text-xl">{player.flag}</span>
+      <span className="text-xl">{<FlagImage flag={player.flag} size="md" />}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-text truncate">{player.name}</p>
         <p className="text-[10px] text-text-secondary">{player.team}</p>
@@ -132,7 +133,7 @@ export function HomePage() {
             <Trophy size={12} /> {t('home.playerOfTournament', language)}
           </span>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-4xl">{featuredPlayer.flag}</span>
+            <span className="text-4xl">{<FlagImage flag={featuredPlayer.flag} size="md" />}</span>
             <div>
               <h2 className="font-black text-white text-2xl sm:text-3xl">{featuredPlayer.name}</h2>
               <p className="text-sm text-white/60">{featuredPlayer.team}</p>
@@ -164,9 +165,9 @@ export function HomePage() {
                     <span className={`status-badge ${status.className}`}>{status.label === 'UP' ? <Clock size={10} /> : status.label === 'FT' ? null : <Activity size={10} className="animate-pulse" />}{status.label}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{homeTeam?.flag ?? '🏳'}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
                     <div className="flex items-center gap-2 mx-3">{match.home_score !== null && match.away_score !== null ? <span className="text-lg font-black text-text">{match.home_score} - {match.away_score}</span> : <span className="text-lg font-black text-text-secondary">vs</span>}</div>
-                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{awayTeam?.flag ?? '🏳'}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </motion.div>
               );
@@ -220,7 +221,7 @@ export function HomePage() {
                 {groupStandings.map((team: { id: number; flag: string; name_en: string; pts: number; mp: number; w: number; d: number; l: number; gf: number; ga: number; gd: number }, idx: number) => (
                   <tr key={team.id} className={idx < 2 ? 'bg-wc-blue/[0.02]' : ''}>
                     <td className="font-bold text-text-secondary">{idx + 1}</td>
-                    <td><div className="flex items-center gap-2"><span className="text-lg">{team.flag}</span><span className="text-sm font-semibold text-text">{team.name_en}</span></div></td>
+                    <td><div className="flex items-center gap-2"><span className="text-lg">{<FlagImage flag={team.flag} size="md" />}</span><span className="text-sm font-semibold text-text">{team.name_en}</span></div></td>
                     <td className="text-center font-bold text-wc-blue">{team.pts}</td>
                     <td className="text-center">{team.mp}</td><td className="text-center">{team.w}</td><td className="text-center">{team.d}</td><td className="text-center">{team.l}</td>
                     <td className="text-center">{team.gf}</td><td className="text-center">{team.ga}</td>
@@ -251,9 +252,9 @@ export function HomePage() {
                 <div key={match.id} className="glass-card-hover p-3 cursor-pointer">
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-text-secondary/60 mb-2">{match.group ? tf('common.groupLabel', language, match.group) : ''} • {formatDate(match.local_date)}</p>
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1"><span className="text-base">{homeTeam?.flag ?? '🏳'}</span><span className="text-[11px] font-semibold text-text truncate">{homeTeam?.name_en ?? '—'}</span></div>
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1"><span className="text-base">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-[11px] font-semibold text-text truncate">{homeTeam?.name_en ?? '—'}</span></div>
                     <span className="text-sm font-black text-text mx-1">{match.home_score ?? 0} - {match.away_score ?? 0}</span>
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end"><span className="text-[11px] font-semibold text-text truncate">{awayTeam?.name_en ?? '—'}</span><span className="text-base">{awayTeam?.flag ?? '🏳'}</span></div>
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end"><span className="text-[11px] font-semibold text-text truncate">{awayTeam?.name_en ?? '—'}</span><span className="text-base">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </div>
               );
@@ -282,9 +283,9 @@ export function HomePage() {
                     {match.group && <span className="text-[10px] font-semibold text-text-secondary/60">{tf('common.groupLabel', language, match.group)}</span>}
                   </div>
                   <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{homeTeam?.flag ?? '🏳'}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
                     <span className="text-xs font-bold text-text-secondary">vs</span>
-                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{awayTeam?.flag ?? '🏳'}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </div>
               );

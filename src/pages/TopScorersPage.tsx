@@ -7,6 +7,7 @@ import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS } from '@/constants';
 import { t } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Player } from '@/types/worldcup';
 
@@ -26,7 +27,7 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
           <span className="text-sm font-bold text-text-secondary">{rank}</span>
         )}
       </div>
-      <span className="text-xl">{player.flag || '👤'}</span>
+      <span className="text-xl">{<FlagImage flag={player.flag} size="md" />}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-text truncate">{player.name}</p>
         <p className="text-[10px] text-text-secondary">{player.team}</p>
@@ -128,7 +129,7 @@ export function TopScorersPage() {
                 <Trophy size={28} className="text-wc-gold" />
               </div>
             )}
-            <span className="text-4xl mt-2 block">{p.flag}</span>
+            <span className="text-4xl mt-2 block">{<FlagImage flag={p.flag} size="md" />}</span>
             <h3 className="text-lg font-black text-text mt-2">{p.name}</h3>
             <p className="text-xs text-text-secondary mb-3">{p.team}</p>
             <div className="flex items-center justify-center gap-5">

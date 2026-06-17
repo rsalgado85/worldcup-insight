@@ -5,6 +5,7 @@ import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { GROUPS } from '@/constants';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 
 export function StandingsPage() {
@@ -47,7 +48,7 @@ export function StandingsPage() {
               {standings.map((team: { id: number; flag: string; name_en: string; fifa_code: string; pts: number; mp: number; w: number; d: number; l: number; gf: number; ga: number; gd: number }, idx: number) => (
                 <tr key={team.id} className={`${idx === 0 ? 'bg-wc-gold/5' : idx === 1 ? 'bg-wc-blue/[0.02]' : ''} transition-colors`}>
                   <td className="text-center">{idx === 0 ? <Trophy size={16} className="text-wc-gold inline" /> : idx === 1 ? <span className="font-bold text-text-secondary">2</span> : <span className="text-text-secondary">{idx + 1}</span>}</td>
-                  <td><div className="flex items-center gap-2.5"><span className="text-xl">{team.flag}</span><div><p className="text-sm font-bold text-text">{team.name_en}</p><p className="text-[10px] text-text-secondary/60">{team.fifa_code}</p></div></div></td>
+                  <td><div className="flex items-center gap-2.5"><span className="text-xl">{<FlagImage flag={team.flag} size="md" />}</span><div><p className="text-sm font-bold text-text">{team.name_en}</p><p className="text-[10px] text-text-secondary/60">{team.fifa_code}</p></div></div></td>
                   <td className="text-center"><span className="font-black text-wc-blue text-base">{team.pts}</span></td>
                   <td className="text-center text-sm">{team.mp}</td><td className="text-center text-sm text-wc-green font-semibold">{team.w}</td><td className="text-center text-sm">{team.d}</td><td className="text-center text-sm text-wc-red font-semibold">{team.l}</td>
                   <td className="text-center text-sm">{team.gf}</td><td className="text-center text-sm">{team.ga}</td>

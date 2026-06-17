@@ -8,6 +8,7 @@ import { useTeams } from '@/hooks/useTeams';
 import { Skeleton } from '@/components/common/Skeleton';
 import { GROUPS } from '@/constants';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { GroupStanding } from '@/types/worldcup';
 
@@ -201,7 +202,7 @@ export function PredictionsPage() {
                     {gp.teams.map((team, idx) => (
                       <div key={team.id || idx} className={`flex items-center gap-2 p-1.5 rounded text-xs ${idx < 2 ? 'bg-wc-blue/[0.04]' : ''}`}>
                         <span className="w-4 text-center font-bold text-text-secondary">{idx + 1}</span>
-                        <span className="text-base">{team.flag || '🏳'}</span>
+                        <span className="text-base">{<FlagImage flag={team.flag} size="md" />}</span>
                         <span className="truncate flex-1 font-medium text-text">{team.name_en}</span>
                         <span className="font-bold text-wc-blue">{team.pts}</span>
                       </div>

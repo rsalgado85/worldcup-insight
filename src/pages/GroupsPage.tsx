@@ -4,6 +4,7 @@ import { Trophy, Users } from 'lucide-react';
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
+import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
 import type { Group } from '@/types/worldcup';
 
@@ -23,7 +24,7 @@ function GroupCard({ group, language }: { group: Group; language: 'en' | 'es' })
             {teams.map((team, idx) => (
               <div key={team.id} className={`flex items-center gap-3 p-2.5 rounded-lg transition-colors hover:bg-wc-blue/[0.03] ${idx === 0 ? 'bg-wc-gold/5' : idx === 1 ? 'bg-wc-blue/[0.02]' : ''}`}>
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${idx === 0 ? 'bg-wc-gold/15 text-wc-gold' : idx === 1 ? 'bg-wc-blue/10 text-wc-blue' : 'bg-border text-text-secondary'}`}>{idx + 1}</div>
-                <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{team.flag}</span><div className="min-w-0"><p className="text-sm font-semibold text-text truncate">{team.name_en}</p><p className="text-[10px] text-text-secondary">{team.fifa_code}</p></div></div>
+                <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{<FlagImage flag={team.flag} size="md" />}</span><div className="min-w-0"><p className="text-sm font-semibold text-text truncate">{team.name_en}</p><p className="text-[10px] text-text-secondary">{team.fifa_code}</p></div></div>
                 <div className="flex items-center gap-3 text-right flex-shrink-0">
                   <div><span className="text-sm font-black text-wc-blue">{team.pts}</span><span className="text-[9px] text-text-secondary ml-0.5">PTS</span></div>
                   <div className="hidden sm:block"><span className="text-xs text-text">{team.w}-{team.d}-{team.l}</span><span className="text-[9px] text-text-secondary ml-0.5">WDL</span></div>
