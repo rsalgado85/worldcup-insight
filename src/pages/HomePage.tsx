@@ -63,11 +63,17 @@ export function HomePage() {
 
   const isLoading = matchesLoading || teamsLoading;
 
-  const todayStr = useMemo(() => { try { return new Date().toISOString().split('T')[0]; } catch { return ''; } }, []);
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }, []);
 
   const todayMatches = useMemo(() => {
     if (!matches) return [];
-    return matches.filter((m: Match) => m.local_date === todayStr);
+    return matches.filter((m: Match) => (m.local_date || '').slice(0, 10) === todayStr);
   }, [matches, todayStr]);
 
   const recentMatches = useMemo(() => {
@@ -77,9 +83,8 @@ export function HomePage() {
 
   const upcomingMatches = useMemo(() => {
     if (!matches) return [];
-    const today = new Date().toISOString().split('T')[0];
-    return matches.filter((m: Match) => !m.finished && m.local_date >= today).sort((a: Match, b: Match) => new Date(a.local_date).getTime() - new Date(b.local_date).getTime()).slice(0, 10);
-  }, [matches]);
+    return matches.filter((m: Match) => !m.finished && (m.local_date || '').slice(0, 10) >= todayStr).sort((a: Match, b: Match) => new Date(a.local_date).getTime() - new Date(b.local_date).getTime()).slice(0, 10);
+  }, [matches, todayStr]);
 
   const groupStandings = useMemo(() => {
     if (!groups) return [];
