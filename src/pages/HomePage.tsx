@@ -82,7 +82,10 @@ export function HomePage() {
 
   const todayMatches = useMemo(() => {
     if (!matches || matches.length === 0) return [];
-    return matches.filter((m: Match) => (m.local_date || '') === todayApi);
+    return matches.filter((m: Match) => {
+      const ld = m.local_date || '';
+      return ld === todayApi || ld.includes(todayApi) || ld.includes(todayApi.replace(/\//g, '-'));
+    });
   }, [matches, todayApi]);
 
   const recentMatches = useMemo(() => {

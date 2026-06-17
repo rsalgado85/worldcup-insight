@@ -93,9 +93,16 @@ export function MatchesPage() {
     let result = [...matches];
 
     if (dateFilter === 'today') {
-      result = result.filter(m => (m.local_date || '') === today);
+      // Try exact match, then substring match, then persian_date
+      result = result.filter(m => {
+        const ld = m.local_date || '';
+        return ld === today || ld.includes(today) || ld.includes(today.replace(/\//g, '-'));
+      });
     } else if (dateFilter === 'tomorrow') {
-      result = result.filter(m => (m.local_date || '') === tomorrow);
+      result = result.filter(m => {
+        const ld = m.local_date || '';
+        return ld === tomorrow || ld.includes(tomorrow) || ld.includes(tomorrow.replace(/\//g, '-'));
+      });
     } else if (dateFilter !== 'all') {
       // dropdown dates are YYYY-MM-DD from availableDates, try both formats
       result = result.filter(m => {
