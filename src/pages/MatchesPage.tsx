@@ -31,7 +31,8 @@ function getLocalDate(daysOffset = 0): string {
 
 /** Format date: "19 jun" or "Jun 19" */
 function fmtDateShort(dateStr: string, lang: 'en' | 'es'): string {
-  const parts = dateStr.split('-');
+  const clean = (dateStr || '').slice(0, 10);
+  const parts = clean.split('-');
   if (parts.length < 3) return dateStr;
   const m = parseInt(parts[1], 10) - 1;
   const d = parseInt(parts[2], 10);
@@ -41,7 +42,8 @@ function fmtDateShort(dateStr: string, lang: 'en' | 'es'): string {
 
 /** Format date with weekday: "jue, 19 jun 2026" or "Thu, Jun 19, 2026" */
 function fmtDateFull(dateStr: string, lang: 'en' | 'es'): string {
-  const parts = dateStr.split('-');
+  const clean = (dateStr || '').slice(0, 10);
+  const parts = clean.split('-');
   if (parts.length < 3) return dateStr;
   const [y, mo, d] = parts.map(Number);
   const date = new Date(y, mo - 1, d);
@@ -64,14 +66,14 @@ export function MatchesPage() {
   const [dateFilter, setDateFilter] = useState<DateFilter>('today');
   const [showDateDropdown, setShowDateDropdown] = useState(false);
 
-  // All unique match dates from API, sorted
+  // All unique match dates from API (strip time if present), sorted
   const availableDates = useMemo(() => {
     if (!matches) return [];
-    const dates = [...new Set(matches.map(m => m.local_date))].filter(Boolean);
+    const dates = [...new Set(matches.map(m => (m.local_date || '').slice(0, 10)))].filter(Boolean);
     return dates.sort();
   }, [matches]);
 
-  // Filter matches by selected date
+  // Filter matches by selected date (compare date part only)
   const filtered = useMemo(() => {
     if (!matches) return [];
 
@@ -81,11 +83,11 @@ export function MatchesPage() {
     let result = [...matches];
 
     if (dateFilter === 'today') {
-      result = result.filter(m => m.local_date === today);
+      result = result.filter(m => (m.local_date || '').slice(0, 10) === today);
     } else if (dateFilter === 'tomorrow') {
-      result = result.filter(m => m.local_date === tomorrow);
+      result = result.filter(m => (m.local_date || '').slice(0, 10) === tomorrow);
     } else if (dateFilter !== 'all') {
-      result = result.filter(m => m.local_date === dateFilter);
+      result = result.filter(m => (m.local_date || '').slice(0, 10) === dateFilter);
     }
 
     // In-progress matches first
@@ -181,7 +183,7 @@ export function MatchesPage() {
                       >
                         {fmtDateFull(date, language)}
                         <span className="text-text-muted ml-2 text-xs">
-                          ({matches?.filter(m => m.local_date === date).length ?? 0})
+                          ({matches?.filter(m => (m.local_date || '').slice(0, 10) === date).length ?? 0})
                         </span>
                       </button>
                     ))}
