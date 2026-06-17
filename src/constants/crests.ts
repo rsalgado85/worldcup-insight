@@ -68,13 +68,21 @@ export const CREST_MAP: Record<string, string> = {
 
 /**
  * Get the crest path for a team by its FIFA code.
- * Returns the correct file path: /images/crests/{filename}.{svg|png}
+ * Returns the path — browser will try SVG first, PNG on error.
  */
 export function getCrestPath(fifaCode: string): string {
   const name = CREST_MAP[fifaCode?.toUpperCase()];
   if (!name) return "/images/crests/placeholder.svg";
-  // SVG preferred check happens at runtime; return .svg as default
   return `/images/crests/${name}.svg`;
+}
+
+/**
+ * Get PNG fallback path (for onError handler).
+ */
+export function getCrestFallback(fifaCode: string): string {
+  const name = CREST_MAP[fifaCode?.toUpperCase()];
+  if (!name) return "/images/crests/placeholder.svg";
+  return `/images/crests/${name}.png`;
 }
 
 /**

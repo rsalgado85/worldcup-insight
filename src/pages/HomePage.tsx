@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/common/Skeleton';
 import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
 import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
+import { getCrestPath, getCrestFallback, getFlagUrl } from '@/constants/crests';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
 
@@ -173,9 +174,9 @@ export function HomePage() {
                     <span className={`status-badge ${status.className}`}>{status.label === 'UP' ? <Clock size={10} /> : status.label === 'FT' ? null : <Activity size={10} className="animate-pulse" />}{status.label}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{homeTeam?.fifa_code ? <img src={getCrestPath(homeTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(homeTeam.iso2) : getCrestFallback(homeTeam.fifa_code); }} /> : <FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
                     <div className="flex items-center gap-2 mx-3">{match.home_score !== null && match.away_score !== null ? <span className="text-lg font-black text-text">{match.home_score} - {match.away_score}</span> : <span className="text-lg font-black text-text-secondary">vs</span>}</div>
-                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{awayTeam?.fifa_code ? <img src={getCrestPath(awayTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(awayTeam.iso2) : getCrestFallback(awayTeam.fifa_code); }} /> : <FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </motion.div>
               );
@@ -260,9 +261,9 @@ export function HomePage() {
                 <div key={match.id} className="glass-card-hover p-3 cursor-pointer">
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-text-secondary/60 mb-2">{match.group ? tf('common.groupLabel', language, match.group) : ''} • {formatDate(match.local_date)}</p>
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1"><span className="text-base">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-[11px] font-semibold text-text truncate">{homeTeam?.name_en ?? '—'}</span></div>
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1"><span className="text-base">{homeTeam?.fifa_code ? <img src={getCrestPath(homeTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(homeTeam.iso2) : getCrestFallback(homeTeam.fifa_code); }} /> : <FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-[11px] font-semibold text-text truncate">{homeTeam?.name_en ?? '—'}</span></div>
                     <span className="text-sm font-black text-text mx-1">{match.home_score ?? 0} - {match.away_score ?? 0}</span>
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end"><span className="text-[11px] font-semibold text-text truncate">{awayTeam?.name_en ?? '—'}</span><span className="text-base">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end"><span className="text-[11px] font-semibold text-text truncate">{awayTeam?.name_en ?? '—'}</span><span className="text-base">{awayTeam?.fifa_code ? <img src={getCrestPath(awayTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(awayTeam.iso2) : getCrestFallback(awayTeam.fifa_code); }} /> : <FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </div>
               );
@@ -291,9 +292,9 @@ export function HomePage() {
                     {match.group && <span className="text-[10px] font-semibold text-text-secondary/60">{tf('common.groupLabel', language, match.group)}</span>}
                   </div>
                   <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{<FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{homeTeam?.fifa_code ? <img src={getCrestPath(homeTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(homeTeam.iso2) : getCrestFallback(homeTeam.fifa_code); }} /> : <FlagImage flag={homeTeam?.flag} size="md" />}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>
                     <span className="text-xs font-bold text-text-secondary">vs</span>
-                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{<FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
+                    <div className="flex items-center gap-2 flex-1 min-w-0 justify-end"><span className="text-sm font-semibold text-text truncate text-right">{awayTeam?.name_en ?? `T${match.away_team_id}`}</span><span className="text-xl">{awayTeam?.fifa_code ? <img src={getCrestPath(awayTeam.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={(e) => { const i = e.target as HTMLImageElement; i.src = i.src.endsWith(".png") ? getFlagUrl(awayTeam.iso2) : getCrestFallback(awayTeam.fifa_code); }} /> : <FlagImage flag={awayTeam?.flag} size="md" />}</span></div>
                   </div>
                 </div>
               );

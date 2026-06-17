@@ -6,6 +6,7 @@ import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
+import { getCrestPath, getCrestFallback, getFlagUrl } from '@/constants/crests';
 import { useAppStore } from '@/store/useAppStore';
 import type { Team } from '@/types/worldcup';
 
