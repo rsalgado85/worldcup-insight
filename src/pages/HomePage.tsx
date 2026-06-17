@@ -64,31 +64,26 @@ export function HomePage() {
 
   const isLoading = matchesLoading || teamsLoading;
 
-  const todayStr = useMemo(() => {
+  const todayApi = useMemo(() => {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const y = d.getFullYear();
+    return `${m}/${day}/${y}`; // "06/17/2026" — API format
+  }, []);
+
+  const displayDate = useMemo(() => {
     const d = new Date();
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
+    return `${y}-${m}-${day}`; // "2026-06-17" — display format
   }, []);
 
   const todayMatches = useMemo(() => {
     if (!matches || matches.length === 0) return [];
-    // Try exact match first, then try substring match
-    const exact = matches.filter((m: Match) => {
-      const ld = m.local_date || '';
-      return ld.slice(0, 10) === todayStr || ld === todayStr;
-    });
-    // If no exact match found, try matching just the month+day part (some APIs use different year)
-    if (exact.length === 0) {
-      const monthDay = todayStr.slice(5); // "06-17"
-      return matches.filter((m: Match) => {
-        const ld = m.local_date || '';
-        return ld.includes(monthDay);
-      });
-    }
-    return exact;
-  }, [matches, todayStr]);
+    return matches.filter((m: Match) => (m.local_date || '') === todayApi);
+  }, [matches, todayApi]);
 
   const recentMatches = useMemo(() => {
     if (!matches) return [];
@@ -97,8 +92,8 @@ export function HomePage() {
 
   const upcomingMatches = useMemo(() => {
     if (!matches) return [];
-    return matches.filter((m: Match) => !m.finished && (m.local_date || '').slice(0, 10) >= todayStr).sort((a: Match, b: Match) => new Date(a.local_date).getTime() - new Date(b.local_date).getTime()).slice(0, 10);
-  }, [matches, todayStr]);
+    return matches.filter((m: Match) => !m.finished && (m.local_date || '').slice(0, 10) >= displayDate).sort((a: Match, b: Match) => new Date(a.local_date).getTime() - new Date(b.local_date).getTime()).slice(0, 10);
+  }, [matches, displayDate]);
 
   const groupStandings = useMemo(() => {
     if (!groups) return [];
@@ -175,7 +170,7 @@ export function HomePage() {
           <Calendar size={20} className="text-primary-light" />
           <h2 className="text-lg font-bold text-text">{t('home.todaysMatches', language)}</h2>
           <span className="text-xs text-text-muted ml-2">
-            ({todayStr} · {matches?.length || 0} total · {todayMatches.length} hoy)
+            ({todayApi} · {matches?.length || 0} total · {todayMatches.length} hoy)
           </span>
         </div>
         {todayMatches.length === 0 ? (

@@ -19,7 +19,7 @@ const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','
 const WEEKDAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const WEEKDAYS_ES = ['dom','lun','mar','mié','jue','vie','sáb'];
 
-/** Get local date as ISO string YYYY-MM-DD (NOT UTC) */
+/** Get local date as ISO string YYYY-MM-DD (for display) */
 function getLocalDate(daysOffset = 0): string {
   const d = new Date();
   d.setDate(d.getDate() + daysOffset);
@@ -27,6 +27,16 @@ function getLocalDate(daysOffset = 0): string {
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${day}`;
+}
+
+/** Get local date as MM/DD/YYYY (API format) */
+function getApiDate(daysOffset = 0): string {
+  const d = new Date();
+  d.setDate(d.getDate() + daysOffset);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const y = d.getFullYear();
+  return `${m}/${day}/${y}`;
 }
 
 /** Format date: "19 jun" or "Jun 19" */
@@ -73,24 +83,25 @@ export function MatchesPage() {
     return dates.sort();
   }, [matches]);
 
-  // Filter matches by selected date (compare date part only)
+  // Filter matches by selected date (MM/DD/YYYY API format)
   const filtered = useMemo(() => {
     if (!matches) return [];
 
-    const today = getLocalDate();
-    const tomorrow = getLocalDate(1);
+    const today = getApiDate();       // "06/17/2026"
+    const tomorrow = getApiDate(1);   // "06/18/2026"
 
     let result = [...matches];
 
     if (dateFilter === 'today') {
-      result = result.filter(m => {
-        const ld = (m.local_date || '');
-        return ld.slice(0, 10) === today || ld === today || ld.includes(today.slice(5));
-      });
+      result = result.filter(m => (m.local_date || '') === today);
     } else if (dateFilter === 'tomorrow') {
-      result = result.filter(m => (m.local_date || '').slice(0, 10) === tomorrow);
+      result = result.filter(m => (m.local_date || '') === tomorrow);
     } else if (dateFilter !== 'all') {
-      result = result.filter(m => (m.local_date || '').slice(0, 10) === dateFilter);
+      // dropdown dates are YYYY-MM-DD from availableDates, try both formats
+      result = result.filter(m => {
+        const ld = m.local_date || '';
+        return ld === dateFilter || ld.slice(0, 10) === dateFilter;
+      });
     }
 
     // In-progress matches first
