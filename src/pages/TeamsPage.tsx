@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, MapPin, Trophy, Activity, Target, Goal, Calendar } from 'lucide-react';
+import { Search, X, MapPin, Trophy, Activity, Target, Goal, Calendar, Globe } from 'lucide-react';
 import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
 import { useMatches } from '@/hooks/useMatches';
@@ -12,6 +12,32 @@ import { useAppStore } from '@/store/useAppStore';
 import { fmtDateCompact } from '@/utils/dates';
 import { GROUP_COLORS } from '@/constants';
 import type { Team, Match } from '@/types/worldcup';
+
+/* ─── Confederation Data ───────────────────────── */
+const CONFED_MAP: Record<string, { name: string; color: string }> = {
+  UEFA: { name: 'Europe', color: '#4583CA' },
+  CONMEBOL: { name: 'South America', color: '#419050' },
+  CONCACAF: { name: 'North America', color: '#9D302D' },
+  CAF: { name: 'Africa', color: '#CCBA8C' },
+  AFC: { name: 'Asia', color: '#8B6B9E' },
+  OFC: { name: 'Oceania', color: '#14B8A6' },
+};
+
+function getContinent(team: Team): string {
+  const code = team.fifa_code?.toUpperCase() || '';
+  const sa = ['ARG','BRA','URU','COL','CHI','PER','ECU','PAR','BOL','VEN'];
+  const na = ['USA','MEX','CAN','CRC','PAN','JAM','HON','SLV','TRI','GUA','HAI','CUB','SUR','GUY','NCA','BLZ','DMA','GRN','ATG','VIN','LCA','SKN','BRB','BAH','BER','CUR','ARU','CAY'];
+  const af = ['MAR','SEN','TUN','NGA','ALG','EGY','CMR','CIV','GHA','RSA','COD','CPV'];
+  const asia = ['JPN','KOR','IRN','AUS','KSA','QAT','UAE','IRQ','UZB','CHN','JOR','SYR','KUW','IND','TKM','PLE','VIE','THA','PRK'];
+  const eu = ['ENG','FRA','GER','ESP','ITA','NED','POR','BEL','CRO','SUI','DEN','SRB','POL','UKR','SWE','WAL','SCO','NOR','AUT','CZE','HUN','TUR','ROU','GRE','SVK','IRL','NIR','ISL','SVN','BIH','GEO','ALB','MKD','MNE','LUX','LTU','LVA','EST','BLR','MDA','ARM','KAZ','ISR','CYP','MLT'];
+  if (sa.includes(code)) return 'CONMEBOL';
+  if (na.includes(code)) return 'CONCACAF';
+  if (af.includes(code)) return 'CAF';
+  if (asia.includes(code)) return 'AFC';
+  if (eu.includes(code)) return 'UEFA';
+  if (['NZL','FIJ','SOL','PNG','TAH','VAN','SAM','COK','TGA'].includes(code)) return 'OFC';
+  return 'UEFA';
+}
 
 /* ─── Team Stats Builder ────────────────────────── */
 interface TeamStats {
@@ -46,6 +72,8 @@ export function TeamsPage() {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const { language } = useAppStore();
 
+  const [confedFilter, setConfedFilter] = useState('all');
+
   const teamsWithGroup = useMemo(() => {
     if (!teams) return [];
     if (!groups) return teams;
@@ -62,10 +90,18 @@ export function TeamsPage() {
 
   const filtered = useMemo(() => {
     if (!teamsWithGroup) return [];
-    if (!search) return teamsWithGroup;
+    let result = [...teamsWithGroup];
     const q = search.toLowerCase();
-    return teamsWithGroup.filter(t => t.name_en.toLowerCase().includes(q) || t.fifa_code?.toLowerCase().includes(q) || t.group?.toLowerCase().includes(q));
-  }, [teamsWithGroup, search]);
+    if (q) result = result.filter(t => t.name_en.toLowerCase().includes(q) || t.fifa_code?.toLowerCase().includes(q) || t.group?.toLowerCase().includes(q));
+    if (confedFilter !== 'all') result = result.filter(t => getContinent(t) === confedFilter);
+    return result;
+  }, [teamsWithGroup, search, confedFilter]);
+
+  const confedCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    teamsWithGroup?.forEach(t => { const c = getContinent(t); counts[c] = (counts[c] || 0) + 1; });
+    return counts;
+  }, [teamsWithGroup]);
 
   const confederations = useMemo(() => {
     const set = new Set<string>();
@@ -108,6 +144,19 @@ export function TeamsPage() {
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
         <input type="text" placeholder={t('teams.searchPlaceholder', language)} value={search} onChange={e=>setSearch(e.target.value)}
           className="input-field pl-10" />
+      </div>
+
+      {/* Conference Filter */}
+      <div className="flex gap-1.5 flex-wrap">
+        <button onClick={()=>setConfedFilter('all')} className={`filter-pill text-[10px] ${confedFilter==='all'?'active':''}`}>
+          <Globe size={11}/> {language==='es'?'Todos':'All'} ({teams?.length||0})
+        </button>
+        {Object.entries(confedCounts).map(([c, count]) => (
+          <button key={c} onClick={()=>setConfedFilter(c)} className={`filter-pill text-[10px] ${confedFilter===c?'active':''}`}
+            style={confedFilter===c ? {background:CONFED_MAP[c]?.color,borderColor:CONFED_MAP[c]?.color} : undefined}>
+            {CONFED_MAP[c]?.name || c} ({count})
+          </button>
+        ))}
       </div>
 
       {/* Grid */}

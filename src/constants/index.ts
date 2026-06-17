@@ -62,7 +62,6 @@ export const NAV_ITEMS = [
   { label: 'Statistics', path: ROUTES.STATISTICS, icon: 'TrendingUp' },
   { label: 'TopScorers', path: ROUTES.TOP_SCORERS, icon: 'Target' },
   { label: 'Stadiums', path: ROUTES.STADIUMS, icon: 'Building2' },
-  { label: 'Countries', path: ROUTES.COUNTRIES, icon: 'Globe' },
   { label: 'Predictions', path: ROUTES.PREDICTIONS, icon: 'Sparkles' },
   { label: 'About', path: ROUTES.ABOUT, icon: 'Info' },
   { label: 'Donate', path: ROUTES.DONATE, icon: 'Heart' },
