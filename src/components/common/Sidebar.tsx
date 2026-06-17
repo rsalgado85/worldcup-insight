@@ -29,7 +29,7 @@ function navLabelToKey(label: string): string {
 }
 
 export function Sidebar() {
-  const { sidebarCollapsed, theme, toggleTheme, toggleSidebar, language } = useAppStore();
+  const { sidebarCollapsed, theme, toggleTheme, toggleSidebar, toggleLanguage, language } = useAppStore();
   const isDark = theme === 'dark';
   const sidebarBg = isDark ? '#0F172A' : '#ffffff';
   const borderColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
@@ -76,6 +76,12 @@ export function Sidebar() {
         <button onClick={toggleTheme} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-200" style={{ color: textMuted }} aria-label={t('common.toggleTheme', language)}>
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           <AnimatePresence mode="wait">{!sidebarCollapsed && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xs font-medium">{theme === 'dark' ? t('common.lightMode', language) : t('common.darkMode', language)}</motion.span>}</AnimatePresence>
+        </button>
+
+        {/* Language Switch */}
+        <button onClick={toggleLanguage} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-200" style={{ color: textMuted }} aria-label={t('common.toggleLang', language)}>
+          <span className="text-sm font-bold">{language === 'en' ? 'ES' : 'EN'}</span>
+          <AnimatePresence mode="wait">{!sidebarCollapsed && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xs font-medium">{language === 'en' ? 'Español' : 'English'}</motion.span>}</AnimatePresence>
         </button>
       </div>
     </motion.aside>
