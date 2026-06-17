@@ -79,9 +79,9 @@
   --color-bg: #090D16;
   --color-card: #111827;
   --color-card-hover: #1A2332;
-  --color-border: rgba(69, 131, 202, 0.10);
-  --color-border-strong: rgba(69, 131, 202, 0.18);
-  --color-divider: rgba(69, 131, 202, 0.06);
+  --color-border: rgba(69, 131, 202, 0.16);
+  --color-border-strong: rgba(69, 131, 202, 0.24);
+  --color-divider: rgba(69, 131, 202, 0.10);
 
   /* ─── Text ───────────────────────────────────── */
   --color-text: #EEF2FF;
