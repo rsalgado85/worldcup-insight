@@ -168,7 +168,7 @@ export function PlayersPage() {
                   </div>
                   <div>
                     <h2 className="text-lg font-black text-text">{selectedPlayer.name}</h2>
-                    <p className="text-[10px] text-text-muted uppercase">{selectedPlayer.team} · {selectedPlayer.position || t('players.player', language)}</p>
+                    <p className="text-[10px] text-text-muted uppercase">{selectedPlayer.team}</p>
                   </div>
                 </div>
                 <button onClick={() => setSelectedPlayer(null)} className="p-1.5 rounded-lg hover:bg-primary-subtle text-text-muted transition-colors">
