@@ -130,7 +130,7 @@ export function TeamsPage() {
               </div>
               <div className="flex items-center gap-3 text-[10px] text-text-secondary pt-3 border-t border-divider">
                 <span className="badge flex items-center gap-1" style={{backgroundColor:`${groupColor}15`, color:groupColor}}>
-                  <MapPin size={10} /> {tf('common.groupLabel', language, team.group)}
+                  <MapPin size={10} /> {tf('common.groupLabel', language, team.group || '—')}
                 </span>
               </div>
             </motion.button>
