@@ -132,8 +132,8 @@ export function HomePage() {
         <div className="absolute right-12 top-4 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
-            <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-4xl shadow-lg overflow-hidden">
-              <FlagImage flag={featured.flag} size="lg" />
+            <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-4xl shadow-lg overflow-hidden p-1">
+              <img src={featured.flag} alt="" className="w-full h-full object-cover rounded-xl" />
             </div>
             <span className="badge text-[9px] px-2 py-0.5 bg-white/20 text-white backdrop-blur font-semibold">{t('home.playerOfTournament', language)}</span>
           </div>
