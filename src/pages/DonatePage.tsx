@@ -72,7 +72,7 @@ export function DonatePage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center">
         <a
-          href={`https://www.paypal.com/donate?business=worldcupinsight@example.com&amount=${amount}&currency_code=USD`}
+          href={`https://paypal.me/rsalgado85/${amount}`}
           target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white text-base font-bold transition-all shadow-lg"
           style={{ background: 'linear-gradient(135deg, #0033A0, #1E5FD9)', boxShadow: '0 4px 20px rgba(0, 51, 160, 0.35)' }}
