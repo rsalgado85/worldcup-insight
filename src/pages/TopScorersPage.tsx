@@ -19,15 +19,17 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
     : player.goals;
 
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-wc-blue/[0.03] ${rank <= 3 ? 'bg-wc-blue/[0.02]' : ''}`}>
+    <div className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
+      rank <= 3 ? 'bg-primary-subtle' : 'hover:bg-card-hover'
+    }`}>
       <div className="w-8 text-center">
         {rank <= 3 ? (
           <Medal size={18} style={{ color: medalColors[rank - 1] }} />
         ) : (
-          <span className="text-sm font-bold text-text-secondary">{rank}</span>
+          <span className="text-sm font-black text-text-muted">{rank}</span>
         )}
       </div>
-      <span className="text-xl">{<FlagImage flag={player.flag} size="md" />}</span>
+      <span className="text-xl"><FlagImage flag={player.flag} size="md" /></span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-text truncate">{player.name}</p>
         <p className="text-[10px] text-text-secondary">{player.team}</p>
@@ -36,20 +38,20 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
         {highlight !== 'cleanSheets' && (
           <>
             <div>
-              <span className="text-sm font-black text-wc-red">{player.goals}</span>
-              <span className="text-[9px] text-text-secondary ml-0.5">G</span>
+              <span className="text-sm font-black text-live">{player.goals}</span>
+              <span className="text-[9px] text-text-muted ml-0.5">G</span>
             </div>
             <div>
-              <span className="text-sm font-black text-wc-blue">{player.assists}</span>
-              <span className="text-[9px] text-text-secondary ml-0.5">A</span>
+              <span className="text-sm font-black text-primary-light">{player.assists}</span>
+              <span className="text-[9px] text-text-muted ml-0.5">A</span>
             </div>
           </>
         )}
         <div>
-          <span className="text-sm font-black text-wc-gold">
+          <span className="text-sm font-black text-warm">
             {highlight === 'cleanSheets' ? player.cleanSheets : (player.rating?.toFixed(1) ?? '-')}
           </span>
-          <span className="text-[9px] text-text-secondary ml-0.5">
+          <span className="text-[9px] text-text-muted ml-0.5">
             {highlight === 'cleanSheets' ? 'CS' : 'R'}
           </span>
         </div>
@@ -76,13 +78,32 @@ export function TopScorersPage() {
     byRating: TOP_RATINGS,
   };
 
+  // ─── Loading ───────────────────────────────────
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-9 w-56" />
+        <Skeleton className="h-5 w-80" />
+        {/* Podium skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="card p-5 space-y-3 text-center">
+              <Skeleton className="h-12 w-12 rounded-full mx-auto" />
+              <Skeleton className="h-5 w-32 mx-auto" />
+              <Skeleton className="h-3 w-20 mx-auto" />
+              <div className="flex justify-center gap-5">
+                <Skeleton className="h-10 w-14" />
+                <Skeleton className="h-10 w-14" />
+                <Skeleton className="h-10 w-14" />
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Leaderboard skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="glass-card p-4 space-y-2">
+            <div key={i} className="card p-4 space-y-2">
+              <Skeleton className="h-4 w-36" />
               {Array.from({ length: 5 }).map((_, j) => (
                 <Skeleton key={j} className="h-12" />
               ))}
@@ -93,67 +114,107 @@ export function TopScorersPage() {
     );
   }
 
+  // ─── Error ─────────────────────────────────────
   if (error) {
     return (
-      <div className="glass-card p-12 text-center">
-        <X size={40} className="mx-auto mb-4 text-wc-red/50" />
+      <div className="card p-12 text-center">
+        <X size={48} className="mx-auto mb-4 text-live" />
         <h3 className="text-lg font-bold text-text mb-2">{t('topScorers.failedLoad', language)}</h3>
         <p className="text-text-secondary text-sm">{t('topScorers.fallbackNote', language)}</p>
       </div>
     );
   }
 
+  const podium = dataSource.byGoals.slice(0, 3);
+  const podiumStyles = [
+    {
+      medal: Trophy,
+      medalColor: '#F2A900',
+      borderColor: 'rgba(242,169,0,0.3)',
+      bgGlow: 'rgba(242,169,0,0.08)',
+      ring: 'ring-warm/30',
+    },
+    {
+      medal: Medal,
+      medalColor: '#94A3B8',
+      borderColor: 'rgba(148,163,184,0.2)',
+      bgGlow: 'rgba(148,163,184,0.04)',
+      ring: 'ring-border-strong/30',
+    },
+    {
+      medal: Medal,
+      medalColor: '#CD7F32',
+      borderColor: 'rgba(205,127,50,0.2)',
+      bgGlow: 'rgba(205,127,50,0.04)',
+      ring: 'ring-border/30',
+    },
+  ];
+
   return (
     <div className="space-y-6 lg:space-y-8">
+      {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold gradient-text">{t('topScorers.title', language)}</h1>
+        <h1 className="text-2xl sm:text-3xl font-black text-gradient">{t('topScorers.title', language)}</h1>
         <p className="text-sm text-text-secondary">
           {t('topScorers.subtitleLine', language)}
         </p>
       </motion.div>
 
-      {/* Golden Boot Leader (Top 3) */}
+      {/* Podium — Top 3 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {dataSource.byGoals.slice(0, 3).map((p, idx) => (
-          <motion.div
-            key={p.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className={`glass-card p-5 text-center relative overflow-hidden ${
-              idx === 0 ? 'border-wc-gold/30 shadow-lg shadow-wc-gold/10' : ''
-            }`}
-          >
-            {idx === 0 && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Trophy size={28} className="text-wc-gold" />
+        {podium.map((p, idx) => {
+          const style = podiumStyles[idx];
+          return (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="card p-5 text-center relative overflow-hidden"
+              style={{
+                borderColor: idx === 0 ? style.borderColor : undefined,
+                backgroundColor: idx === 0 ? style.bgGlow : undefined,
+              }}
+            >
+              {idx === 0 && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <Trophy size={28} className="text-warm drop-shadow-lg" />
+                </div>
+              )}
+              <div className="w-16 h-16 mx-auto mt-2 rounded-2xl bg-primary-subtle flex items-center justify-center">
+                <span className="text-3xl"><FlagImage flag={p.flag} size="xl" /></span>
               </div>
-            )}
-            <span className="text-4xl mt-2 block">{<FlagImage flag={p.flag} size="md" />}</span>
-            <h3 className="text-lg font-black text-text mt-2">{p.name}</h3>
-            <p className="text-xs text-text-secondary mb-3">{p.team}</p>
-            <div className="flex items-center justify-center gap-5">
-              <div className="text-center">
-                <span className="text-2xl font-black text-wc-red">{p.goals}</span>
-                <p className="text-[9px] uppercase text-text-secondary">{t('topScorers.goals', language)}</p>
+              <h3 className="text-lg font-black text-text mt-3">{p.name}</h3>
+              <p className="text-xs text-text-secondary mb-3">{p.team}</p>
+              <div className="flex items-center justify-center gap-5">
+                <div className="text-center">
+                  <span className="text-2xl font-black text-live">{p.goals}</span>
+                  <p className="text-[9px] uppercase tracking-wider text-text-muted">{t('topScorers.goals', language)}</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-black text-primary-light">{p.assists}</span>
+                  <p className="text-[9px] uppercase tracking-wider text-text-muted">{t('topScorers.assists', language)}</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-black text-warm">{p.rating}</span>
+                  <p className="text-[9px] uppercase tracking-wider text-text-muted">{t('topScorers.rating', language)}</p>
+                </div>
               </div>
-              <div className="text-center">
-                <span className="text-2xl font-black text-wc-blue">{p.assists}</span>
-                <p className="text-[9px] uppercase text-text-secondary">{t('topScorers.assists', language)}</p>
-              </div>
-              <div className="text-center">
-                <span className="text-2xl font-black text-wc-gold">{p.rating}</span>
-                <p className="text-[9px] uppercase text-text-secondary">{t('topScorers.rating', language)}</p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Leaderboards */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="glass-card p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-wc-red mb-4 flex items-center gap-1.5">
+        {/* Goals */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="card p-4"
+        >
+          <h3 className="text-xs font-black uppercase tracking-wider text-live mb-4 flex items-center gap-1.5">
             <Goal size={14} /> {t('topScorers.goldenBootGoals', language)}
           </h3>
           <div className="space-y-1">
@@ -161,9 +222,16 @@ export function TopScorersPage() {
               <ScorerRow key={p.id} player={p} rank={i + 1} highlight="goals" language={language} />
             ))}
           </div>
-        </div>
-        <div className="glass-card p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-wc-blue mb-4 flex items-center gap-1.5">
+        </motion.div>
+
+        {/* Assists */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="card p-4"
+        >
+          <h3 className="text-xs font-black uppercase tracking-wider text-primary-light mb-4 flex items-center gap-1.5">
             <Zap size={14} /> {t('topScorers.playmakers', language)}
           </h3>
           <div className="space-y-1">
@@ -171,9 +239,16 @@ export function TopScorersPage() {
               <ScorerRow key={p.id} player={p} rank={i + 1} highlight="assists" language={language} />
             ))}
           </div>
-        </div>
-        <div className="glass-card p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-wc-gold mb-4 flex items-center gap-1.5">
+        </motion.div>
+
+        {/* Ratings */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="card p-4"
+        >
+          <h3 className="text-xs font-black uppercase tracking-wider text-warm mb-4 flex items-center gap-1.5">
             <Star size={14} /> {t('topScorers.playerRatings', language)}
           </h3>
           <div className="space-y-1">
@@ -181,12 +256,17 @@ export function TopScorersPage() {
               <ScorerRow key={p.id} player={p} rank={i + 1} highlight="rating" language={language} />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Clean Sheets */}
-      <div className="glass-card p-4">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-wc-green mb-4 flex items-center gap-1.5">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+        className="card p-4"
+      >
+        <h3 className="text-xs font-black uppercase tracking-wider text-success mb-4 flex items-center gap-1.5">
           <Swords size={14} /> {t('topScorers.goldenGlove', language)}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -194,7 +274,7 @@ export function TopScorersPage() {
             <ScorerRow key={p.id} player={p as Player & { cleanSheets?: number }} rank={i + 1} highlight="cleanSheets" language={language} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

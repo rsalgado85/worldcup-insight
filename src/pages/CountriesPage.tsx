@@ -5,7 +5,9 @@ import { useTeams } from '@/hooks/useTeams';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
+import { getLocalFlag, getCrestPath, getCrestFallback } from '@/constants/crests';
 import { useAppStore } from '@/store/useAppStore';
+import { GROUP_COLORS } from '@/constants';
 import type { Team } from '@/types/worldcup';
 
 const CONTINENT_MAP: Record<string, { name: string; color: string }> = {
@@ -62,23 +64,45 @@ export function CountriesPage() {
     return counts;
   }, [teams]);
 
+  // ─── Loading ───────────────────────────────────
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-9 w-56" />
+        <Skeleton className="h-5 w-80" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="kpi-card text-center space-y-1">
+              <Skeleton className="h-5 w-5 mx-auto rounded-full" />
+              <Skeleton className="h-6 w-8 mx-auto" />
+              <Skeleton className="h-3 w-16 mx-auto" />
+            </div>
+          ))}
+        </div>
+        <Skeleton className="h-10 w-full rounded-xl" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="glass-card p-4"><Skeleton className="h-20" /></div>
+            <div key={i} className="card p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-xl" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-14" />
+                </div>
+              </div>
+              <Skeleton className="h-3 w-full" />
+            </div>
           ))}
         </div>
       </div>
     );
   }
 
+  // ─── Error ─────────────────────────────────────
   if (error) {
     return (
-      <div className="glass-card p-12 text-center">
-        <X size={40} className="mx-auto mb-4 text-wc-red/50" />
+      <div className="card p-12 text-center">
+        <X size={48} className="mx-auto mb-4 text-live" />
         <h3 className="text-lg font-bold text-text mb-2">{t('countries.failedLoad', language)}</h3>
         <p className="text-text-secondary text-sm">{t('common.errorCheck', language)}</p>
       </div>
@@ -87,50 +111,59 @@ export function CountriesPage() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold gradient-text">{t('countries.title', language)}</h1>
+        <h1 className="text-2xl sm:text-3xl font-black text-gradient">{t('countries.title', language)}</h1>
         <p className="text-sm text-text-secondary">
           {tf('countries.subtitleLine', language, teams?.length ?? 0, Object.keys(confederationCounts).length)}
         </p>
       </motion.div>
 
       {/* Confederation Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3"
+      >
         {Object.entries(confederationCounts).map(([conf, count]) => {
           const info = CONTINENT_MAP[conf] || { name: conf, color: '#64748B' };
           return (
             <motion.div
               key={conf}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               className="kpi-card text-center"
             >
               <Globe size={20} className="mx-auto mb-1" style={{ color: info.color }} />
-              <span className="kpi-value text-lg" style={{ color: info.color }}>{count}</span>
-              <span className="text-[10px] text-text-secondary">{info.name}</span>
+              <span className="block text-xl font-black" style={{ color: info.color }}>{count}</span>
+              <span className="text-[10px] text-text-secondary font-medium">{info.name}</span>
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="flex flex-col sm:flex-row gap-3"
+      >
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             placeholder={t('countries.searchPlaceholder', language)}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-wc-blue focus:ring-2 focus:ring-wc-blue/10 transition-all"
+            className="input-field pl-10"
           />
         </div>
         <div className="flex gap-1.5 flex-wrap">
           <button
             onClick={() => setConfedFilter('all')}
-            className={`px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-              confedFilter === 'all' ? 'bg-wc-blue text-white' : 'bg-card border border-border text-text-secondary hover:bg-wc-blue/5'
-            }`}
+            className={`filter-pill ${confedFilter === 'all' ? 'active' : ''}`}
           >
             {t('countries.all', language)}
           </button>
@@ -138,19 +171,19 @@ export function CountriesPage() {
             <button
               key={c}
               onClick={() => setConfedFilter(c)}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-                confedFilter === c ? 'bg-wc-blue text-white' : 'bg-card border border-border text-text-secondary hover:bg-wc-blue/5'
-              }`}
+              className={`filter-pill ${confedFilter === c ? 'active' : ''}`}
+              style={confedFilter === c ? { background: CONTINENT_MAP[c].color, borderColor: CONTINENT_MAP[c].color } : undefined}
             >
               {CONTINENT_MAP[c].name}
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
+      {/* Empty state */}
       {grouped.length === 0 ? (
-        <div className="glass-card p-12 text-center">
-          <Flag size={40} className="mx-auto mb-4 text-text-secondary/30" />
+        <div className="card p-12 text-center">
+          <Flag size={40} className="mx-auto mb-4 text-text-muted" />
           <p className="text-text-secondary font-medium">{t('countries.noCountriesFound', language)}</p>
         </div>
       ) : (
@@ -158,28 +191,50 @@ export function CountriesPage() {
           {grouped.map((team, idx) => {
             const conf = getContinent(team);
             const info = CONTINENT_MAP[conf] || { name: conf, color: '#64748B' };
+            const group = team.groups || team.group || '—';
+            const groupColor = GROUP_COLORS[group] || info.color;
             return (
               <motion.div
                 key={team.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.02 }}
-                className="glass-card-hover p-4"
+                transition={{ delay: idx * 0.03 }}
+                className="card p-4 hover:shadow-card-hover hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{<FlagImage flag={team.flag} size="md" />}</span>
+                  {/* Crest with fallback */}
+                  {team.fifa_code ? (
+                    <img
+                      src={getCrestPath(team.fifa_code)}
+                      alt={team.name_en}
+                      className="w-10 h-10 object-contain rounded-lg bg-primary-subtle p-0.5"
+                      onError={(e) => {
+                        const fallback = getCrestFallback(team.fifa_code!);
+                        const img = e.target as HTMLImageElement;
+                        if (img.src !== fallback) {
+                          img.src = fallback;
+                        } else {
+                          img.style.display = 'none';
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-primary-subtle flex items-center justify-center">
+                      <FlagImage flag={team.flag} size="md" />
+                    </div>
+                  )}
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-bold text-text truncate">{team.name_en}</h3>
-                    <p className="text-[10px] font-semibold text-wc-blue uppercase">{team.fifa_code}</p>
+                    <h3 className="text-sm font-black text-text truncate">{team.name_en}</h3>
+                    <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">{team.fifa_code}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 text-[10px] text-text-secondary pt-3 border-t border-border">
+                <div className="flex items-center gap-2 text-[10px] text-text-secondary pt-3 border-t border-divider">
                   <span className="flex items-center gap-1">
                     <MapPin size={10} />
-                    {tf('common.groupLabel', language, team.groups || team.group || '—')}
+                    {tf('common.groupLabel', language, group)}
                   </span>
                   <span
-                    className="flex items-center gap-1 px-1.5 py-0.5 rounded-full font-semibold"
+                    className="badge flex items-center gap-1"
                     style={{ backgroundColor: `${info.color}15`, color: info.color }}
                   >
                     <Globe size={10} />
