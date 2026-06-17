@@ -72,19 +72,23 @@ export function HomePage() {
     return `${y}-${m}-${day}`;
   }, []);
 
-  // Find the first available match date from the API
-  const firstMatchDate = useMemo(() => {
-    if (!matches || matches.length === 0) return null;
-    const dates = [...new Set(matches.map((m: Match) => (m.local_date || '').slice(0, 10)))].filter(Boolean).sort();
-    // Find today or nearest future date
-    const future = dates.filter(d => d >= todayStr);
-    return future.length > 0 ? future[0] : dates[dates.length - 1] || null;
-  }, [matches, todayStr]);
-
   const todayMatches = useMemo(() => {
-    if (!matches || !firstMatchDate) return [];
-    return matches.filter((m: Match) => (m.local_date || '').slice(0, 10) === firstMatchDate);
-  }, [matches, firstMatchDate]);
+    if (!matches || matches.length === 0) return [];
+    // Try exact match first, then try substring match
+    const exact = matches.filter((m: Match) => {
+      const ld = m.local_date || '';
+      return ld.slice(0, 10) === todayStr || ld === todayStr;
+    });
+    // If no exact match found, try matching just the month+day part (some APIs use different year)
+    if (exact.length === 0) {
+      const monthDay = todayStr.slice(5); // "06-17"
+      return matches.filter((m: Match) => {
+        const ld = m.local_date || '';
+        return ld.includes(monthDay);
+      });
+    }
+    return exact;
+  }, [matches, todayStr]);
 
   const recentMatches = useMemo(() => {
     if (!matches) return [];
@@ -167,7 +171,13 @@ export function HomePage() {
 
       {/* Section 2: Today's Matches */}
       <section>
-        <div className="flex items-center gap-2 mb-4"><Calendar size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">{t('home.todaysMatches', language)}</h2></div>
+        <div className="flex items-center gap-2 mb-4">
+          <Calendar size={20} className="text-primary-light" />
+          <h2 className="text-lg font-bold text-text">{t('home.todaysMatches', language)}</h2>
+          <span className="text-xs text-text-muted ml-2">
+            ({todayStr} · {matches?.length || 0} total · {todayMatches.length} hoy)
+          </span>
+        </div>
         {todayMatches.length === 0 ? (
           <div className="glass-card p-8 text-center"><Calendar size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">{t('home.noMatchesToday', language)}</p></div>
         ) : (

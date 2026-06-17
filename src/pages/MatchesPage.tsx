@@ -73,26 +73,20 @@ export function MatchesPage() {
     return dates.sort();
   }, [matches]);
 
-  // First available match date (fallback when today has no matches)
-  const firstMatchDate = useMemo(() => {
-    if (availableDates.length === 0) return null;
-    const today = getLocalDate();
-    const future = availableDates.filter(d => d >= today);
-    return future.length > 0 ? future[0] : availableDates[availableDates.length - 1];
-  }, [availableDates]);
-
   // Filter matches by selected date (compare date part only)
   const filtered = useMemo(() => {
     if (!matches) return [];
 
     const today = getLocalDate();
     const tomorrow = getLocalDate(1);
-    const effectiveToday = firstMatchDate || today;
 
     let result = [...matches];
 
     if (dateFilter === 'today') {
-      result = result.filter(m => (m.local_date || '').slice(0, 10) === effectiveToday);
+      result = result.filter(m => {
+        const ld = (m.local_date || '');
+        return ld.slice(0, 10) === today || ld === today || ld.includes(today.slice(5));
+      });
     } else if (dateFilter === 'tomorrow') {
       result = result.filter(m => (m.local_date || '').slice(0, 10) === tomorrow);
     } else if (dateFilter !== 'all') {
