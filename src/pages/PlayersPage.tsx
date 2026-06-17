@@ -1,0 +1,1 @@
+export function PlayersPage() { return <div className="p-8 text-center"><h1 className="text-2xl font-bold">Players</h1><p className="text-text-secondary mt-2">Player profiles and statistics coming soon.</p></div>; }

@@ -1,0 +1,1 @@
+export function StadiumsPage() { return <div className="p-8 text-center"><h1 className="text-2xl font-bold">Stadiums</h1><p className="text-text-secondary mt-2">All 16 World Cup 2026 stadiums coming soon.</p></div>; }

@@ -1,39 +1,23 @@
 /**
- * About Page - Creator Profile
- * 
- * Premium creator profile page inspired by GameVault's about section.
- * Features:
- * - Hero section with avatar and bio
- * - Tech stack showcase with animated cards
- * - Project stats and metrics
- * - Social links
- * - Timeline of project development
- * - Fully translated (EN/ES)
- * - Dark/Light mode compatible
+ * About Page — World Cup Insight v2
  */
 
 import { motion } from 'framer-motion';
 import {
-  Code2,
-  Palette,
+  Globe,
   Server,
   Database,
   Zap,
-  Globe,
-  Mail,
-  ExternalLink,
-  Award,
-  BookOpen,
-  Sparkles,
-  Cpu,
+  Trophy,
+  Code2,
+  Palette,
   Layers,
+  Cpu,
   Shield,
-  User,
-  GitBranch,
-  MessageCircle,
+  Sparkles,
+  Award,
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import { t, type TranslationKey } from '@/constants/translations';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -41,283 +25,172 @@ const fadeInUp = {
 };
 
 const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
+  animate: { transition: { staggerChildren: 0.08 } },
 };
 
 const techStack = [
-  { name: 'React', icon: Code2, color: '#61DAFB', category: 'frontend' as const },
-  { name: 'TypeScript', icon: Shield, color: '#3178C6', category: 'frontend' as const },
-  { name: 'Angular', icon: Code2, color: '#DD0031', category: 'frontend' as const },
-  { name: 'Python', icon: Code2, color: '#3776AB', category: 'backend' as const },
-  { name: 'C# .NET', icon: Server, color: '#512BD4', category: 'backend' as const },
-  { name: 'PHP/Laravel', icon: Server, color: '#FF2D20', category: 'backend' as const },
-  { name: 'Java', icon: Cpu, color: '#ED8B00', category: 'backend' as const },
-  { name: 'Node.js', icon: Server, color: '#339933', category: 'backend' as const },
-  { name: 'Azure', icon: Database, color: '#0078D4', category: 'cloud' as const },
-  { name: 'AWS', icon: Database, color: '#FF9900', category: 'cloud' as const },
-  { name: 'SQL Server', icon: Database, color: '#CC2927', category: 'database' as const },
-  { name: 'MongoDB', icon: Database, color: '#47A248', category: 'database' as const },
-  { name: 'React Native', icon: Zap, color: '#61DAFB', category: 'mobile' as const },
-  { name: 'Microservices', icon: Layers, color: '#00BCD4', category: 'architecture' as const },
-  { name: 'AI & Automation', icon: Cpu, color: '#9C27B0', category: 'ai' as const },
-  { name: 'DevOps/CI/CD', icon: Zap, color: '#FF6C37', category: 'devops' as const },
+  { name: 'React 19', icon: Code2, color: '#61DAFB' },
+  { name: 'TypeScript', icon: Shield, color: '#3178C6' },
+  { name: 'Vite', icon: Zap, color: '#BD34FE' },
+  { name: 'React Router', icon: Globe, color: '#CA4245' },
+  { name: 'Framer Motion', icon: Palette, color: '#FF4154' },
+  { name: 'Recharts', icon: Layers, color: '#22B5BF' },
+  { name: 'Zustand', icon: Database, color: '#443E38' },
+  { name: 'React Query', icon: Server, color: '#FF4154' },
+  { name: 'Tailwind CSS', icon: Palette, color: '#38BDF8' },
+  { name: 'Axios', icon: Globe, color: '#5A29E4' },
+  { name: 'Lucide Icons', icon: Sparkles, color: '#F2A900' },
 ];
 
-const projectStats = [
-  { label: 'about.experience', value: '18+' },
-  { label: 'about.projects', value: '50+' },
-  { label: 'about.technologies', value: '20+' },
-  { label: 'about.industries', value: '5' },
-  { label: 'about.countries', value: '4' },
-  { label: 'about.certifications', value: '6' },
-];
-
-const achievements = [
-  {
-    icon: Award,
-    title: 'about.ach1Title',
-    desc: 'about.ach1Desc',
-  },
-  {
-    icon: Sparkles,
-    title: 'about.ach2Title',
-    desc: 'about.ach2Desc',
-  },
-  {
-    icon: BookOpen,
-    title: 'about.ach3Title',
-    desc: 'about.ach3Desc',
-  },
-];
-
-const timeline = [
-  { year: '2025', event: 'about.tl1', company: 'VOPM' },
-  { year: '2024', event: 'about.tl2', company: 'MIO S.A.S.' },
-  { year: '2022', event: 'about.tl3', company: 'Banco Ademi' },
-  { year: '2019', event: 'about.tl4', company: 'SICPA Dominicana' },
-  { year: '2014', event: 'about.tl5', company: 'Telconet S.A.' },
-  { year: '2012', event: 'about.tl6', company: 'Kantar Health Spain' },
+const features = [
+  { icon: Trophy, title: '48 Teams', desc: 'Complete roster of all qualified nations for FIFA World Cup 2026™ with rankings and confederation data.' },
+  { icon: Globe, title: '16 Stadiums', desc: 'All host venues across the United States, Mexico, and Canada with capacity and location information.' },
+  { icon: Server, title: 'Real-time Data', desc: 'Powered by the worldcup26.ir API, delivering match results, group standings, and tournament statistics.' },
+  { icon: Layers, title: 'Interactive Analytics', desc: 'Rich data visualizations with Recharts — goals by group, possession stats, card distributions, and matchday trends.' },
+  { icon: Award, title: 'Top Scorers', desc: 'Golden Boot rankings — goals, assists, and player ratings.' },
+  { icon: Cpu, title: 'Predictions Engine', desc: 'Knockout bracket simulator with group stage projections and random tournament outcomes.' },
 ];
 
 export function AboutPage() {
-  const { language } = useAppStore();
+  const { theme } = useAppStore();
+  const isDark = theme === 'dark';
 
   return (
     <div className="space-y-12 max-w-5xl mx-auto pb-12">
-      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-8 md:p-12 relative overflow-hidden"
+        className="glass-card p-8 md:p-12 relative overflow-hidden rounded-2xl"
       >
-        <div className="animated-gradient absolute inset-0" />
-        
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{ background: 'linear-gradient(135deg, #0033A0 0%, #E4002B 50%, #F2A900 100%)' }}
+        />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          {/* Avatar */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="relative flex-shrink-0"
           >
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-[#C6A15B] to-[#3E6B48] p-[3px] shadow-xl shadow-[#C6A15B]/20">
-              <div className="w-full h-full rounded-2xl bg-dark-card flex items-center justify-center overflow-hidden">
-                <img
-                  src="/avatar.png"
-                  alt="Robinson Salgado"
-                  className="w-full h-full object-cover"
-                />
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-[#0033A0] to-[#E4002B] p-[3px] shadow-xl shadow-[#0033A0]/20">
+              <div
+                className="w-full h-full rounded-2xl flex items-center justify-center overflow-hidden"
+                style={{ backgroundColor: isDark ? '#0F1416' : '#ffffff' }}
+              >
+                <Trophy size={56} className="text-[#F2A900]" />
               </div>
             </div>
-            {/* Online indicator */}
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-success border-4 border-dark-card flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            </div>
           </motion.div>
-
-          {/* Info */}
           <div className="flex-1 text-center md:text-left">
             <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl md:text-4xl font-black tracking-tight"
+              className="text-3xl md:text-4xl font-black tracking-tight text-white"
             >
-              <span className="gradient-text">Robinson Salgado</span>
+              World Cup <span className="text-[#F2A900]">Insight</span> v2
             </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-lg gradient-text font-semibold mt-1"
-            >
-              {t('about.role', language)}
-            </motion.p>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-text-secondary mt-3 max-w-lg leading-relaxed"
+              className="text-white/70 mt-3 max-w-lg leading-relaxed text-sm"
             >
-              {t('about.bio', language)}
+              A comprehensive FIFA World Cup 2026™ analytics platform. Explore all 48 qualified teams,
+              track match results in real time, analyze player statistics, visualize tournament data
+              with interactive charts, and simulate knockout bracket predictions.
             </motion.p>
-
-            {/* Social Links */}
-            <motion.div
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="flex items-center justify-center md:justify-start gap-3 mt-5"
+              className="text-white/50 text-xs mt-3"
             >
-              {[
-                { icon: GitBranch, href: 'https://github.com/rsalgado85', label: 'GitHub' },
-                { icon: Globe, href: 'https://www.linkedin.com/in/robinsonsalgado', label: 'LinkedIn' },
-                { icon: MessageCircle, href: 'https://twitter.com/rsalgado85', label: 'Twitter' },
-                { icon: Mail, href: 'mailto:rsalgado85@gmail.com', label: 'Email' },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-glass hover:bg-glass-hover border border-glass-border transition-all hover:scale-110 hover:border-accent/30"
-                  aria-label={label}
-                >
-                  <Icon size={18} className="text-text-secondary hover:text-accent-light transition-colors" />
-                </a>
-              ))}
-            </motion.div>
+              Built with React 19, TypeScript, Recharts, and Framer Motion — powered by the worldcup26.ir API.
+            </motion.p>
           </div>
         </div>
       </motion.div>
 
-      {/* Project Stats */}
-      <motion.div
-        variants={stagger}
-        initial="initial"
-        animate="animate"
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
-      >
-        {projectStats.map((stat) => (
-          <motion.div
-            key={stat.label}
-            variants={fadeInUp}
-            className="glass-card p-4 text-center hover:border-accent/20 transition-all"
-          >
-            <p className="text-2xl font-bold gradient-text">{stat.value}</p>
-            <p className="text-[10px] text-text-secondary mt-1 uppercase tracking-wider">
-              {t(stat.label as TranslationKey, language)}
-            </p>
+      <motion.div variants={stagger} initial="initial" animate="animate" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {features.map((feature) => (
+          <motion.div key={feature.title} variants={fadeInUp} className="glass-card p-5 rounded-2xl hover:border-[#0033A0]/20 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#0033A0]/10 flex items-center justify-center mb-3">
+              <feature.icon size={20} className="text-[#0033A0]" />
+            </div>
+            <h3 className="font-bold text-sm text-text-primary">{feature.title}</h3>
+            <p className="text-xs text-text-secondary mt-1.5 leading-relaxed">{feature.desc}</p>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Tech Stack */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="glass-card p-6 md:p-8"
+        className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <h2 className="text-xl font-bold mb-2">{t('about.techStack', language)}</h2>
-        <p className="text-text-secondary text-sm mb-6">{t('about.techStackDesc', language)}</p>
-
+        <h2 className="text-xl font-bold text-text-primary mb-2">Tech Stack</h2>
+        <p className="text-text-secondary text-sm mb-6">Modern web technologies powering the World Cup Insight platform</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {techStack.map((tech) => (
-            <motion.div
-              key={tech.name}
-              whileHover={{ scale: 1.05, y: -4 }}
-              className="glass-card-hover p-3 flex flex-col items-center gap-2 cursor-default"
-            >
+            <motion.div key={tech.name} whileHover={{ scale: 1.05, y: -4 }} className="glass-card-hover p-3 rounded-xl flex flex-col items-center gap-2 cursor-default">
               <tech.icon size={24} style={{ color: tech.color }} />
-              <span className="text-xs font-medium text-center">{tech.name}</span>
+              <span className="text-[10px] font-medium text-center text-text-secondary">{tech.name}</span>
             </motion.div>
           ))}
         </div>
       </motion.div>
 
-      {/* Achievements */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
+        className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <h2 className="text-xl font-bold mb-4">{t('about.achievements', language)}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {achievements.map((ach, i) => (
-            <motion.div
-              key={ach.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.1 }}
-              className="glass-card p-5 hover:border-accent/20 transition-all"
-            >
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
-                <ach.icon size={20} className="text-accent-light" />
-              </div>
-              <h3 className="font-semibold text-sm">{t(ach.title as TranslationKey, language)}</h3>
-              <p className="text-text-secondary text-xs mt-1 leading-relaxed">
-                {t(ach.desc as TranslationKey, language)}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Timeline */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="glass-card p-6 md:p-8"
-      >
-        <h2 className="text-xl font-bold mb-2">{t('about.timeline', language)}</h2>
-        <p className="text-text-secondary text-sm mb-6">{t('about.timelineDesc', language)}</p>
-
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-[#ff4d6d] via-[#d946ef] to-transparent" />
-
-          <div className="space-y-6">
-            {timeline.map((item, i) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
-                className="relative pl-10"
-              >
-                {/* Dot */}
-                <div className="absolute left-2.5 top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-[#ff4d6d] to-[#d946ef] shadow-lg shadow-[#ff4d6d]/30" />
-                
-                <div className="glass-card p-4">
-                  <span className="text-xs font-bold gradient-text">{item.year}</span>
-                  <p className="text-sm text-text-primary mt-1">
-                    {t(item.event as TranslationKey, language)}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+        <h2 className="text-xl font-bold text-text-primary mb-2">API & Data Sources</h2>
+        <p className="text-text-secondary text-sm mb-6">External APIs and data providers that make this platform possible</p>
+        <div className="glass-card-hover p-4 rounded-xl flex items-start gap-4">
+          <div className="w-10 h-10 rounded-lg bg-[#0033A0]/10 flex items-center justify-center flex-shrink-0">
+            <Globe size={18} className="text-[#0033A0]" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-text-primary">worldcup26.ir</h3>
+            <p className="text-xs text-text-secondary mt-0.5">Primary data source for teams, matches, groups, stadiums, and players.</p>
+            <code className="text-[10px] text-[#0033A0] bg-[#0033A0]/5 px-2 py-0.5 rounded mt-1.5 inline-block">
+              https://worldcup26.ir/api
+            </code>
           </div>
         </div>
       </motion.div>
 
-      {/* Footer Quote */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <p className="text-text-secondary text-sm italic">
-          &ldquo;{t('about.quote', language)}&rdquo;
+        <h2 className="text-xl font-bold text-text-primary mb-2">About This Platform</h2>
+        <p className="text-text-secondary text-sm leading-relaxed">
+          World Cup Insight v2 is a fan-built analytics platform created to provide comprehensive
+          coverage of the FIFA World Cup 2026™. The platform aggregates data from the worldcup26.ir
+          API to deliver real-time match updates, team information, player statistics, and interactive
+          data visualizations.
         </p>
-        <p className="text-xs text-text-secondary/50 mt-2">
-          {t('about.quoteAuthor', language)}
+        <p className="text-text-secondary text-sm leading-relaxed mt-3">
+          The prediction engine uses random simulation for bracket projections and is intended for
+          entertainment purposes only. All official data belongs to FIFA and respective data providers.
+          This project is not affiliated with or endorsed by FIFA.
+        </p>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center">
+        <p className="text-xs text-text-secondary/40">
+          &copy; {new Date().getFullYear()} World Cup Insight v2 — Fan-made FIFA World Cup 2026™ analytics platform.
+        </p>
+        <p className="text-[10px] text-text-secondary/30 mt-1">
+          FIFA World Cup is a trademark of FIFA. This site is not affiliated with FIFA.
         </p>
       </motion.div>
     </div>

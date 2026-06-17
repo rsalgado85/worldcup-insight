@@ -1,20 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/common/Sidebar';
-import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import { useAppStore } from '@/store/useAppStore';
-import { useProgressivePokemon } from '@/hooks/useProgressiveLoader';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, LayoutDashboard, Users, Skull, Package, Map, Bug, Swords, User } from 'lucide-react';
+import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User } from 'lucide-react';
 
 const MOBILE_NAV_ITEMS = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/characters', icon: Users, label: 'Characters' },
-  { path: '/bosses', icon: Skull, label: 'Bosses' },
-  { path: '/items', icon: Package, label: 'Items' },
-  { path: '/maps', icon: Map, label: 'Maps' },
-  { path: '/creatures', icon: Bug, label: 'Creatures' },
-  { path: '/compare', icon: Swords, label: 'Compare' },
+  { path: '/teams', icon: Users, label: 'Teams' },
+  { path: '/statistics', icon: BarChart3, label: 'Stats' },
+  { path: '/top-scorers', icon: Trophy, label: 'Scorers' },
   { path: '/about', icon: User, label: 'About' },
 ];
 
@@ -22,16 +17,6 @@ export function MainLayout() {
   const { sidebarCollapsed, toggleSidebar, theme } = useAppStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const {
-    isLoading,
-    isLoaded,
-    progress,
-    currentGeneration,
-    loadedPokemon,
-    totalPokemon,
-    currentGenPokemon,
-    totalGenPokemon,
-  } = useProgressivePokemon();
 
   // Apply theme class to document
   useEffect(() => {
@@ -67,24 +52,11 @@ export function MainLayout() {
   }, [mobileMenuOpen]);
 
   const bgStyle = theme === 'light'
-    ? { background: '#F5F0E8' }
-    : { background: 'radial-gradient(ellipse at 20% 50%, #1E2A2D 0%, #162022 40%, #0F1416 70%, #0A0F10 100%)' };
+    ? { background: '#F8FAFC' }
+    : { background: 'radial-gradient(ellipse at 20% 50%, #001B44 0%, #0F1416 40%, #0A0F10 70%)' };
 
   return (
     <div className="flex h-screen overflow-hidden" style={bgStyle}>
-      {/* Loading Overlay - only renders during first-time data load (no flash if cached) */}
-      {isLoading && (
-        <LoadingOverlay
-          isVisible={true}
-          progress={progress}
-          currentGeneration={currentGeneration}
-          loadedPokemon={loadedPokemon}
-          totalPokemon={totalPokemon}
-          currentGenPokemon={currentGenPokemon}
-          totalGenPokemon={totalGenPokemon}
-        />
-      )}
-
       {/* Desktop Sidebar - hidden on mobile */}
       <div className="hidden lg:block">
         <Sidebar />
@@ -125,17 +97,17 @@ export function MainLayout() {
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-lg transition-colors active:scale-95"
-            style={{ color: theme === 'light' ? 'var(--color-text-secondary)' : 'rgba(255,255,255,0.6)' }}
+            style={{ color: theme === 'light' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)' }}
             aria-label="Open navigation menu"
           >
             <Menu size={22} />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#C6A15B] to-[#3E6B48] flex items-center justify-center p-1 shadow-sm shadow-[#C6A15B]/20">
-              <img src="/logo.svg" alt="HYRULEDEX" className="w-full h-full object-contain" />
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0033A0] to-[#E4002B] flex items-center justify-center p-1 shadow-sm shadow-[#0033A0]/20">
+              <Trophy size={14} className="text-[#F2A900]" />
             </div>
             <span className="text-base font-black tracking-tight" style={{ color: theme === 'light' ? '#1a1a2e' : '#ffffff' }}>
-              HYRULE<span className="text-[#C6A15B]">DEX</span>
+              WC<span className="text-[#F2A900]">INSIGHT</span>
             </span>
           </div>
           <div className="w-9" />
@@ -160,7 +132,7 @@ export function MainLayout() {
           borderTop: theme === 'light' ? '1px solid rgba(0,0,0,0.04)' : '1px solid rgba(255,255,255,0.04)',
         }}>
           <p className="text-xs" style={{ color: theme === 'light' ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.3)' }}>
-            &copy; {new Date().getFullYear()} HyruleDex — Enciclopedia de Zelda. All rights reserved.
+            &copy; {new Date().getFullYear()} World Cup Insight v2 — FIFA World Cup 2026™ analytics platform.
           </p>
         </footer>
       </div>
@@ -168,11 +140,6 @@ export function MainLayout() {
   );
 }
 
-/**
- * Mobile Bottom Navigation Bar
- * Replaces the sidebar on mobile with a compact bottom tab bar.
- * Shows only the 5 most important navigation items.
- */
 function MobileBottomNav() {
   const { theme } = useAppStore();
   const isDark = theme === 'dark';
@@ -200,7 +167,7 @@ function MobileBottomNav() {
             key={item.path}
             onClick={() => navigate(item.path)}
             className="flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 transition-all active:scale-90"
-            style={{ color: isActive ? '#C6A15B' : isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}
+            style={{ color: isActive ? '#0033A0' : isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}
             aria-label={item.label}
             aria-current={isActive ? 'page' : undefined}
           >

@@ -3,27 +3,25 @@ import { lazy, Suspense } from 'react';
 import { MainLayout } from '@/layouts/MainLayout';
 import { ErrorPage } from '@/components/common/ErrorPage';
 
-// Lazy-loaded pages for code splitting
-const DashboardPage = lazy(() => import('@/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
-const CharactersPage = lazy(() => import('@/pages/CharactersPage').then(m => ({ default: m.CharactersPage })));
-const BossesPage = lazy(() => import('@/pages/BossesPage').then(m => ({ default: m.BossesPage })));
-const ItemsPage = lazy(() => import('@/pages/ItemsPage').then(m => ({ default: m.ItemsPage })));
-const DungeonsPage = lazy(() => import('@/pages/HistoryPage').then(m => ({ default: m.HistoryPage })));
-const LorePage = lazy(() => import('@/pages/LorePage').then(m => ({ default: m.LorePage })));
-const ComparePage = lazy(() => import('@/pages/ComparePage').then(m => ({ default: m.ComparePage })));
-const CheatsPage = lazy(() => import('@/pages/CheatsPage').then(m => ({ default: m.CheatsPage })));
-const WeaponsPage = lazy(() => import('@/pages/WeaponsPage').then(m => ({ default: m.WeaponsPage })));
-const GamesPage = lazy(() => import('@/pages/VideogamesPage').then(m => ({ default: m.VideogamesPage })));
-const MapsPage = lazy(() => import('@/pages/MapsPage').then(m => ({ default: m.MapsPage })));
-const CreaturesPage = lazy(() => import('@/pages/CreaturesPage').then(m => ({ default: m.CreaturesPage })));
-const FavoritesPage = lazy(() => import('@/pages/FavoritesPage').then(m => ({ default: m.FavoritesPage })));
+const HomePage = lazy(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })));
+const MatchesPage = lazy(() => import('@/pages/MatchesPage').then(m => ({ default: m.MatchesPage })));
+const LiveScoresPage = lazy(() => import('@/pages/LiveScoresPage').then(m => ({ default: m.LiveScoresPage })));
+const StandingsPage = lazy(() => import('@/pages/StandingsPage').then(m => ({ default: m.StandingsPage })));
+const GroupsPage = lazy(() => import('@/pages/GroupsPage').then(m => ({ default: m.GroupsPage })));
+const TeamsPage = lazy(() => import('@/pages/TeamsPage').then(m => ({ default: m.TeamsPage })));
+const PlayersPage = lazy(() => import('@/pages/PlayersPage').then(m => ({ default: m.PlayersPage })));
+const StatisticsPage = lazy(() => import('@/pages/StatisticsPage').then(m => ({ default: m.StatisticsPage })));
+const TopScorersPage = lazy(() => import('@/pages/TopScorersPage').then(m => ({ default: m.TopScorersPage })));
+const StadiumsPage = lazy(() => import('@/pages/StadiumsPage').then(m => ({ default: m.StadiumsPage })));
+const CountriesPage = lazy(() => import('@/pages/CountriesPage').then(m => ({ default: m.CountriesPage })));
+const PredictionsPage = lazy(() => import('@/pages/PredictionsPage').then(m => ({ default: m.PredictionsPage })));
 const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })));
 const DonatePage = lazy(() => import('@/pages/DonatePage').then(m => ({ default: m.DonatePage })));
 
 function SuspenseWrapper({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback={<div className="flex items-center justify-center h-64">
-      <div className="w-8 h-8 border-2 border-[#C6A15B] border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-[#0033A0] border-t-transparent rounded-full animate-spin" />
     </div>}>
       {children}
     </Suspense>
@@ -36,20 +34,18 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <SuspenseWrapper><DashboardPage /></SuspenseWrapper> },
-      { path: 'dashboard', element: <SuspenseWrapper><DashboardPage /></SuspenseWrapper> },
-      { path: 'characters', element: <SuspenseWrapper><CharactersPage /></SuspenseWrapper> },
-      { path: 'bosses', element: <SuspenseWrapper><BossesPage /></SuspenseWrapper> },
-      { path: 'items', element: <SuspenseWrapper><ItemsPage /></SuspenseWrapper> },
-      { path: 'dungeons', element: <SuspenseWrapper><DungeonsPage /></SuspenseWrapper> },
-      { path: 'lore', element: <SuspenseWrapper><LorePage /></SuspenseWrapper> },
-      { path: 'compare', element: <SuspenseWrapper><ComparePage /></SuspenseWrapper> },
-      { path: 'cheats', element: <SuspenseWrapper><CheatsPage /></SuspenseWrapper> },
-      { path: 'weapons', element: <SuspenseWrapper><WeaponsPage /></SuspenseWrapper> },
-      { path: 'games', element: <SuspenseWrapper><GamesPage /></SuspenseWrapper> },
-      { path: 'maps', element: <SuspenseWrapper><MapsPage /></SuspenseWrapper> },
-      { path: 'creatures', element: <SuspenseWrapper><CreaturesPage /></SuspenseWrapper> },
-      { path: 'favorites', element: <SuspenseWrapper><FavoritesPage /></SuspenseWrapper> },
+      { index: true, element: <SuspenseWrapper><HomePage /></SuspenseWrapper> },
+      { path: 'matches', element: <SuspenseWrapper><MatchesPage /></SuspenseWrapper> },
+      { path: 'live-scores', element: <SuspenseWrapper><LiveScoresPage /></SuspenseWrapper> },
+      { path: 'standings', element: <SuspenseWrapper><StandingsPage /></SuspenseWrapper> },
+      { path: 'groups', element: <SuspenseWrapper><GroupsPage /></SuspenseWrapper> },
+      { path: 'teams', element: <SuspenseWrapper><TeamsPage /></SuspenseWrapper> },
+      { path: 'players', element: <SuspenseWrapper><PlayersPage /></SuspenseWrapper> },
+      { path: 'statistics', element: <SuspenseWrapper><StatisticsPage /></SuspenseWrapper> },
+      { path: 'top-scorers', element: <SuspenseWrapper><TopScorersPage /></SuspenseWrapper> },
+      { path: 'stadiums', element: <SuspenseWrapper><StadiumsPage /></SuspenseWrapper> },
+      { path: 'countries', element: <SuspenseWrapper><CountriesPage /></SuspenseWrapper> },
+      { path: 'predictions', element: <SuspenseWrapper><PredictionsPage /></SuspenseWrapper> },
       { path: 'about', element: <SuspenseWrapper><AboutPage /></SuspenseWrapper> },
       { path: 'donate', element: <SuspenseWrapper><DonatePage /></SuspenseWrapper> },
     ],
