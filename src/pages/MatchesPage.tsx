@@ -15,12 +15,27 @@ function getTeamForMatch(teamId: number, teams: Team[]): Team | undefined {
 }
 
 function formatDateSpanish(dateStr: string, lang: 'en' | 'es'): string {
-  try {
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
-      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
-    });
-  } catch { return dateStr; }
+  // Parse ISO date: "2026-06-11" → day parts
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const [y, m, d] = parts.map(Number);
+  const date = new Date(y, m - 1, d); // month is 0-indexed in JS
+  if (isNaN(date.getTime())) return dateStr;
+
+  const locale = lang === 'es' ? 'es-ES' : 'en-US';
+  const weekdays = lang === 'es'
+    ? ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb']
+    : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = lang === 'es'
+    ? ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+    : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const weekday = weekdays[date.getDay()];
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${weekday}, ${day} ${month} ${year}`;
 }
 
 function formatDateISO(dateStr: string): string {

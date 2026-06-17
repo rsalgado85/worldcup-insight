@@ -29,8 +29,11 @@ function getTeamForMatch(teamId: number, teams: Team[]): Team | undefined {
 }
 
 function formatDate(dateStr: string): string {
-  try { return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-  catch { return dateStr; }
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const [y, m, d] = parts.map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[m - 1]} ${d}`;
 }
 
 interface PlayerData { id: number; name: string; team: string; flag: string; goals?: number; assists?: number; rating?: number; cleanSheets?: number; value?: number }
