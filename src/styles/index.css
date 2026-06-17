@@ -42,9 +42,9 @@
   --color-bg: #FEFEFE;
   --color-card: #FEFEFE;
   --color-card-hover: #F6F8FC;
-  --color-border: rgba(26, 61, 127, 0.08);
-  --color-border-strong: rgba(26, 61, 127, 0.15);
-  --color-divider: rgba(26, 61, 127, 0.05);
+  --color-border: rgba(26, 61, 127, 0.10);
+  --color-border-strong: rgba(26, 61, 127, 0.18);
+  --color-divider: rgba(26, 61, 127, 0.06);
 
   /* ─── Text (Light) ───────────────────────────── */
   --color-text: #0C1729;
@@ -76,12 +76,12 @@
    ═══════════════════════════════════════════════════ */
 .dark {
   /* ─── Surfaces ───────────────────────────────── */
-  --color-bg: #090D16;
-  --color-card: #111827;
-  --color-card-hover: #1A2332;
-  --color-border: rgba(69, 131, 202, 0.16);
-  --color-border-strong: rgba(69, 131, 202, 0.24);
-  --color-divider: rgba(69, 131, 202, 0.10);
+  --color-bg: #080C14;
+  --color-card: #131B28;
+  --color-card-hover: #1C2635;
+  --color-border: rgba(91, 155, 213, 0.20);
+  --color-border-strong: rgba(91, 155, 213, 0.30);
+  --color-divider: rgba(91, 155, 213, 0.14);
 
   /* ─── Text ───────────────────────────────────── */
   --color-text: #EEF2FF;
