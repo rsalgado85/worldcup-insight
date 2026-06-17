@@ -146,27 +146,8 @@ export function TeamsPage() {
                   className="card p-5 hover:shadow-card-hover hover:-translate-y-0.5 transition-all"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    {/* Crest with fallback */}
-                    {team.fifa_code ? (
-                      <img
-                        src={getCrestPath(team.fifa_code)}
-                        alt={team.name_en}
-                        className="w-12 h-12 object-contain rounded-xl bg-primary-subtle p-1"
-                        onError={(e) => {
-                          const fallback = getCrestFallback(team.fifa_code!);
-                          const img = e.target as HTMLImageElement;
-                          if (img.src !== fallback) {
-                            img.src = fallback;
-                          } else {
-                            img.style.display = 'none';
-                          }
-                        }}
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-xl bg-primary-subtle flex items-center justify-center">
-                        <FlagImage flag={team.flag} size="lg" />
-                      </div>
-                    )}
+                    {/* Flag */}
+                    <FlagImage flag={team.flag} size="xl" />
                     <div className="min-w-0 flex-1">
                       <h3 className="text-sm font-black text-text truncate">{team.name_en}</h3>
                       <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">{team.fifa_code}</p>
