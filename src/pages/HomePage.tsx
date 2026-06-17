@@ -171,6 +171,7 @@ export function HomePage() {
                 <motion.div key={match.id} initial={{opacity:0,scale:.95}} animate={{opacity:1,scale:1}} className="card p-4 hover:shadow-card-hover transition-all">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-text-muted">{match.group ? tf('common.groupLabel',language,match.group): match.type}</span>
+                    {(() => { const t = (match.local_date||'').split(' ')[1]; return t ? <span className="badge bg-primary-subtle text-primary text-[9px]">{t}</span> : null; })()}
                     <span className={`text-[10px] font-bold ${st.c}`}>{st.l||'VS'}</span>
                   </div>
                   <div className="flex items-center justify-between">
