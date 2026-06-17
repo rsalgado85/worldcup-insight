@@ -72,10 +72,19 @@ export function HomePage() {
     return `${y}-${m}-${day}`;
   }, []);
 
-  const todayMatches = useMemo(() => {
-    if (!matches) return [];
-    return matches.filter((m: Match) => (m.local_date || '').slice(0, 10) === todayStr);
+  // Find the first available match date from the API
+  const firstMatchDate = useMemo(() => {
+    if (!matches || matches.length === 0) return null;
+    const dates = [...new Set(matches.map((m: Match) => (m.local_date || '').slice(0, 10)))].filter(Boolean).sort();
+    // Find today or nearest future date
+    const future = dates.filter(d => d >= todayStr);
+    return future.length > 0 ? future[0] : dates[dates.length - 1] || null;
   }, [matches, todayStr]);
+
+  const todayMatches = useMemo(() => {
+    if (!matches || !firstMatchDate) return [];
+    return matches.filter((m: Match) => (m.local_date || '').slice(0, 10) === firstMatchDate);
+  }, [matches, firstMatchDate]);
 
   const recentMatches = useMemo(() => {
     if (!matches) return [];
