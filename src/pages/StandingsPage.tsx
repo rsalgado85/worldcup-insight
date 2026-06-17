@@ -4,7 +4,7 @@ import { Trophy, Medal, TrendingUp, Swords, ChevronDown } from 'lucide-react';
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
-import { getCrestPath, getCrestFallback, getFlagUrl } from '@/constants/crests';
+import { getLocalFlag } from '@/constants/crests';
 import { t, tf } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
 import { GROUPS } from '@/constants';
@@ -139,12 +139,9 @@ export function StandingsPage() {
                     <td className="py-3.5">
                       <div className="flex items-center gap-3">
                         {team.fifa_code ? (
-                          <img src={getCrestPath(team.fifa_code)} alt={team.name_en}
+                          <img src={getLocalFlag(team.fifa_code)} alt={team.name_en}
                             className="w-7 h-7 object-contain"
-                            onError={(e) => {
-                              const i = e.target as HTMLImageElement;
-                              i.src = i.src.endsWith('.png') ? getFlagUrl('') : getCrestFallback(team.fifa_code);
-                            }} />
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                         ) : (
                           <FlagImage flag={team.flag} size="sm" />
                         )}

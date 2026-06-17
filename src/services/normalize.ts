@@ -73,7 +73,14 @@ export function normalizeMatch(raw: RawMatch): Match {
     home_scorers: parseScorers(raw.home_scorers),
     away_scorers: parseScorers(raw.away_scorers),
     finished: toBool(raw.finished),
-    time_elapsed: raw.time_elapsed === 'finished' ? null : raw.time_elapsed || null,
+    time_elapsed: (() => {
+      const t = raw.time_elapsed;
+      if (!t || t === 'finished' || t === 'notstarted' || t === 'null') return null;
+      // Only pass through numeric elapsed times or HT
+      if (t === 'HT') return 'HT';
+      const n = Number(t);
+      return !isNaN(n) ? `${n}'` : null;
+    })(),
     group: raw.group || null,
     local_date: raw.local_date,
     utc_date: raw.local_date, // API doesn't provide utc_date separately

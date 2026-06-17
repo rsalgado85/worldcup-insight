@@ -1,5 +1,5 @@
 # ============================================
-# DashDex - Pokémon Analytics Dashboard
+# World Cup Insight v2 — FIFA World Cup 2026 Analytics
 # Multi-stage Docker build for production
 # ============================================
 

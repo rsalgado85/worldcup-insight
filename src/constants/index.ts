@@ -1,11 +1,5 @@
 export const API_BASE_URL = 'https://worldcup26.ir/api';
-export const CACHE_PREFIX = 'wcinsight_';
-export const CACHE_TTL = 24 * 60 * 60 * 1000;
-export const STALE_TIME = 5 * 60 * 1000;
-// Legacy exports for backward compatibility
-export const POKEMON_LIMIT = 200;
-export const ATTRIBUTE_NAMES: Record<string, string> = {};
-export const RACE_COLORS: Record<string, string> = {};
+
 
 export const WC_COLORS = {
   primary: '#1A3D7F',       // French Blue

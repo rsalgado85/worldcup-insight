@@ -17,7 +17,7 @@ Actúa como un equipo multidisciplinario compuesto por:
 * Conversion Optimization Specialist
 * Motion Designer
 
-Tu misión es transformar completamente el proyecto existente HYRULEDEX en una nueva plataforma llamada:
+Tu misión es transformar completamente el proyecto existente (template base) en una nueva plataforma llamada:
 
 # WORLD CUP INSIGHT
 

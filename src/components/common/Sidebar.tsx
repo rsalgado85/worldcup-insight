@@ -35,9 +35,7 @@ export function Sidebar() {
         <AnimatePresence mode="wait">
           {!sidebarCollapsed ? (
             <motion.div key="expanded" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-live flex items-center justify-center shadow-lg">
-                <Trophy size={20} className="text-white" />
-              </div>
+              <img src="/images/logos/wc2026-official.svg" alt="FIFA World Cup 2026" className="h-12 w-auto object-contain" />
               <div>
                 <h1 className="text-base font-black tracking-tight text-text">
                   WC<span className="text-primary-light">26</span> INSIGHT
@@ -49,9 +47,7 @@ export function Sidebar() {
             </motion.div>
           ) : (
             <motion.div key="collapsed" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="w-full flex justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-live flex items-center justify-center shadow-lg">
-                <Trophy size={20} className="text-white" />
-              </div>
+              <img src="/images/logos/wc2026-official.svg" alt="FIFA World Cup 2026" className="h-10 w-auto object-contain" />
             </motion.div>
           )}
         </AnimatePresence>

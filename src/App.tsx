@@ -1,28 +1,45 @@
 import { RouterProvider } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { router } from '@/routes';
 
-/**
- * QueryClient configuration with aggressive caching strategy.
- * - staleTime: 30 minutes - data is considered fresh for 30 min
- * - gcTime: 24 hours - data stays in cache for 24 hours
- * This reduces API calls significantly while keeping data reasonably fresh.
- */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30 * 60 * 1000, // 30 minutes
-      gcTime: 24 * 60 * 60 * 1000, // 24 hours
+      staleTime: 10 * 60 * 1000,
+      gcTime: 24 * 60 * 60 * 1000,
       retry: 2,
       refetchOnWindowFocus: false,
+      placeholderData: (prev: any) => prev,
     },
   },
 });
 
+const persister = createSyncStoragePersister({
+  storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+  key: 'WC_INSIGHT_CACHE',
+  throttleTime: 1000,
+});
+
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister,
+        maxAge: 24 * 60 * 60 * 1000,
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) => {
+            // Only persist teams/groups/stadiums — skip matches (they change constantly)
+            const staticKeys = ['teams', 'groups', 'stadiums', 'players'];
+            return staticKeys.includes(query.queryKey[0] as string);
+          },
+        },
+      }}
+      onSuccess={() => queryClient.resumePausedMutations()}
+    >
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }

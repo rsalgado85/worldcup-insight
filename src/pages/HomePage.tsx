@@ -1,16 +1,21 @@
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Trophy, Goal, Calendar, Clock, Users, Activity, TrendingUp, Star, Zap, Shield, Swords, MapPin } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Calendar, ChevronDown, Clock, Goal, MapPin, Swords, Trophy, Users, Activity, TrendingUp, Star, Zap, Shield } from 'lucide-react';
 import { useMatches } from '@/hooks/useMatches';
 import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
-import { getCrestPath, getCrestFallback, getFlagUrl } from '@/constants/crests';
-import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
+import { getLocalFlag } from '@/constants/crests';
+import { TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
 import { t, tf } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
+
+const flagOnError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const i = e.target as HTMLImageElement;
+  i.style.display = 'none';
+};
 
 /* ─── Helpers ─────────────────────────────────────── */
 const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -18,7 +23,7 @@ function fmtDate(d: string) { const p = (d||'').slice(0,10).split('-'); return p
 function getTeam(matches: Team[] | undefined, id: number) { return matches?.find(t => t.id === id); }
 function getStatus(m: Match) {
   if (m.finished) return { l: 'FT', c: 'text-text-muted' };
-  if (m.time_elapsed) return { l: m.time_elapsed === 'HT' ? 'HT' : `${m.time_elapsed}'`, c: 'text-live' };
+  if (m.time_elapsed) return { l: m.time_elapsed, c: 'text-live' };
   return { l: '', c: 'text-text-muted' };
 }
 function formBlock(w: number, d: number, l: number, i: number) {
@@ -30,7 +35,7 @@ function formBlock(w: number, d: number, l: number, i: number) {
 
 interface PlayerData { id: number; name: string; team: string; flag: string; goals?: number; assists?: number; rating?: number; cleanSheets?: number; value?: number }
 
-function TrendingPlayerRow({ player, rank }: { player: PlayerData; rank: number }) {
+function TrendingPlayerRow({ player, rank, stat, statColor }: { player: PlayerData; rank: number; stat?: string | number; statColor?: string }) {
   return (
     <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary-subtle transition-colors">
       <span className="text-[10px] font-black text-text-muted w-4 text-right">{rank}</span>
@@ -39,6 +44,7 @@ function TrendingPlayerRow({ player, rank }: { player: PlayerData; rank: number 
         <p className="text-xs font-bold text-text truncate">{player.name}</p>
         <p className="text-[9px] text-text-muted">{player.team}</p>
       </div>
+      {stat !== undefined && <span className="text-sm font-black text-right min-w-[2rem]" style={{color: statColor}}>{stat}</span>}
     </div>
   );
 }
@@ -49,6 +55,7 @@ export function HomePage() {
   const { data: teams, isLoading: teamsLoading } = useTeams();
   const { data: groups } = useGroups();
   const [activeGroupTab, setActiveGroupTab] = useState('A');
+  const [expandedMatch, setExpandedMatch] = useState<number | null>(null);
   const { language } = useAppStore();
   const isLoading = matchesLoading || teamsLoading;
 
@@ -89,7 +96,7 @@ export function HomePage() {
     { label: t('home.countries', language), value: 48, icon: Users, color: 'var(--color-warm)' },
     { label: t('home.liveNow', language), value: matches?.filter(m => !m.finished&&m.time_elapsed).length??0, icon: Activity, color: 'var(--color-live)' },
     { label: t('home.totalAttendance', language), value: '3.5M+', icon: Users, color: 'var(--color-primary-light)' },
-    { label: t('home.topScorer', language), value: 'Mbappé (8)', icon: Star, color: 'var(--color-accent)' },
+    { label: t('home.topScorer', language), value: `${TOP_SCORERS[0].name.split(' ').pop()} (${TOP_SCORERS[0].goals})`, icon: Star, color: 'var(--color-accent)' },
     { label: t('home.topAssists', language), value: 'De Bruyne (6)', icon: Zap, color: 'var(--color-success)' },
   ];
 
@@ -106,7 +113,7 @@ export function HomePage() {
     </div>
   );
 
-  const featured = FEATURED_PLAYERS[0];
+  const featured = TOP_SCORERS[0];
 
   return (
     <div className="space-y-6 lg:space-y-8">
@@ -168,15 +175,15 @@ export function HomePage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      {home?.fifa_code ? <img src={getCrestPath(home.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={e=>{const i=e.target as HTMLImageElement;i.src=i.src.endsWith('.png')?getFlagUrl(home.iso2):getCrestFallback(home.fifa_code)}}/> : <FlagImage flag={home?.flag} size="md"/>}
+                      {home?.fifa_code ? <img src={getLocalFlag(home.fifa_code)} alt="" className="w-8 h-8 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <FlagImage flag={home?.flag} size="md"/>}
                       <span className="text-sm font-bold text-text truncate">{home?.name_en??`T${match.home_team_id}`}</span>
                     </div>
                     <div className="mx-3">
-                      {match.home_score!==null&&match.away_score!==null ? <span className="text-lg font-black text-text">{match.home_score}-{match.away_score}</span> : <span className="text-lg font-bold text-text-muted">vs</span>}
+                      {match.home_score!==null&&match.away_score!==null&&(match.finished||match.time_elapsed) ? <span className="text-lg font-black text-text">{match.home_score}-{match.away_score}</span> : <span className="text-lg font-bold text-text-muted">vs</span>}
                     </div>
                     <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                       <span className="text-sm font-bold text-text truncate text-right">{away?.name_en??`T${match.away_team_id}`}</span>
-                      {away?.fifa_code ? <img src={getCrestPath(away.fifa_code)} alt="" className="w-8 h-8 object-contain" onError={e=>{const i=e.target as HTMLImageElement;i.src=i.src.endsWith('.png')?getFlagUrl(away.iso2):getCrestFallback(away.fifa_code)}}/> : <FlagImage flag={away?.flag} size="md"/>}
+                      {away?.fifa_code ? <img src={getLocalFlag(away.fifa_code)} alt="" className="w-8 h-8 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <FlagImage flag={away?.flag} size="md"/>}
                     </div>
                   </div>
                 </motion.div>
@@ -216,16 +223,18 @@ export function HomePage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            {t:t('home.topScorers',language),d:TOP_SCORERS,ic:Goal,c:'var(--color-live)'},
-            {t:t('home.topAssistsSub',language),d:TOP_ASSISTS,ic:Zap,c:'var(--color-primary-light)'},
-            {t:t('home.topRatings',language),d:TOP_RATINGS,ic:Star,c:'var(--color-warm)'},
-            {t:t('home.cleanSheets',language),d:TOP_CLEAN_SHEETS,ic:Shield,c:'var(--color-success)'},
+            {t:t('home.topScorers',language),d:TOP_SCORERS,ic:Goal,c:'var(--color-live)', s:TOP_SCORERS.reduce((a,p)=>a+(p.goals||0),0), u:t('home.goals',language), sf:(p:any)=>p.goals},
+            {t:t('home.topAssistsSub',language),d:TOP_ASSISTS,ic:Zap,c:'var(--color-primary-light)', s:TOP_ASSISTS.reduce((a,p)=>a+(p.value||0),0), u:t('home.assists',language), sf:(p:any)=>p.value},
+            {t:t('home.topRatings',language),d:TOP_RATINGS,ic:Star,c:'var(--color-warm)', s:(TOP_RATINGS.reduce((a,p)=>a+(p.value||0),0)/TOP_RATINGS.length).toFixed(1), u:'', sf:(p:any)=>p.value},
+            {t:t('home.cleanSheets',language),d:TOP_CLEAN_SHEETS,ic:Shield,c:'var(--color-success)', s:TOP_CLEAN_SHEETS.reduce((a,p)=>a+(p.value||0),0), u:'', sf:(p:any)=>p.value},
           ].map(section => (
             <div key={section.t} className="card p-4">
               <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5" style={{color:section.c}}>
                 <section.ic size={13} /> {section.t}
               </h3>
-              {section.d.slice(0,5).map((p,i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i+1} />)}
+              {section.u && <p className="text-2xl font-black mb-3" style={{color:section.c}}>{section.s} <span className="text-[9px] font-semibold text-text-muted uppercase tracking-wider">{section.u}</span></p>}
+              {!section.u && <p className="text-2xl font-black mb-3" style={{color:section.c}}>{section.s}</p>}
+              {section.d.slice(0,5).map((p,i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i+1} stat={section.sf(p)} statColor={section.c} />)}
             </div>
           ))}
         </div>
@@ -273,7 +282,7 @@ export function HomePage() {
                       </td>
                       <td className="py-3">
                         <div className="flex items-center gap-2.5">
-                          {team.fifa_code ? <img src={getCrestPath(team.fifa_code)} alt="" className="w-6 h-6 object-contain" onError={e=>{const i=e.target as HTMLImageElement;i.src=i.src.endsWith('.png')?getFlagUrl(''):getCrestFallback(team.fifa_code)}}/> : <FlagImage flag={team.flag} size="sm"/>}
+                          <FlagImage flag={team.flag} size="sm"/>
                           <div>
                             <p className="text-xs font-bold text-text">{team.name_en}</p>
                             <p className="text-[9px] text-text-muted">{team.fifa_code}</p>
@@ -307,18 +316,41 @@ export function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {recentMatches.map(match => {
               const home = getTeam(teams,match.home_team_id), away = getTeam(teams,match.away_team_id);
+              const isOpen = expandedMatch === match.id;
+              const scorers = [match.home_scorers, match.away_scorers].filter(Boolean);
+              const hasDetails = scorers.length > 0 || match.group || match.matchday || match.type;
               return (
-                <div key={match.id} className="card p-3 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                    {home?.fifa_code ? <img src={getCrestPath(home.fifa_code)} alt="" className="w-5 h-5 object-contain"/> : <span className="text-xs">{home?.flag}</span>}
-                    <span className="text-[11px] font-bold text-text truncate">{home?.name_en}</span>
+                <motion.div key={match.id} layout className={`card transition-all ${isOpen ? 'ring-1 ring-primary/20' : 'cursor-pointer hover:shadow-card-hover'}`} onClick={() => setExpandedMatch(isOpen ? null : match.id)}>
+                  <div className="p-3 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      {home?.fifa_code ? <img src={getLocalFlag(home.fifa_code)} alt="" className="w-5 h-5 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <span className="text-xs">{home?.flag}</span>}
+                      <span className="text-[11px] font-bold text-text truncate">{home?.name_en}</span>
+                    </div>
+                    <span className="text-sm font-black text-text mx-2">{match.home_score}-{match.away_score}</span>
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end">
+                      <span className="text-[11px] font-bold text-text truncate">{away?.name_en}</span>
+                      {away?.fifa_code ? <img src={getLocalFlag(away.fifa_code)} alt="" className="w-5 h-5 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <span className="text-xs">{away?.flag}</span>}
+                    </div>
+                    {hasDetails && <ChevronDown size={14} className={`text-text-muted flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />}
                   </div>
-                  <span className="text-sm font-black text-text mx-2">{match.home_score}-{match.away_score}</span>
-                  <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-end">
-                    <span className="text-[11px] font-bold text-text truncate">{away?.name_en}</span>
-                    {away?.fifa_code ? <img src={getCrestPath(away.fifa_code)} alt="" className="w-5 h-5 object-contain"/> : <span className="text-xs">{away?.flag}</span>}
-                  </div>
-                </div>
+                  <AnimatePresence>
+                    {isOpen && hasDetails && (
+                      <motion.div initial={{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}} transition={{duration:0.2}} className="overflow-hidden">
+                        <div className="px-3 pb-3 space-y-2 border-t border-divider pt-2">
+                          {match.group && <p className="text-[10px] text-text-muted"><span className="font-semibold text-text-secondary">{t('common.group', language) || 'Group'}:</span> {match.group}{match.matchday ? ` · Matchday ${match.matchday}` : ''}</p>}
+                          {match.type && !match.group && <p className="text-[10px] text-text-muted"><span className="font-semibold text-text-secondary">Stage:</span> {match.type}{match.matchday ? ` · Matchday ${match.matchday}` : ''}</p>}
+                          {scorers.length > 0 && (
+                            <div className="space-y-1">
+                              {match.home_scorers && <p className="text-[10px]"><Goal size={10} className="inline text-live mr-1" /><span className="font-semibold text-text-secondary">{home?.name_en || 'Home'}:</span> <span className="text-text-muted">{match.home_scorers}</span></p>}
+                              {match.away_scorers && <p className="text-[10px]"><Goal size={10} className="inline text-primary-light mr-1" /><span className="font-semibold text-text-secondary">{away?.name_en || 'Away'}:</span> <span className="text-text-muted">{match.away_scorers}</span></p>}
+                            </div>
+                          )}
+                          <p className="text-[9px] text-text-muted/60">{fmtDate(match.local_date)} · FT</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               );
             })}
           </div>
@@ -343,13 +375,13 @@ export function HomePage() {
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                      {home?.fifa_code ? <img src={getCrestPath(home.fifa_code)} alt="" className="w-5 h-5 object-contain"/> : <span className="text-xs">{home?.flag}</span>}
+                      {home?.fifa_code ? <img src={getLocalFlag(home.fifa_code)} alt="" className="w-5 h-5 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <span className="text-xs">{home?.flag}</span>}
                       <span className="text-[11px] font-bold text-text truncate">{home?.name_en}</span>
                     </div>
                     <span className="text-xs font-bold text-text-muted mx-2">vs</span>
                     <div className="flex items-center gap-1.5 flex-1 min-w-0 justify-end">
                       <span className="text-[11px] font-bold text-text truncate">{away?.name_en}</span>
-                      {away?.fifa_code ? <img src={getCrestPath(away.fifa_code)} alt="" className="w-5 h-5 object-contain"/> : <span className="text-xs">{away?.flag}</span>}
+                      {away?.fifa_code ? <img src={getLocalFlag(away.fifa_code)} alt="" className="w-5 h-5 object-contain rounded-sm" onError={(e) => flagOnError(e)}/> : <span className="text-xs">{away?.flag}</span>}
                     </div>
                   </div>
                 </div>

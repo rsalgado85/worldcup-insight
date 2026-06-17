@@ -1,142 +1,80 @@
-# HyruleDex — Compendio de The Legend of Zelda
+# World Cup Insight v2 — FIFA World Cup 2026 Analytics
 
-> Un compendio interactivo del universo Zelda — personajes, jefes, armas, criaturas, mapas, videojuegos y más. Construido con React 19, TypeScript y la estética Triforce.
+> Plataforma moderna de estadísticas, análisis y visualizaciones para el Mundial FIFA 2026. Construida con React 19, TypeScript, Vite y Tailwind CSS v4.
 
-![Version](https://img.shields.io/badge/version-2.0.0-gold)
-![React](https://img.shields.io/badge/React-19-61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6)
-![License](https://img.shields.io/badge/license-MIT-green)
+🔗 **[worldcup-eight-topaz.vercel.app](https://worldcup-eight-topaz.vercel.app)**
 
-🔗 **[hyruledex.vercel.app](https://hyruledex.vercel.app)**
+## ✨ Características
 
----
-
-## 🛡️ Módulos
-
-| Módulo | Descripción |
-|--------|-------------|
-| **Dashboard** | Vista principal con personajes destacados, jefes aleatorios, KPIs y modales de detalle |
-| **Personajes** | 21 personajes (Link, Zelda, Ganondorf, campeones, sabios…) con filtro por raza y estadísticas |
-| **Jefes** | 27 jefes finales y de mazmorra — stats, dificultad, dungeon de origen |
-| **Armas** | 43 ítems: espadas, escudos, arcos, armaduras y objetos — barras ATK/DEF animadas |
-| **Criaturas** | Bestiario del Compendio de Hyrule vía API — criaturas y monstruos con detalle emergente |
-| **Objetos** | Objetos clásicos de la saga |
-| **Mapas** | Mapas interactivos de Hyrule |
-| **Favoritos** | Guarda personajes, jefes y criaturas favoritos |
-| **Comparador** | Comparación lado a lado de personajes |
-| **Línea de tiempo** | 14 juegos con historia, subtítulos y curiosidades (EN/ES) |
-| **Trucos** | 90 trucos, secretos, glitches y easter eggs en 9 juegos |
-| **Videojuegos** | 195+ juegos de Zelda vía RAWG API con búsqueda y paginación |
-| **Lore** | Historia y trasfondo del universo Zelda |
-
----
+| Sección | Descripción |
+|---|---|
+| **Dashboard** | Panel principal con KPIs, jugador destacado, últimos resultados |
+| **Matches** | Calendario completo con filtros por fecha, grupo, equipo y estado |
+| **Live Scores** | Partidos en vivo con actualización automática |
+| **Standings** | Tablas de clasificación por grupos (A–L) |
+| **Groups** | Vista detallada de cada grupo con estadísticas |
+| **Teams** | Grid de selecciones con escudos, banderas y rankings |
+| **Players** | Buscador avanzado con filtros por país, posición y edad |
+| **Statistics** | Dashboard analítico con gráficos Recharts |
+| **Top Scorers** | Ranking completo de goleadores y asistencias |
+| **Stadiums** | Sedes con imágenes, capacidad y ubicación |
+| **Countries** | Información de países participantes |
+| **Predictions** | Predicciones y simulaciones |
+| **About** | Información del proyecto y stack tecnológico |
+| **Donate** | Apoyo al proyecto vía PayPal y Buy Me a Coffee |
 
 ## 🎨 Diseño
 
-- **Tema oscuro Triforce** — dorado `#C6A15B`, verde `#3E6B48`, fondos glassmorphism
-- **Navegación inferior móvil** con iconos y barra lateral completa en desktop
-- **Bilingüe** — español e inglés en todos los módulos
-- **Animaciones** — Framer Motion con `whileInView`, barras de stats animadas, modales con `AnimatePresence`
-- **Filtro por raza** — pills clickeables que filtran personajes en tiempo real
-- **Imágenes locales** — renders oficiales de pidgi.net, zeldawiki.wiki y Spriters Resource
+- **Light + Dark mode** con toggle persistente
+- **Bilingüe** (ES/EN) con selector de idioma
+- **Responsive**: desktop, tablet, mobile con bottom nav
+- **Sidebar colapsable** con animaciones Framer Motion
+- **Paleta**: French Blue, Steel Blue, Baltic Blue, Vintage Grape, Sand
 
----
+## 🛠 Stack
 
-## 🛠️ Stack Tecnológico
+- **Frontend**: React 19, TypeScript, Vite 8
+- **Estilos**: Tailwind CSS v4 con temas CSS custom properties
+- **Estado**: Zustand con persistencia
+- **Routing**: React Router v7 con lazy loading
+- **Datos**: React Query (TanStack Query v5)
+- **Gráficos**: Recharts, Chart.js
+- **Animaciones**: Framer Motion
+- **Íconos**: Lucide React
+- **API**: worldcup26.ir
 
-| Tecnología | Uso |
-|------------|-----|
-| React 19 | UI |
-| TypeScript | Tipado |
-| Vite | Build |
-| React Router v7 | Navegación SPA |
-| Zustand | Estado global (tema, idioma, favoritos) |
-| Tailwind CSS v4 | Estilos |
-| Framer Motion | Animaciones |
-| Lucide React | Iconografía |
-
----
-
-## 📁 Estructura
+## 📂 Estructura
 
 ```
 src/
-├── app/              # Configuración de la app
-├── components/       # Componentes reutilizables
-│   ├── common/       # Sidebar, MobileBottomNav, KPICard, SearchBar…
-│   └── layout/       # Layout principal
-├── pages/            # 19 páginas (Dashboard, Characters, Bosses, Weapons…)
-├── store/            # Zustand (useAppStore)
-├── constants/        # Colores de raza, traducciones, config
-├── hooks/            # Hooks personalizados
-├── services/         # Clientes API (Hyrule Compendium, RAWG)
-├── types/            # Tipos TypeScript
-└── styles/           # Estilos globales y tema Triforce
+├── components/    # UI components (Sidebar, charts, cards)
+├── constants/     # Colores, rutas, traducciones, datos estáticos
+├── hooks/         # Custom hooks (useMatches, useTeams, useGroups, etc.)
+├── layouts/       # MainLayout con sidebar + mobile nav
+├── pages/         # 14 páginas (lazy-loaded)
+├── routes/        # React Router config
+├── services/      # API clients (match, team, group, player, stadium)
+├── store/         # Zustand (tema, idioma, favoritos, sidebar)
+├── styles/        # CSS con temas light/dark
+└── types/         # TypeScript interfaces (World Cup)
 ```
-
----
 
 ## 🚀 Desarrollo
 
-### Requisitos
-
-- Node.js 20+
-- npm 10+
-
-### Instalación
-
 ```bash
-git clone https://github.com/rsalgado85/hyruledex.git
-cd hyruledex
 npm install
-npm run dev
+npm run dev      # http://localhost:5173
+npm run build    # Build de producción
 ```
 
-### Build
+## 📦 Deploy
 
 ```bash
-npm run build    # TypeScript + Vite
-npm run preview  # Previsualizar build
+npx vercel --prod --yes
 ```
 
----
-
-## ▲ Deploy en Vercel
-
-El proyecto se despliega automáticamente en Vercel al pushear a `main`.
-
-```bash
-git push origin main
-```
-
-Producción: **[hyruledex.vercel.app](https://hyruledex.vercel.app)**
+Producción: **[worldcup-eight-topaz.vercel.app](https://worldcup-eight-topaz.vercel.app)**
 
 ---
 
-## 🌐 APIs utilizadas
-
-- **[Hyrule Compendium API](https://api.hyrule-compendium.com/)** — criaturas y monstruos
-- **[RAWG API](https://rawg.io/apidocs)** — catálogo de videojuegos de Zelda
-
----
-
-## 🗂️ Assets
-
-Todas las imágenes son locales en `/public/`:
-
-| Carpeta | Contenido |
-|---------|-----------|
-| `public/characters/` | 21 personajes (PNG, fondo transparente) |
-| `public/bosses/` | 27 jefes |
-| `public/weapons/` | 43 ítems (espadas, escudos, arcos, armaduras) |
-| `public/creatures/` | Criaturas del compendio |
-
----
-
-## 📝 Licencia
-
-MIT — [LICENSE](LICENSE)
-
----
-
-Construido con ❤️ y la Trifuerza del Valor ⚔️
+Creado por [Robinson Salgado](https://github.com/rsalgado85) • [LinkedIn](https://linkedin.com/in/robinsonsalgado)

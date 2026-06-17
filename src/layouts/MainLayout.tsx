@@ -62,9 +62,7 @@ export function MainLayout() {
             <Menu size={22} />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-live flex items-center justify-center p-1 shadow-sm">
-              <Trophy size={14} className="text-warm" />
-            </div>
+            <img src="/images/logos/wc2026-official.svg" alt="FIFA World Cup 2026" className="h-7 w-auto object-contain" />
             <span className="text-base font-black tracking-tight text-text">
               WC<span className="text-primary-light">INSIGHT</span>
             </span>

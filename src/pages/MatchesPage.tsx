@@ -5,7 +5,7 @@ import { useMatches } from '@/hooks/useMatches';
 import { useTeams } from '@/hooks/useTeams';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
-import { getCrestPath, getCrestFallback, getFlagUrl } from '@/constants/crests';
+import { getLocalFlag } from '@/constants/crests';
 import { t } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
@@ -313,18 +313,10 @@ export function MatchesPage() {
                       <div className="flex-shrink-0">
                         {homeTeam?.fifa_code ? (
                           <img
-                            src={getCrestPath(homeTeam.fifa_code)}
+                            src={getLocalFlag(homeTeam.fifa_code)}
                             alt={homeTeam.name_en}
                             className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-                            onError={(e) => {
-                              const img = e.target as HTMLImageElement;
-                              if (!img.src.endsWith('.png')) {
-                                img.src = getCrestFallback(homeTeam.fifa_code);
-                              } else {
-                                img.src = getFlagUrl(homeTeam.iso2);
-                              }
-                            }}
-                          />
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                         ) : (
                           <FlagImage flag={homeTeam?.flag} size="lg" />
                         )}
@@ -349,18 +341,10 @@ export function MatchesPage() {
                       <div className="flex-shrink-0">
                         {awayTeam?.fifa_code ? (
                           <img
-                            src={getCrestPath(awayTeam.fifa_code)}
+                            src={getLocalFlag(awayTeam.fifa_code)}
                             alt={awayTeam.name_en}
                             className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-                            onError={(e) => {
-                              const img = e.target as HTMLImageElement;
-                              if (!img.src.endsWith('.png')) {
-                                img.src = getCrestFallback(awayTeam.fifa_code);
-                              } else {
-                                img.src = getFlagUrl(awayTeam.iso2);
-                              }
-                            }}
-                          />
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                         ) : (
                           <FlagImage flag={awayTeam?.flag} size="lg" />
                         )}
