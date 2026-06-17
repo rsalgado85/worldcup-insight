@@ -6,80 +6,48 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User } from 'lucide-react';
 
 const MOBILE_NAV_ITEMS = [
-  { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { path: '/', icon: LayoutDashboard, label: 'Home' },
+  { path: '/matches', icon: Trophy, label: 'Matches' },
+  { path: '/standings', icon: BarChart3, label: 'Standings' },
   { path: '/teams', icon: Users, label: 'Teams' },
-  { path: '/statistics', icon: BarChart3, label: 'Stats' },
-  { path: '/top-scorers', icon: Trophy, label: 'Scorers' },
   { path: '/about', icon: User, label: 'About' },
 ];
 
 export function MainLayout() {
-  const { sidebarCollapsed, toggleSidebar, theme } = useAppStore();
+  const { sidebarCollapsed, theme } = useAppStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Apply theme class to document
+  // Apply theme class to <html>
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'light') {
-      root.classList.add('light');
+    if (theme === 'dark') {
+      root.classList.add('dark');
     } else {
-      root.classList.remove('light');
+      root.classList.remove('dark');
     }
   }, [theme]);
 
   // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  // Scroll to top on route change
-  useEffect(() => {
-    const mainContent = document.querySelector('main');
-    if (mainContent) {
-      mainContent.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [location.pathname]);
+  useEffect(() => { setMobileMenuOpen(false); }, [location.pathname]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
-  const bgStyle = theme === 'light'
-    ? { background: '#F8FAFC' }
-    : { background: 'radial-gradient(ellipse at 20% 50%, #001B44 0%, #0F1416 40%, #0A0F10 70%)' };
-
   return (
-    <div className="flex h-screen overflow-hidden" style={bgStyle}>
-      {/* Desktop Sidebar - hidden on mobile */}
-      <div className="hidden lg:block">
-        <Sidebar />
-      </div>
+    <div className="flex h-screen overflow-hidden bg-bg text-text">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block"><Sidebar /></div>
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed left-0 top-0 z-50 h-full w-[280px] lg:hidden"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden" onClick={() => setMobileMenuOpen(false)} />
+            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed left-0 top-0 z-50 h-full w-[280px] lg:hidden">
               <Sidebar />
             </motion.div>
           </>
@@ -89,25 +57,16 @@ export function MainLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile header */}
-        <header className="lg:hidden flex items-center justify-between px-3 py-3" style={{
-          borderBottom: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.04)',
-          backgroundColor: theme === 'light' ? 'rgba(255,255,255,0.8)' : 'transparent',
-          backdropFilter: theme === 'light' ? 'blur(12px)' : 'none',
-        }}>
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="p-2 rounded-lg transition-colors active:scale-95"
-            style={{ color: theme === 'light' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)' }}
-            aria-label="Open navigation menu"
-          >
+        <header className="lg:hidden flex items-center justify-between px-3 py-3 border-b border-divider bg-bg/90 backdrop-blur-xl">
+          <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-lg text-text-muted active:scale-95" aria-label="Open navigation menu">
             <Menu size={22} />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0033A0] to-[#E4002B] flex items-center justify-center p-1 shadow-sm shadow-[#0033A0]/20">
-              <Trophy size={14} className="text-[#F2A900]" />
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-live flex items-center justify-center p-1 shadow-sm">
+              <Trophy size={14} className="text-warm" />
             </div>
-            <span className="text-base font-black tracking-tight" style={{ color: theme === 'light' ? '#1a1a2e' : '#ffffff' }}>
-              WC<span className="text-[#F2A900]">INSIGHT</span>
+            <span className="text-base font-black tracking-tight text-text">
+              WC<span className="text-primary-light">INSIGHT</span>
             </span>
           </div>
           <div className="w-9" />
@@ -115,24 +74,18 @@ export function MainLayout() {
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto px-3 py-4 md:px-6 md:py-6 lg:p-8">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
             <Outlet />
           </motion.div>
         </main>
 
-        {/* Mobile Bottom Nav - visible only on mobile */}
+        {/* Mobile Bottom Nav */}
         <MobileBottomNav />
 
-        {/* Copyright Footer - hidden on mobile (replaced by bottom nav) */}
-        <footer className="hidden lg:block py-3 px-4 md:px-6 lg:px-8 text-center" style={{
-          borderTop: theme === 'light' ? '1px solid rgba(0,0,0,0.04)' : '1px solid rgba(255,255,255,0.04)',
-        }}>
-          <p className="text-xs" style={{ color: theme === 'light' ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.3)' }}>
-            &copy; {new Date().getFullYear()} World Cup Insight v2 — FIFA World Cup 2026™ analytics platform.
+        {/* Desktop Footer */}
+        <footer className="hidden lg:block py-3 px-4 md:px-6 lg:px-8 text-center border-t border-divider">
+          <p className="text-xs text-text-muted">
+            &copy; {new Date().getFullYear()} World Cup Insight v2 — FIFA World Cup 2026&trade; analytics platform.
           </p>
         </footer>
       </div>
@@ -141,33 +94,19 @@ export function MainLayout() {
 }
 
 function MobileBottomNav() {
-  const { theme } = useAppStore();
-  const isDark = theme === 'dark';
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
-    <nav
-      className="lg:hidden flex items-center justify-around px-2 py-1 safe-area-bottom"
-      style={{
-        backgroundColor: isDark ? 'rgba(11, 18, 32, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-        borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-      }}
-      aria-label="Mobile navigation"
-    >
+    <nav className="lg:hidden flex items-center justify-around px-2 py-1 border-t border-divider bg-bg/95 backdrop-blur-xl" aria-label="Mobile navigation">
       {MOBILE_NAV_ITEMS.map((item) => {
         const Icon = item.icon;
-        const isActive = item.path === '/dashboard'
-          ? location.pathname === '/' || location.pathname === '/dashboard'
-          : location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+        const isActive = item.path === '/' ? location.pathname === '/' : location.pathname === item.path || location.pathname.startsWith(item.path + '/');
         return (
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className="flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 transition-all active:scale-90"
-            style={{ color: isActive ? '#0033A0' : isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}
+            className={`flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 transition-all active:scale-90 ${isActive ? 'text-primary-light' : 'text-text-muted'}`}
             aria-label={item.label}
             aria-current={isActive ? 'page' : undefined}
           >
