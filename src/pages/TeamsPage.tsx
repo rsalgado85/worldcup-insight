@@ -55,7 +55,7 @@ export function TeamsPage() {
       let groupName = team.groups || team.group;
       if (!groupName) {
         for (const g of groups) {
-          if (g.teams?.some((t: { team_id: number }) => t.team_id === team.id)) { groupName = g.name; break; }
+          if ((g.teams as any[])?.some((t: any) => t.team_id === team.id)) { groupName = g.name; break; }
         }
       }
       return { ...team, group: groupName || '—' };
@@ -115,7 +115,8 @@ export function TeamsPage() {
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((team, idx) => {
-          const groupColor = GROUP_COLORS[team.group] || 'var(--color-primary)';
+          const groupName = (team as any).group || '—';
+          const groupColor = GROUP_COLORS[groupName] || 'var(--color-primary)';
           return (
             <motion.button key={team.id} initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:idx*0.03}}
               onClick={() => setSelectedTeam(team)}
