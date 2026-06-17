@@ -1,10 +1,12 @@
 // ─── Match Service ──────────────────────────────────
 import { apiClient } from './apiClient';
-import type { Match, ApiResponse } from '@/types/worldcup';
+import { normalizeMatch } from './normalize';
+import type { Match, GamesResponse } from '@/types/worldcup';
 
 export async function fetchMatches(): Promise<Match[]> {
-  const { data } = await apiClient.get<ApiResponse<Match>>('/get/games');
-  return data.data ?? [];
+  const { data } = await apiClient.get<GamesResponse>('/get/games');
+  const rawGames = data.games ?? [];
+  return rawGames.map(normalizeMatch);
 }
 
 export async function fetchMatchById(id: number): Promise<Match | null> {

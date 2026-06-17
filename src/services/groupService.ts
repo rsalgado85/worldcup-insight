@@ -1,10 +1,16 @@
 // ─── Group Service ───────────────────────────────────
 import { apiClient } from './apiClient';
-import type { Group, GroupStanding, ApiResponse } from '@/types/worldcup';
+import { normalizeGroup } from './normalize';
+import { fetchTeamsMap } from './teamService';
+import type { Group, GroupStanding, GroupsResponse } from '@/types/worldcup';
 
 export async function fetchGroups(): Promise<Group[]> {
-  const { data } = await apiClient.get<ApiResponse<Group>>('/get/groups');
-  return data.data ?? [];
+  const [{ data }, teamsMap] = await Promise.all([
+    apiClient.get<GroupsResponse>('/get/groups'),
+    fetchTeamsMap(),
+  ]);
+  const rawGroups = data.groups ?? [];
+  return rawGroups.map((g) => normalizeGroup(g, teamsMap));
 }
 
 export async function fetchGroupByName(name: string): Promise<Group | null> {

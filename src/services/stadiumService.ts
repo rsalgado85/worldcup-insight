@@ -1,10 +1,12 @@
 // ─── Stadium Service ────────────────────────────────
 import { apiClient } from './apiClient';
-import type { Stadium, ApiResponse } from '@/types/worldcup';
+import { normalizeStadium } from './normalize';
+import type { Stadium, StadiumsResponse } from '@/types/worldcup';
 
 export async function fetchStadiums(): Promise<Stadium[]> {
-  const { data } = await apiClient.get<ApiResponse<Stadium>>('/get/stadiums');
-  return data.data ?? [];
+  const { data } = await apiClient.get<StadiumsResponse>('/get/stadiums');
+  const rawStadiums = data.stadiums ?? [];
+  return rawStadiums.map(normalizeStadium);
 }
 
 export async function fetchStadiumById(id: number): Promise<Stadium | null> {

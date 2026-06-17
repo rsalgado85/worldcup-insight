@@ -10,6 +10,8 @@ import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FEATURED_PLAYERS, TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS } from '@/constants';
+import { t, tf } from '@/constants/translations';
+import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
 
 function getStatus(match: Match): { label: string; className: string } {
@@ -53,6 +55,7 @@ export function HomePage() {
   const { data: teams, isLoading: teamsLoading } = useTeams();
   const { data: groups } = useGroups();
   const [activeGroupTab, setActiveGroupTab] = useState<string>('A');
+  const { language } = useAppStore();
 
   const isLoading = matchesLoading || teamsLoading;
 
@@ -81,15 +84,15 @@ export function HomePage() {
   }, [groups, activeGroupTab]);
 
   const kpiCards = useMemo(() => [
-    { label: 'Matches Played', value: matches?.filter((m: Match) => m.finished).length ?? '—', icon: Swords, color: '#0033A0' },
-    { label: 'Goals Scored', value: matches?.reduce((s: number, m: Match) => s + (m.home_score ?? 0) + (m.away_score ?? 0), 0) ?? '—', icon: Goal, color: '#E4002B' },
-    { label: 'Avg Goals/Match', value: (() => { const f = matches?.filter((m: Match) => m.finished) ?? []; return f.length ? (f.reduce((s: number, m: Match) => s + (m.home_score ?? 0) + (m.away_score ?? 0), 0) / f.length).toFixed(1) : '—'; })(), icon: TrendingUp, color: '#00A859' },
-    { label: 'Countries', value: 48, icon: Users, color: '#F2A900' },
-    { label: 'Live Now', value: matches?.filter((m: Match) => !m.finished && m.time_elapsed).length ?? 0, icon: Activity, color: '#E4002B' },
-    { label: 'Total Attendance', value: '3.5M+', icon: Users, color: '#0033A0' },
-    { label: 'Top Scorer', value: 'Mbappé (8)', icon: Star, color: '#F2A900' },
-    { label: 'Top Assists', value: 'De Bruyne (6)', icon: Zap, color: '#00A859' },
-  ], [matches]);
+    { label: t('home.matchesPlayed', language), value: matches?.filter((m: Match) => m.finished).length ?? '—', icon: Swords, color: '#0033A0' },
+    { label: t('home.goalsScored', language), value: matches?.reduce((s: number, m: Match) => s + (m.home_score ?? 0) + (m.away_score ?? 0), 0) ?? '—', icon: Goal, color: '#E4002B' },
+    { label: t('home.avgGoalsMatch', language), value: (() => { const f = matches?.filter((m: Match) => m.finished) ?? []; return f.length ? (f.reduce((s: number, m: Match) => s + (m.home_score ?? 0) + (m.away_score ?? 0), 0) / f.length).toFixed(1) : '—'; })(), icon: TrendingUp, color: '#00A859' },
+    { label: t('home.countries', language), value: 48, icon: Users, color: '#F2A900' },
+    { label: t('home.liveNow', language), value: matches?.filter((m: Match) => !m.finished && m.time_elapsed).length ?? 0, icon: Activity, color: '#E4002B' },
+    { label: t('home.totalAttendance', language), value: '3.5M+', icon: Users, color: '#0033A0' },
+    { label: t('home.topScorer', language), value: 'Mbappé (8)', icon: Star, color: '#F2A900' },
+    { label: t('home.topAssists', language), value: 'De Bruyne (6)', icon: Zap, color: '#00A859' },
+  ], [matches, language]);
 
   if (isLoading) {
     return (
@@ -113,8 +116,8 @@ export function HomePage() {
   return (
     <div className="space-y-6 lg:space-y-8">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl sm:text-3xl font-bold text-text"><span className="gradient-text">World Cup 2026</span> Dashboard</h1>
-        <p className="text-sm text-text-secondary mt-1">June 11 – July 19, 2026 • United States, Canada & Mexico</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-text"><span className="gradient-text">{t('home.title', language)}</span> {t('home.dashboardLabel', language)}</h1>
+        <p className="text-sm text-text-secondary mt-1">{t('home.dateSubtitle', language)}</p>
       </motion.div>
 
       {/* Section 1: Player of the Tournament */}
@@ -126,7 +129,7 @@ export function HomePage() {
         </div>
         <div className="relative z-10">
           <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white/80 inline-flex items-center gap-1.5 mb-3">
-            <Trophy size={12} /> Player of the Tournament
+            <Trophy size={12} /> {t('home.playerOfTournament', language)}
           </span>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-4xl">{featuredPlayer.flag}</span>
@@ -136,18 +139,18 @@ export function HomePage() {
             </div>
           </div>
           <div className="flex gap-6 mt-4">
-            <div className="text-center"><div className="font-black text-2xl text-white">{featuredPlayer.goals}</div><div className="text-[10px] uppercase tracking-wider text-white/50">Goals</div></div>
-            <div className="text-center"><div className="font-black text-2xl text-white">{featuredPlayer.assists}</div><div className="text-[10px] uppercase tracking-wider text-white/50">Assists</div></div>
-            <div className="text-center"><div className="font-black text-2xl text-wc-gold">{featuredPlayer.rating}</div><div className="text-[10px] uppercase tracking-wider text-white/50">Rating</div></div>
+            <div className="text-center"><div className="font-black text-2xl text-white">{featuredPlayer.goals}</div><div className="text-[10px] uppercase tracking-wider text-white/50">{t('home.goals', language)}</div></div>
+            <div className="text-center"><div className="font-black text-2xl text-white">{featuredPlayer.assists}</div><div className="text-[10px] uppercase tracking-wider text-white/50">{t('home.assists', language)}</div></div>
+            <div className="text-center"><div className="font-black text-2xl text-wc-gold">{featuredPlayer.rating}</div><div className="text-[10px] uppercase tracking-wider text-white/50">{t('home.rating', language)}</div></div>
           </div>
         </div>
       </motion.div>
 
       {/* Section 2: Today's Matches */}
       <section>
-        <div className="flex items-center gap-2 mb-4"><Calendar size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">Today's Matches</h2></div>
+        <div className="flex items-center gap-2 mb-4"><Calendar size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">{t('home.todaysMatches', language)}</h2></div>
         {todayMatches.length === 0 ? (
-          <div className="glass-card p-8 text-center"><Calendar size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">No matches scheduled for today</p></div>
+          <div className="glass-card p-8 text-center"><Calendar size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">{t('home.noMatchesToday', language)}</p></div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {todayMatches.map((match: Match) => {
@@ -157,7 +160,7 @@ export function HomePage() {
               return (
                 <motion.div key={match.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card p-4 hover:shadow-lg transition-shadow">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-text-secondary">{match.group ? `Group ${match.group}` : match.type}</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-text-secondary">{match.group ? tf('common.groupLabel', language, match.group) : match.type}</span>
                     <span className={`status-badge ${status.className}`}>{status.label === 'UP' ? <Clock size={10} /> : status.label === 'FT' ? null : <Activity size={10} className="animate-pulse" />}{status.label}</span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -174,7 +177,7 @@ export function HomePage() {
 
       {/* Section 3: KPI Metrics */}
       <section>
-        <div className="flex items-center gap-2 mb-4"><Activity size={20} className="text-wc-red" /><h2 className="text-lg font-bold text-text">Key Metrics</h2></div>
+        <div className="flex items-center gap-2 mb-4"><Activity size={20} className="text-wc-red" /><h2 className="text-lg font-bold text-text">{t('home.keyMetrics', language)}</h2></div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {kpiCards.map((kpi, i) => (
             <motion.div key={kpi.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="kpi-card">
@@ -187,32 +190,32 @@ export function HomePage() {
 
       {/* Section 4: Top Rankings */}
       <section>
-        <div className="flex items-center gap-2 mb-4"><Trophy size={20} className="text-wc-gold" /><h2 className="text-lg font-bold text-text">Top Rankings</h2></div>
+        <div className="flex items-center gap-2 mb-4"><Trophy size={20} className="text-wc-gold" /><h2 className="text-lg font-bold text-text">{t('home.topRankings', language)}</h2></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-red mb-3 flex items-center gap-1.5"><Goal size={14} /> Top Scorers</h3>{TOP_SCORERS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p} rank={i + 1} />)}</div>
-          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-blue mb-3 flex items-center gap-1.5"><Zap size={14} /> Top Assists</h3>{TOP_ASSISTS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i + 1} />)}</div>
-          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-gold mb-3 flex items-center gap-1.5"><Star size={14} /> Top Ratings</h3>{TOP_RATINGS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p} rank={i + 1} />)}</div>
-          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-green mb-3 flex items-center gap-1.5"><Shield size={14} /> Clean Sheets</h3>{TOP_CLEAN_SHEETS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i + 1} />)}</div>
+          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-red mb-3 flex items-center gap-1.5"><Goal size={14} /> {t('home.topScorers', language)}</h3>{TOP_SCORERS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p} rank={i + 1} />)}</div>
+          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-blue mb-3 flex items-center gap-1.5"><Zap size={14} /> {t('home.topAssistsSub', language)}</h3>{TOP_ASSISTS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i + 1} />)}</div>
+          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-gold mb-3 flex items-center gap-1.5"><Star size={14} /> {t('home.topRatings', language)}</h3>{TOP_RATINGS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p} rank={i + 1} />)}</div>
+          <div className="glass-card p-4"><h3 className="text-xs font-bold uppercase tracking-wider text-wc-green mb-3 flex items-center gap-1.5"><Shield size={14} /> {t('home.cleanSheets', language)}</h3>{TOP_CLEAN_SHEETS.slice(0, 5).map((p, i) => <TrendingPlayerRow key={p.id} player={p as PlayerData} rank={i + 1} />)}</div>
         </div>
       </section>
 
       {/* Section 5: Group Standings */}
       <section>
-        <div className="flex items-center gap-2 mb-4"><Trophy size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">Group Standings</h2></div>
+        <div className="flex items-center gap-2 mb-4"><Trophy size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">{t('home.groupStandings', language)}</h2></div>
         <div className="flex gap-1.5 mb-4 overflow-x-auto pb-2">
           {GROUPS.map((g) => (
             <button key={g} onClick={() => setActiveGroupTab(g)}
               className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex-shrink-0 ${activeGroupTab === g ? 'bg-wc-blue text-white shadow-lg shadow-wc-blue/25' : 'bg-card text-text-secondary hover:bg-wc-blue/5 hover:text-wc-blue border border-border'}`}>
-              Group {g}
+              {tf('common.groupLabel', language, g)}
             </button>
           ))}
         </div>
         {groupStandings.length === 0 ? (
-          <div className="glass-card p-8 text-center"><Trophy size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">No standings data available</p></div>
+          <div className="glass-card p-8 text-center"><Trophy size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">{t('home.noStandingsData', language)}</p></div>
         ) : (
           <div className="glass-card overflow-x-auto">
             <table className="wc-table">
-              <thead><tr><th>#</th><th>Team</th><th className="text-center">PTS</th><th className="text-center">MP</th><th className="text-center">W</th><th className="text-center">D</th><th className="text-center">L</th><th className="text-center">GF</th><th className="text-center">GA</th><th className="text-center">GD</th></tr></thead>
+              <thead><tr><th>#</th><th>{t('standings.team', language)}</th><th className="text-center">{t('standings.pts', language)}</th><th className="text-center">{t('standings.mp', language)}</th><th className="text-center">{t('standings.w', language)}</th><th className="text-center">{t('standings.d', language)}</th><th className="text-center">{t('standings.l', language)}</th><th className="text-center">{t('standings.gf', language)}</th><th className="text-center">{t('standings.ga', language)}</th><th className="text-center">{t('standings.gd', language)}</th></tr></thead>
               <tbody>
                 {groupStandings.map((team: { id: number; flag: string; name_en: string; pts: number; mp: number; w: number; d: number; l: number; gf: number; ga: number; gd: number }, idx: number) => (
                   <tr key={team.id} className={idx < 2 ? 'bg-wc-blue/[0.02]' : ''}>
@@ -228,17 +231,17 @@ export function HomePage() {
             </table>
           </div>
         )}
-        <div className="mt-3 text-right"><Link to="/standings" className="inline-flex items-center gap-1 text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors">View All Standings <ChevronRight size={16} /></Link></div>
+        <div className="mt-3 text-right"><Link to="/standings" className="inline-flex items-center gap-1 text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors">{t('home.viewAllStandings', language)} <ChevronRight size={16} /></Link></div>
       </section>
 
       {/* Section 6: Recent Results */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2"><Clock size={20} className="text-wc-green" /><h2 className="text-lg font-bold text-text">Recent Results</h2></div>
-          <Link to="/matches" className="text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors flex items-center gap-1">All Matches <ChevronRight size={16} /></Link>
+          <div className="flex items-center gap-2"><Clock size={20} className="text-wc-green" /><h2 className="text-lg font-bold text-text">{t('home.recentResultsLabel', language)}</h2></div>
+          <Link to="/matches" className="text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors flex items-center gap-1">{t('home.allMatches', language)} <ChevronRight size={16} /></Link>
         </div>
         {recentMatches.length === 0 ? (
-          <div className="glass-card p-8 text-center"><Clock size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">No recent results</p></div>
+          <div className="glass-card p-8 text-center"><Clock size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">{t('home.noRecentResults', language)}</p></div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
             {recentMatches.map((match: Match) => {
@@ -246,7 +249,7 @@ export function HomePage() {
               const awayTeam = teams ? getTeamForMatch(match.away_team_id, teams) : undefined;
               return (
                 <div key={match.id} className="glass-card-hover p-3 cursor-pointer">
-                  <p className="text-[9px] font-semibold uppercase tracking-wider text-text-secondary/60 mb-2">{match.group ? `Group ${match.group}` : ''} • {formatDate(match.local_date)}</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-wider text-text-secondary/60 mb-2">{match.group ? tf('common.groupLabel', language, match.group) : ''} • {formatDate(match.local_date)}</p>
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0 flex-1"><span className="text-base">{homeTeam?.flag ?? '🏳'}</span><span className="text-[11px] font-semibold text-text truncate">{homeTeam?.name_en ?? '—'}</span></div>
                     <span className="text-sm font-black text-text mx-1">{match.home_score ?? 0} - {match.away_score ?? 0}</span>
@@ -262,11 +265,11 @@ export function HomePage() {
       {/* Section 7: Upcoming Matches */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2"><Calendar size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">Upcoming Matches</h2></div>
-          <Link to="/matches" className="text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors flex items-center gap-1">Full Calendar <ChevronRight size={16} /></Link>
+          <div className="flex items-center gap-2"><Calendar size={20} className="text-wc-blue" /><h2 className="text-lg font-bold text-text">{t('home.upcomingMatches', language)}</h2></div>
+          <Link to="/matches" className="text-sm font-semibold text-wc-blue hover:text-wc-blue/80 transition-colors flex items-center gap-1">{t('home.fullCalendar', language)} <ChevronRight size={16} /></Link>
         </div>
         {upcomingMatches.length === 0 ? (
-          <div className="glass-card p-8 text-center"><Calendar size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">No upcoming matches</p></div>
+          <div className="glass-card p-8 text-center"><Calendar size={32} className="mx-auto mb-3 text-text-secondary/40" /><p className="text-text-secondary font-medium">{t('home.noUpcomingMatches', language)}</p></div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {upcomingMatches.map((match: Match) => {
@@ -276,7 +279,7 @@ export function HomePage() {
                 <div key={match.id} className="glass-card-hover p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="status-badge status-upcoming"><Clock size={10} />{formatDate(match.local_date)}</span>
-                    {match.group && <span className="text-[10px] font-semibold text-text-secondary/60">Group {match.group}</span>}
+                    {match.group && <span className="text-[10px] font-semibold text-text-secondary/60">{tf('common.groupLabel', language, match.group)}</span>}
                   </div>
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2 flex-1 min-w-0"><span className="text-xl">{homeTeam?.flag ?? '🏳'}</span><span className="text-sm font-semibold text-text truncate">{homeTeam?.name_en ?? `T${match.home_team_id}`}</span></div>

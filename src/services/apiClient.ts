@@ -1,7 +1,7 @@
 // ─── API Client ──────────────────────────────────────
 import axios from 'axios';
 
-const API_BASE_URL = 'https://worldcup26.ir/api';
+const API_BASE_URL = 'https://worldcup26.ir';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

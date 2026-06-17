@@ -18,6 +18,7 @@ import {
   Award,
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
+import { t, tf } from '@/constants/translations';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -42,18 +43,18 @@ const techStack = [
   { name: 'Lucide Icons', icon: Sparkles, color: '#F2A900' },
 ];
 
-const features = [
-  { icon: Trophy, title: '48 Teams', desc: 'Complete roster of all qualified nations for FIFA World Cup 2026™ with rankings and confederation data.' },
-  { icon: Globe, title: '16 Stadiums', desc: 'All host venues across the United States, Mexico, and Canada with capacity and location information.' },
-  { icon: Server, title: 'Real-time Data', desc: 'Powered by the worldcup26.ir API, delivering match results, group standings, and tournament statistics.' },
-  { icon: Layers, title: 'Interactive Analytics', desc: 'Rich data visualizations with Recharts — goals by group, possession stats, card distributions, and matchday trends.' },
-  { icon: Award, title: 'Top Scorers', desc: 'Golden Boot rankings — goals, assists, and player ratings.' },
-  { icon: Cpu, title: 'Predictions Engine', desc: 'Knockout bracket simulator with group stage projections and random tournament outcomes.' },
-];
-
 export function AboutPage() {
-  const { theme } = useAppStore();
+  const { theme, language } = useAppStore();
   const isDark = theme === 'dark';
+
+  const features = [
+    { icon: Trophy, title: t('about.feature48', language), desc: t('about.feature48Desc', language) },
+    { icon: Globe, title: t('about.feature16', language), desc: t('about.feature16Desc', language) },
+    { icon: Server, title: t('about.featureRealtime', language), desc: t('about.featureRealtimeDesc', language) },
+    { icon: Layers, title: t('about.featureAnalytics', language), desc: t('about.featureAnalyticsDesc', language) },
+    { icon: Award, title: t('about.featureScorers', language), desc: t('about.featureScorersDesc', language) },
+    { icon: Cpu, title: t('about.featurePredictions', language), desc: t('about.featurePredictionsDesc', language) },
+  ];
 
   return (
     <div className="space-y-12 max-w-5xl mx-auto pb-12">
@@ -97,9 +98,7 @@ export function AboutPage() {
               transition={{ delay: 0.4 }}
               className="text-white/70 mt-3 max-w-lg leading-relaxed text-sm"
             >
-              A comprehensive FIFA World Cup 2026™ analytics platform. Explore all 48 qualified teams,
-              track match results in real time, analyze player statistics, visualize tournament data
-              with interactive charts, and simulate knockout bracket predictions.
+              {t('about.tagline', language)}
             </motion.p>
             <motion.p
               initial={{ opacity: 0 }}
@@ -107,7 +106,7 @@ export function AboutPage() {
               transition={{ delay: 0.5 }}
               className="text-white/50 text-xs mt-3"
             >
-              Built with React 19, TypeScript, Recharts, and Framer Motion — powered by the worldcup26.ir API.
+              {t('about.techLine', language)}
             </motion.p>
           </div>
         </div>
@@ -131,8 +130,8 @@ export function AboutPage() {
         transition={{ delay: 0.2 }}
         className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <h2 className="text-xl font-bold text-text-primary mb-2">Tech Stack</h2>
-        <p className="text-text-secondary text-sm mb-6">Modern web technologies powering the World Cup Insight platform</p>
+        <h2 className="text-xl font-bold text-text-primary mb-2">{t('about.techStack', language)}</h2>
+        <p className="text-text-secondary text-sm mb-6">{t('about.techStackDesc', language)}</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {techStack.map((tech) => (
             <motion.div key={tech.name} whileHover={{ scale: 1.05, y: -4 }} className="glass-card-hover p-3 rounded-xl flex flex-col items-center gap-2 cursor-default">
@@ -149,15 +148,15 @@ export function AboutPage() {
         transition={{ delay: 0.3 }}
         className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <h2 className="text-xl font-bold text-text-primary mb-2">API & Data Sources</h2>
-        <p className="text-text-secondary text-sm mb-6">External APIs and data providers that make this platform possible</p>
+        <h2 className="text-xl font-bold text-text-primary mb-2">{t('about.apiTitle', language)}</h2>
+        <p className="text-text-secondary text-sm mb-6">{t('about.apiDesc', language)}</p>
         <div className="glass-card-hover p-4 rounded-xl flex items-start gap-4">
           <div className="w-10 h-10 rounded-lg bg-[#0033A0]/10 flex items-center justify-center flex-shrink-0">
             <Globe size={18} className="text-[#0033A0]" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-text-primary">worldcup26.ir</h3>
-            <p className="text-xs text-text-secondary mt-0.5">Primary data source for teams, matches, groups, stadiums, and players.</p>
+            <p className="text-xs text-text-secondary mt-0.5">{t('about.apiSourceDesc', language)}</p>
             <code className="text-[10px] text-[#0033A0] bg-[#0033A0]/5 px-2 py-0.5 rounded mt-1.5 inline-block">
               https://worldcup26.ir/api
             </code>
@@ -171,26 +170,21 @@ export function AboutPage() {
         transition={{ delay: 0.4 }}
         className="glass-card p-6 md:p-8 rounded-2xl"
       >
-        <h2 className="text-xl font-bold text-text-primary mb-2">About This Platform</h2>
+        <h2 className="text-xl font-bold text-text-primary mb-2">{t('about.aboutPlatform', language)}</h2>
         <p className="text-text-secondary text-sm leading-relaxed">
-          World Cup Insight v2 is a fan-built analytics platform created to provide comprehensive
-          coverage of the FIFA World Cup 2026™. The platform aggregates data from the worldcup26.ir
-          API to deliver real-time match updates, team information, player statistics, and interactive
-          data visualizations.
+          {t('about.platformDesc1', language)}
         </p>
         <p className="text-text-secondary text-sm leading-relaxed mt-3">
-          The prediction engine uses random simulation for bracket projections and is intended for
-          entertainment purposes only. All official data belongs to FIFA and respective data providers.
-          This project is not affiliated with or endorsed by FIFA.
+          {t('about.platformDesc2', language)}
         </p>
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center">
         <p className="text-xs text-text-secondary/40">
-          &copy; {new Date().getFullYear()} World Cup Insight v2 — Fan-made FIFA World Cup 2026™ analytics platform.
+          {tf('about.copyright', language, new Date().getFullYear())}
         </p>
         <p className="text-[10px] text-text-secondary/30 mt-1">
-          FIFA World Cup is a trademark of FIFA. This site is not affiliated with FIFA.
+          {t('about.disclaimer', language)}
         </p>
       </motion.div>
     </div>
