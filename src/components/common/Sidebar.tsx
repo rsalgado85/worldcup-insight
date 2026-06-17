@@ -1,11 +1,20 @@
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Calendar, Activity, Trophy, Users, Info, Sun, Moon, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  LayoutDashboard, Calendar, Activity, Trophy, Users, Info,
+  Sun, Moon, ChevronLeft, ChevronRight,
+  Swords, Radio, BarChart3, Grid3x3, UserRound, TrendingUp,
+  Target, Building2, Globe, Sparkles, Heart
+} from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { NAV_ITEMS } from '@/constants';
 import { t } from '@/constants/translations';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number }>> = { LayoutDashboard, Calendar, Activity, Trophy, Users, Info };
+const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+  LayoutDashboard, Calendar, Swords, Radio, Activity, BarChart3,
+  Grid3x3, Users, UserRound, TrendingUp, Target, Star: Trophy,
+  Building2, Globe, Sparkles, Info, Heart, Trophy
+};
 
 function navLabelToKey(label: string): string {
   const map: Record<string, string> = {

@@ -53,18 +53,18 @@ export const ROUTES = {
 
 export const NAV_ITEMS = [
   { label: 'Home', path: ROUTES.HOME, icon: 'LayoutDashboard' },
-  { label: 'Matches', path: ROUTES.MATCHES, icon: 'Trophy' },
-  { label: 'LiveScores', path: ROUTES.LIVE_SCORES, icon: 'Activity' },
+  { label: 'Matches', path: ROUTES.MATCHES, icon: 'Swords' },
+  { label: 'LiveScores', path: ROUTES.LIVE_SCORES, icon: 'Radio' },
   { label: 'Standings', path: ROUTES.STANDINGS, icon: 'BarChart3' },
   { label: 'Groups', path: ROUTES.GROUPS, icon: 'Grid3x3' },
   { label: 'Teams', path: ROUTES.TEAMS, icon: 'Users' },
   { label: 'Players', path: ROUTES.PLAYERS, icon: 'UserRound' },
   { label: 'Statistics', path: ROUTES.STATISTICS, icon: 'TrendingUp' },
-  { label: 'TopScorers', path: ROUTES.TOP_SCORERS, icon: 'Star' },
+  { label: 'TopScorers', path: ROUTES.TOP_SCORERS, icon: 'Target' },
   { label: 'Stadiums', path: ROUTES.STADIUMS, icon: 'Building2' },
   { label: 'Countries', path: ROUTES.COUNTRIES, icon: 'Globe' },
   { label: 'Predictions', path: ROUTES.PREDICTIONS, icon: 'Sparkles' },
-  { label: 'About', path: ROUTES.ABOUT, icon: 'User' },
+  { label: 'About', path: ROUTES.ABOUT, icon: 'Info' },
   { label: 'Donate', path: ROUTES.DONATE, icon: 'Heart' },
 ] as const;
 
