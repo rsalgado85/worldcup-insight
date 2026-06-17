@@ -9,6 +9,7 @@ import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getCrestPath, getCrestFallback } from '@/constants/crests';
 import { useAppStore } from '@/store/useAppStore';
+import { fmtDateCompact } from '@/utils/dates';
 import { GROUP_COLORS } from '@/constants';
 import type { Team, Match } from '@/types/worldcup';
 
@@ -35,11 +36,8 @@ function buildTeamStats(teamId: number, matches: Match[]): TeamStats {
 }
 
 /* ─── Helpers ────────────────────────────────────── */
-function formatMatchDate(d: string) { const p = (d||'').slice(0,10).split(/[\/-]/); if(p.length<3) return d; const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return `${m[+p[0]-1]||m[+p[1]-1]} ${+p[1]||+p[2]}`; }
-
 function getGroupForTeam(team: Team): string { return team.groups || team.group || '—'; }
 
-/* ═══════════════════════════════════════════════════ */
 export function TeamsPage() {
   const { data: teams, isLoading, error } = useTeams();
   const { data: groups } = useGroups();
@@ -198,12 +196,12 @@ export function TeamsPage() {
                       return (
                         <div key={m.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-primary-subtle/50">
                           <div className="flex items-center gap-2 text-xs">
-                            <span className="text-text-muted">{formatMatchDate(m.local_date)}</span>
+                            <span className="text-text-muted">{fmtDateCompact(m.local_date)}</span>
                             <span className="text-text font-semibold">{isHome?'vs':''}{opponent}</span>
                             {!isHome && <span className="text-[9px] text-text-muted">(V)</span>}
                           </div>
                           <span className={`text-xs font-black px-2 py-0.5 rounded-md ${result}`}>
-                            {m.finished ? `${hs}-${as}` : formatMatchDate(m.local_date)}
+                            {m.finished ? `${hs}-${as}` : fmtDateCompact(m.local_date)}
                           </span>
                         </div>
                       );

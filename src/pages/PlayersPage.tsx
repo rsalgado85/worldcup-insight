@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
 import { useAppStore } from '@/store/useAppStore';
+import { fmtDateCompact } from '@/utils/dates';
 import type { Player, Match } from '@/types/worldcup';
 
 /* ─── Player Match Stats ────────────────────────── */
@@ -31,12 +32,6 @@ function getPlayerMatches(playerId: number, playerName: string, matches: Match[]
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 8);
-}
-
-function fmtMatchDate(d: string) {
-  const p = (d || '').slice(0, 10).split(/[\/-]/);
-  if (p.length < 3) return d;
-  return `${p[1] || p[0]}/${p[2] || p[2]}`;
 }
 
 /* ═══════════════════════════════════════════════════ */
@@ -202,7 +197,7 @@ export function PlayersPage() {
                       {playerMatches.map(pm => (
                         <div key={pm.match.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-primary-subtle/50">
                           <div className="flex items-center gap-2 text-xs">
-                            <span className="text-text-muted">{fmtMatchDate(pm.date)}</span>
+                            <span className="text-text-muted">{fmtDateCompact(pm.date)}</span>
                             <span className="text-text font-semibold">{pm.opponent || `Match ${pm.match.id}`}</span>
                           </div>
                           <div className="flex items-center gap-2">

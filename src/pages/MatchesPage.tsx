@@ -7,66 +7,14 @@ import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getLocalFlag } from '@/constants/crests';
 import { t } from '@/constants/translations';
+import { getApiDate, getLocalDate, fmtDateShort, fmtDateFull, fmtTime } from '@/utils/dates';
 import { useAppStore } from '@/store/useAppStore';
 import type { Match, Team } from '@/types/worldcup';
 
 type DateFilter = 'all' | 'today' | 'tomorrow' | string;
 
-// ─── Helpers ───────────────────────────────────────────
+const getTeamForMatch = (id: number, teams: Team[]) => teams.find(t => t.id === id);
 
-const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-const WEEKDAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const WEEKDAYS_ES = ['dom','lun','mar','mié','jue','vie','sáb'];
-
-/** Get local date as ISO string YYYY-MM-DD (for display) */
-function getLocalDate(daysOffset = 0): string {
-  const d = new Date();
-  d.setDate(d.getDate() + daysOffset);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-/** Get local date as MM/DD/YYYY (API format) */
-function getApiDate(daysOffset = 0): string {
-  const d = new Date();
-  d.setDate(d.getDate() + daysOffset);
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const y = d.getFullYear();
-  return `${m}/${day}/${y}`;
-}
-
-/** Format date: "19 jun" or "Jun 19" */
-function fmtDateShort(dateStr: string, lang: 'en' | 'es'): string {
-  const clean = (dateStr || '').slice(0, 10);
-  const parts = clean.split('-');
-  if (parts.length < 3) return dateStr;
-  const m = parseInt(parts[1], 10) - 1;
-  const d = parseInt(parts[2], 10);
-  const months = lang === 'es' ? MONTHS_ES : MONTHS_EN;
-  return lang === 'es' ? `${d} ${months[m]}` : `${months[m]} ${d}`;
-}
-
-/** Format date with weekday: "jue, 19 jun 2026" or "Thu, Jun 19, 2026" */
-function fmtDateFull(dateStr: string, lang: 'en' | 'es'): string {
-  const clean = (dateStr || '').slice(0, 10);
-  const parts = clean.split('-');
-  if (parts.length < 3) return dateStr;
-  const [y, mo, d] = parts.map(Number);
-  const date = new Date(y, mo - 1, d);
-  const wd = (lang === 'es' ? WEEKDAYS_ES : WEEKDAYS_EN)[date.getDay()];
-  const month = (lang === 'es' ? MONTHS_ES : MONTHS_EN)[mo - 1];
-  return `${wd}, ${d} ${month} ${y}`;
-}
-
-function getTeamForMatch(teamId: number, teams: Team[]): Team | undefined {
-  return teams.find((t: Team) => t.id === teamId);
-}
-
-// ─── Component ─────────────────────────────────────────
 
 export function MatchesPage() {
   const { data: matches, isLoading, error } = useMatches();
