@@ -61,10 +61,8 @@ export function MainLayout() {
             <Menu size={22} />
           </button>
           <div className="flex items-center gap-2">
-            <img src="/images/logos/wc2026-official.svg" alt="World Cup 2026" className="h-7 w-auto object-contain" />
-            <span className="text-base font-black tracking-tight text-text">
-              WC<span className="text-primary-light">INSIGHT</span>
-            </span>
+            <img src="/images/logos/wc2026-official.jpg" alt="World Cup 2026" className="h-7 w-auto object-contain rounded-md" />
+            <span className="text-base font-black tracking-tight text-text">WC26INSIGHT</span>
           </div>
           <div className="w-9" />
         </header>
