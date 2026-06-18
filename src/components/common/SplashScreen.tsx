@@ -189,7 +189,7 @@ export function SplashScreen({ isVisible, onComplete, language = 'es' }: SplashS
               >
                 <img
                   src="/logo.svg"
-                  alt="FIFA World Cup 2026"
+                  alt="World Cup 2026"
                   className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(226,184,76,0.3)]"
                 />
               </div>
@@ -280,7 +280,7 @@ export function SplashScreen({ isVisible, onComplete, language = 'es' }: SplashS
             className="absolute bottom-8 text-center"
           >
             <p className="text-[10px] tracking-[0.2em] uppercase text-white/[0.12]">
-              FIFA World Cup 2026™
+              World Cup 2026
             </p>
           </motion.div>
         </motion.div>

@@ -21,7 +21,7 @@
   <!-- Background circle -->
   <circle cx="256" cy="256" r="240" fill="url(#navyBlue)" stroke="#E2B84C" stroke-width="3"/>
 
-  <!-- FIFA World Cup Trophy (stylized) -->
+  <!-- World Cup Trophy (stylized) -->
   <g transform="translate(256, 175)" filter="url(#glow)">
     <!-- Globe/base of trophy -->
     <ellipse cx="0" cy="48" rx="22" ry="10" fill="url(#trophyGold)" stroke="#8B6914" stroke-width="1.5"/>
@@ -41,10 +41,10 @@
     <path d="M18,10 Q30,5 32,15 Q32,22 18,20" fill="none" stroke="url(#trophyGold)" stroke-width="3"/>
   </g>
 
-  <!-- FIFA text -->
+  <!-- WC26 text -->
   <text x="256" y="310" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif" font-weight="900"
-        font-size="56" letter-spacing="8" fill="#FFFFFF">FIFA</text>
+        font-size="56" letter-spacing="8" fill="#FFFFFF">WC26</text>
 
   <!-- WORLD CUP text -->
   <text x="256" y="365" text-anchor="middle"

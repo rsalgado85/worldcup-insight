@@ -62,7 +62,7 @@ export function MainLayout() {
             <Menu size={22} />
           </button>
           <div className="flex items-center gap-2">
-            <img src="/images/logos/wc2026-official.svg" alt="FIFA World Cup 2026" className="h-7 w-auto object-contain" />
+            <img src="/images/logos/wc2026-official.svg" alt="World Cup 2026" className="h-7 w-auto object-contain" />
             <span className="text-base font-black tracking-tight text-text">
               WC<span className="text-primary-light">INSIGHT</span>
             </span>
@@ -83,7 +83,7 @@ export function MainLayout() {
         {/* Desktop Footer */}
         <footer className="hidden lg:block py-3 px-4 md:px-6 lg:px-8 text-center border-t border-divider">
           <p className="text-xs text-text-muted">
-            &copy; {new Date().getFullYear()} World Cup Insight v2 — FIFA World Cup 2026&trade; analytics platform.
+            &copy; {new Date().getFullYear()} World Cup Insight v2 — World Cup 2026 analytics platform.
           </p>
         </footer>
       </div>

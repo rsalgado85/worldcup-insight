@@ -281,8 +281,8 @@ export function PredictionsPage() {
         {isOffline && (
           <p className="text-xs text-text-secondary mt-2">
             {language === 'es'
-              ? 'Usando rankings FIFA para equipos sin partidos jugados'
-              : 'Using FIFA rankings for unplayed groups'}
+              ? 'Usando rankings mundiales para equipos sin partidos jugados'
+              : 'Using world rankings for unplayed groups'}
           </p>
         )}
         {!canSimulate && (
@@ -358,7 +358,7 @@ export function PredictionsPage() {
                           {hasStandings ? (
                             <span className="font-bold text-wc-blue">{team.pts}</span>
                           ) : (
-                            <span className="text-[9px] text-text-muted" title="FIFA ranking">
+                            <span className="text-[9px] text-text-muted" title="World ranking">
                               #{getFifaRank(team.name_en)}
                             </span>
                           )}

@@ -65,7 +65,7 @@ export const translations = {
 
     // Home
     'home.title': 'World Cup 2026',
-    'home.subtitle': 'Your complete guide to FIFA World Cup 2026',
+    'home.subtitle': 'Your complete guide to World Cup 2026',
     'home.dashboardTitle': 'World Cup 2026 Dashboard',
     'home.dashboardLabel': 'Dashboard',
     'home.dateSubtitle': 'June 11 – July 19, 2026 • United States, Canada & Mexico',
@@ -104,7 +104,7 @@ export const translations = {
 
     // Matches
     'matches.title': 'Matches',
-    'matches.subtitle': 'Full schedule and results for FIFA World Cup 2026',
+    'matches.subtitle': 'Full schedule and results for World Cup 2026',
     'matches.browseSubtitle': 'Browse all 104 World Cup matches — filter by team, group, or status',
     'matches.live': 'LIVE',
     'matches.finished': 'Finished',
@@ -173,7 +173,7 @@ export const translations = {
     // Groups
     'groups.title': 'Groups',
     'groups.subtitle': 'World Cup 2026 group stage draw',
-    'groups.allGroupsSubtitle': 'All 12 groups of the FIFA World Cup 2026™ — 48 teams competing for the trophy',
+    'groups.allGroupsSubtitle': 'All 12 groups of the World Cup 2026 — 48 teams competing for the trophy',
     'groups.noTeams': 'No teams',
     'groups.totalGoals': 'Total goals',
     'groups.avgPts': 'Avg pts',
@@ -191,7 +191,7 @@ export const translations = {
     // Teams
     'teams.title': 'Teams',
     'teams.subtitle': 'All 48 teams competing in World Cup 2026',
-    'teams.fifaRank': 'FIFA Rank',
+    'teams.fifaRank': 'World Rank',
     'teams.group': 'Group',
     'teams.coach': 'Coach',
     'teams.placeholder': 'All 48 national teams participating in World Cup 2026.',
@@ -229,7 +229,7 @@ export const translations = {
 
     // Stadiums
     'stadiums.title': 'Stadiums',
-    'stadiums.subtitle': 'Host venues for FIFA World Cup 2026',
+    'stadiums.subtitle': 'Host venues for World Cup 2026',
     'stadiums.capacity': 'Capacity',
     'stadiums.city': 'City',
     'stadiums.country': 'Country',
@@ -276,12 +276,12 @@ export const translations = {
     'about.apiDesc': 'External APIs and data providers that make this platform possible',
     'about.apiSourceDesc': 'Primary data source for teams, matches, groups, stadiums, and players.',
     'about.aboutPlatform': 'About This Platform',
-    'about.platformDesc1': 'World Cup Insight v2 is a fan-built analytics platform created to provide comprehensive coverage of the FIFA World Cup 2026™. The platform aggregates data from the worldcup26.ir API to deliver real-time match updates, team information, player statistics, and interactive data visualizations.',
-    'about.platformDesc2': 'The prediction engine uses random simulation for bracket projections and is intended for entertainment purposes only. All official data belongs to FIFA and respective data providers. This project is not affiliated with or endorsed by FIFA.',
-    'about.copyright': '© {0} World Cup Insight v2 — Fan-made FIFA World Cup 2026™ analytics platform.',
-    'about.disclaimer': 'FIFA World Cup is a trademark of FIFA. This site is not affiliated with FIFA.',
+    'about.platformDesc1': 'World Cup Insight v2 is a fan-built analytics platform created to provide comprehensive coverage of the World Cup 2026. The platform aggregates data from the worldcup26.ir API to deliver real-time match updates, team information, player statistics, and interactive data visualizations.',
+    'about.platformDesc2': 'The prediction engine uses random simulation for bracket projections and is intended for entertainment purposes only. This project is an independent fan initiative and is not affiliated with or endorsed by any official organization.',
+    'about.copyright': '© {0} World Cup Insight v2 — Fan-made World Cup 2026 analytics platform.',
+    'about.disclaimer': 'This is an independent fan project. Not affiliated with any sports governing body.',
     'about.feature48': '48 Teams',
-    'about.feature48Desc': 'Complete roster of all qualified nations for FIFA World Cup 2026™ with rankings and confederation data.',
+    'about.feature48Desc': 'Complete roster of all qualified nations for World Cup 2026 with rankings and confederation data.',
     'about.feature16': '16 Stadiums',
     'about.feature16Desc': 'All host venues across the United States, Mexico, and Canada with capacity and location information.',
     'about.featureRealtime': 'Real-time Data',
@@ -292,7 +292,7 @@ export const translations = {
     'about.featureScorersDesc': 'Golden Boot rankings — goals, assists, and player ratings.',
     'about.featurePredictions': 'Predictions Engine',
     'about.featurePredictionsDesc': 'Knockout bracket simulator with group stage projections and random tournament outcomes.',
-    'about.tagline': 'A comprehensive FIFA World Cup 2026™ analytics platform. Explore all 48 qualified teams, track match results in real time, analyze player statistics, visualize tournament data with interactive charts, and simulate knockout bracket predictions.',
+    'about.tagline': 'A comprehensive World Cup 2026 analytics platform. Explore all 48 qualified teams, track match results in real time, analyze player statistics, visualize tournament data with interactive charts, and simulate knockout bracket predictions.',
     'about.techLine': 'Built with React 19, TypeScript, Recharts, and Framer Motion — powered by the worldcup26.ir API.',
 
     // Donate
@@ -314,7 +314,7 @@ export const translations = {
     'donate.supportFeaturesDesc': 'Match predictions, player stats',
     'donate.supportDev': 'Development',
     'donate.supportDevDesc': 'Ongoing maintenance & improvements',
-    'donate.disclaimer': 'World Cup Insight is not affiliated with FIFA. All trademarks belong to their respective owners.',
+    'donate.disclaimer': 'World Cup Insight is an independent fan project. All trademarks belong to their respective owners.',
     'donate.coffee': 'Coffee',
     'donate.supporter': 'Supporter',
     'donate.contributor': 'Contributor',
@@ -322,7 +322,7 @@ export const translations = {
 
     // Teams page extras
     'teams.failedLoad': 'Failed to load teams',
-    'teams.subtitleLine': '{0} teams from {1} confederations competing in FIFA World Cup 2026™',
+    'teams.subtitleLine': '{0} teams from {1} confederations competing in World Cup 2026',
     'teams.searchPlaceholder': 'Search teams by name, code, or group...',
     'teams.noTeamsFound': 'No teams found matching your search',
     'teams.showingOf': 'Showing {0} of {1} teams',
@@ -383,7 +383,7 @@ export const translations = {
     // Countries page extras
     'countries.failedLoad': 'Failed to load countries',
     'countries.subtitleLine': '{0} nations from {1} confederations participating in World Cup 2026',
-    'countries.searchPlaceholder': 'Search countries by name or FIFA code...',
+    'countries.searchPlaceholder': 'Search countries by name or country code...',
     'countries.noCountriesFound': 'No countries found',
     'countries.all': 'All',
     'countries.noData': 'No data',
@@ -473,7 +473,7 @@ export const translations = {
 
     // Home
     'home.title': 'Mundial 2026',
-    'home.subtitle': 'Tu guía completa de la Copa Mundial FIFA 2026',
+    'home.subtitle': 'Tu guía completa de la Copa Mundial 2026',
     'home.dashboardTitle': 'Panel del Mundial 2026',
     'home.dashboardLabel': 'Panel',
     'home.dateSubtitle': '11 de junio – 19 de julio, 2026 • Estados Unidos, Canadá y México',
@@ -581,7 +581,7 @@ export const translations = {
     // Groups
     'groups.title': 'Grupos',
     'groups.subtitle': 'Sorteo de la fase de grupos del Mundial 2026',
-    'groups.allGroupsSubtitle': 'Los 12 grupos de la Copa Mundial FIFA 2026™ — 48 equipos compitiendo por el trofeo',
+    'groups.allGroupsSubtitle': 'Los 12 grupos de la Copa Mundial 2026 — 48 equipos compitiendo por el trofeo',
     'groups.noTeams': 'Sin equipos',
     'groups.totalGoals': 'Total de goles',
     'groups.avgPts': 'Prom. pts',
@@ -599,7 +599,7 @@ export const translations = {
     // Teams
     'teams.title': 'Equipos',
     'teams.subtitle': 'Los 48 equipos del Mundial 2026',
-    'teams.fifaRank': 'Ranking FIFA',
+    'teams.fifaRank': 'Ranking Mundial',
     'teams.group': 'Grupo',
     'teams.coach': 'Entrenador',
     'teams.placeholder': 'Las 48 selecciones nacionales que participan en el Mundial 2026.',
@@ -684,12 +684,12 @@ export const translations = {
     'about.apiDesc': 'APIs externas y proveedores de datos que hacen posible esta plataforma',
     'about.apiSourceDesc': 'Fuente principal de datos para equipos, partidos, grupos, estadios y jugadores.',
     'about.aboutPlatform': 'Acerca de Esta Plataforma',
-    'about.platformDesc1': 'World Cup Insight v2 es una plataforma de análisis creada por fans para ofrecer cobertura completa de la Copa Mundial FIFA 2026™. La plataforma agrega datos de la API worldcup26.ir para ofrecer actualizaciones de partidos en tiempo real, información de equipos, estadísticas de jugadores y visualizaciones de datos interactivas.',
-    'about.platformDesc2': 'El motor de predicción usa simulación aleatoria para proyecciones de bracket y es solo para fines de entretenimiento. Todos los datos oficiales pertenecen a FIFA y sus respectivos proveedores. Este proyecto no está afiliado ni respaldado por FIFA.',
-    'about.copyright': '© {0} World Cup Insight v2 — Plataforma de análisis de la Copa Mundial FIFA 2026™ creada por fans.',
-    'about.disclaimer': 'FIFA World Cup es una marca registrada de FIFA. Este sitio no está afiliado a FIFA.',
+    'about.platformDesc1': 'World Cup Insight v2 es una plataforma de análisis creada por fans para ofrecer cobertura completa de la Copa Mundial 2026. La plataforma agrega datos de la API worldcup26.ir para ofrecer actualizaciones de partidos en tiempo real, información de equipos, estadísticas de jugadores y visualizaciones de datos interactivas.',
+    'about.platformDesc2': 'El motor de predicción usa simulación aleatoria para proyecciones de bracket y es solo para fines de entretenimiento. Este proyecto es una iniciativa independiente de fans y no está afiliado a ninguna organización oficial.',
+    'about.copyright': '© {0} World Cup Insight v2 — Plataforma de análisis de la Copa Mundial 2026 creada por fans.',
+    'about.disclaimer': 'Este es un proyecto independiente de fans. No está afiliado a ningún organismo deportivo oficial.',
     'about.feature48': '48 Equipos',
-    'about.feature48Desc': 'Lista completa de todas las naciones clasificadas para la Copa Mundial FIFA 2026™ con rankings y datos de confederación.',
+    'about.feature48Desc': 'Lista completa de todas las naciones clasificadas para la Copa Mundial 2026 con rankings y datos de confederación.',
     'about.feature16': '16 Estadios',
     'about.feature16Desc': 'Todas las sedes en Estados Unidos, México y Canadá con información de capacidad y ubicación.',
     'about.featureRealtime': 'Datos en Tiempo Real',
@@ -700,7 +700,7 @@ export const translations = {
     'about.featureScorersDesc': 'Ranking de la Bota de Oro — goles, asistencias y valoraciones de jugadores.',
     'about.featurePredictions': 'Motor de Predicciones',
     'about.featurePredictionsDesc': 'Simulador de bracket eliminatorio con proyecciones de fase de grupos y resultados aleatorios del torneo.',
-    'about.tagline': 'Una plataforma integral de análisis de la Copa Mundial FIFA 2026™. Explora los 48 equipos clasificados, sigue resultados en tiempo real, analiza estadísticas de jugadores, visualiza datos del torneo con gráficos interactivos y simula predicciones del bracket eliminatorio.',
+    'about.tagline': 'Una plataforma integral de análisis de la Copa Mundial 2026. Explora los 48 equipos clasificados, sigue resultados en tiempo real, analiza estadísticas de jugadores, visualiza datos del torneo con gráficos interactivos y simula predicciones del bracket eliminatorio.',
     'about.techLine': 'Construido con React 19, TypeScript, Recharts y Framer Motion — impulsado por la API worldcup26.ir.',
 
     // Donate
@@ -722,7 +722,7 @@ export const translations = {
     'donate.supportFeaturesDesc': 'Predicciones, estadísticas de jugadores',
     'donate.supportDev': 'Desarrollo',
     'donate.supportDevDesc': 'Mantenimiento y mejoras continuas',
-    'donate.disclaimer': 'World Cup Insight no está afiliado a FIFA. Todas las marcas pertenecen a sus respectivos dueños.',
+    'donate.disclaimer': 'World Cup Insight es un proyecto independiente de fans. Todas las marcas pertenecen a sus respectivos dueños.',
     'donate.coffee': 'Café',
     'donate.supporter': 'Seguidor',
     'donate.contributor': 'Colaborador',
@@ -730,7 +730,7 @@ export const translations = {
 
     // Teams page extras
     'teams.failedLoad': 'Error al cargar equipos',
-    'teams.subtitleLine': '{0} equipos de {1} confederaciones compitiendo en la Copa Mundial FIFA 2026™',
+    'teams.subtitleLine': '{0} equipos de {1} confederaciones compitiendo en la Copa Mundial 2026',
     'teams.searchPlaceholder': 'Buscar equipos por nombre, código o grupo...',
     'teams.noTeamsFound': 'No se encontraron equipos con tu búsqueda',
     'teams.showingOf': 'Mostrando {0} de {1} equipos',
@@ -791,7 +791,7 @@ export const translations = {
     // Countries page extras
     'countries.failedLoad': 'Error al cargar países',
     'countries.subtitleLine': '{0} naciones de {1} confederaciones participando en el Mundial 2026',
-    'countries.searchPlaceholder': 'Buscar países por nombre o código FIFA...',
+    'countries.searchPlaceholder': 'Buscar países por nombre o código de país...',
     'countries.noCountriesFound': 'No se encontraron países',
     'countries.all': 'Todos',
     'countries.noData': 'Sin datos',
