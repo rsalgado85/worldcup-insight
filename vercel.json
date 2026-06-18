@@ -1,5 +1,13 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://worldcup26.ir/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=300, stale-while-revalidate=600" }
+      ]
+    }
   ]
 }
