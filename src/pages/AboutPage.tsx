@@ -46,7 +46,6 @@ const techStack = [
 
 export function AboutPage() {
   const { theme, language } = useAppStore();
-  const isDark = theme === 'dark';
 
   const features = [
     { icon: Trophy, title: t('about.feature48', language), desc: t('about.feature48Desc', language) },
@@ -62,24 +61,18 @@ export function AboutPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-8 md:p-12 relative overflow-hidden rounded-2xl"
+        className="relative overflow-hidden rounded-2xl p-8 md:p-12"
+        style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)' }}
       >
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{ background: 'linear-gradient(135deg, #0033A0 0%, #E4002B 50%, #F2A900 100%)' }}
-        />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+        <div className="flex flex-col md:flex-row items-center gap-8">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="relative flex-shrink-0"
           >
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-[#0033A0] to-[#E4002B] p-[3px] shadow-xl shadow-[#0033A0]/20">
-              <div
-                className="w-full h-full rounded-2xl flex items-center justify-center overflow-hidden"
-                style={{ backgroundColor: isDark ? '#0F1416' : '#ffffff' }}
-              >
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-white/15 p-[3px] shadow-xl shadow-black/20">
+              <div className="w-full h-full rounded-2xl overflow-hidden">
                 <img src="/avatar.png" alt="Robinson Salgado" className="w-full h-full object-cover" />
               </div>
             </div>
