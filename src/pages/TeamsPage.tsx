@@ -4,13 +4,14 @@ import { Search, X, MapPin, Trophy, Activity, Target, Goal, Calendar, Globe } fr
 import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
 import { useMatches } from '@/hooks/useMatches';
+import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getCrestPath, getCrestFallback } from '@/constants/crests';
 import { useAppStore } from '@/store/useAppStore';
 import { fmtDateCompact } from '@/utils/dates';
-import { GROUP_COLORS } from '@/constants';
+import { GROUP_COLORS, getPlayerAvatar } from '@/constants';
 import type { Team, Match } from '@/types/worldcup';
 
 /* ─── Confederation Data ───────────────────────── */
@@ -68,6 +69,7 @@ export function TeamsPage() {
   const { data: teams, isLoading, error } = useTeams();
   const { data: groups } = useGroups();
   const { data: matches } = useMatches();
+  const { data: players } = usePlayers();
   const [search, setSearch] = useState('');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const { language } = useAppStore();
@@ -114,6 +116,15 @@ export function TeamsPage() {
     if (!selectedTeam || !matches) return null;
     return buildTeamStats(selectedTeam.id, matches);
   }, [selectedTeam, matches]);
+
+  // Top scorer for selected team
+  const teamTopScorer = useMemo(() => {
+    if (!selectedTeam || !players) return null;
+    const teamPlayers = players.filter(p => p.team === selectedTeam.name_en);
+    if (teamPlayers.length === 0) return null;
+    // Sort by goals desc, then rating desc
+    return teamPlayers.sort((a, b) => (b.goals || 0) - (a.goals || 0) || (b.rating || 0) - (a.rating || 0))[0];
+  }, [selectedTeam, players]);
 
   // Loading
   if (isLoading) return (
@@ -228,6 +239,54 @@ export function TeamsPage() {
                     </div>
                   ))}
                 </div>
+
+                {/* Top Scorer */}
+                {teamTopScorer && (() => {
+                  const avatarUrl = getPlayerAvatar(teamTopScorer.team) || teamTopScorer.avatar || teamTopScorer.flag;
+                  return (
+                    <div className="bg-gradient-to-r from-wc-gold/10 to-wc-gold/5 rounded-xl p-4 border border-wc-gold/20">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3 flex items-center gap-1.5">
+                        <Goal size={12} className="text-wc-gold" />
+                        {language === 'es' ? 'Goleador del equipo' : 'Team Top Scorer'}
+                      </h3>
+                      <div className="flex items-center gap-3">
+                        <div className="relative flex-shrink-0">
+                          <div className="w-14 h-14 rounded-xl overflow-hidden bg-wc-gold/20 flex items-center justify-center ring-2 ring-wc-gold/30">
+                            <img
+                              src={avatarUrl}
+                              alt={teamTopScorer.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          </div>
+                          <div className="absolute -bottom-1 -right-1 bg-wc-gold text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow">
+                            {teamTopScorer.goals || 0}
+                          </div>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-text truncate">{teamTopScorer.name}</p>
+                          <div className="flex items-center gap-3 mt-0.5 text-xs text-text-muted">
+                            <span className="flex items-center gap-1">
+                              <Goal size={10} className="text-wc-gold" />
+                              <span className="font-semibold text-text">{teamTopScorer.goals || 0}</span> {language === 'es' ? 'goles' : 'goals'}
+                            </span>
+                            {(teamTopScorer.assists ?? 0) > 0 && (
+                              <span className="flex items-center gap-1">
+                                <Activity size={10} className="text-wc-blue" />
+                                <span className="font-semibold text-text">{teamTopScorer.assists}</span> {language === 'es' ? 'asist.' : 'ast'}
+                              </span>
+                            )}
+                            {(teamTopScorer.rating ?? 0) > 0 && (
+                              <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded bg-wc-gold/10 text-wc-gold">
+                                {teamTopScorer.rating?.toFixed(1)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Recent Matches */}
                 <div>
