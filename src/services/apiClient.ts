@@ -7,10 +7,9 @@ const API_BASE_URL = '/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 5000,  // 5s — API is unreliable, fallback fast to local data
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  timeout: 10000,  // 10s — proxy adds a hop
+  // No Content-Type default: axios auto-sets it for POST/PUT;
+  // sending it on GET confuses worldcup26.ir through the Vercel proxy.
 });
 
 // No retries — API is down permanently. Fall through to cached/static data.
