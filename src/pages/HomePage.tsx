@@ -8,7 +8,7 @@ import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getLocalFlag } from '@/constants/crests';
-import { TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS, getPlayerAvatar } from '@/constants';
+import { TOP_SCORERS, TOP_ASSISTS, TOP_RATINGS, TOP_CLEAN_SHEETS, GROUPS, getPlayerAvatar, getFlagPath } from '@/constants';
 import { usePlayerModalStore } from '@/store/playerModalStore';
 import { t, tf } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
@@ -154,17 +154,17 @@ export function HomePage() {
         className="relative overflow-hidden rounded-2xl p-6 sm:p-8"
         style={{background:'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)'}}>
         {/* Background player illustration — right-aligned, merging into the card */}
-        {featured.avatar && (
+        {(() => { const bgAvatar = getPlayerAvatar(featured.team) || featured.avatar; return bgAvatar ? (
           <div className="absolute right-0 top-0 bottom-0 w-1/2 sm:w-2/5 overflow-hidden">
-            <img src={featured.avatar} alt=""
+            <img src={bgAvatar} alt=""
               className="absolute right-0 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-none object-cover"
               style={{maskImage:'linear-gradient(to left, black 30%, transparent 100%)',WebkitMaskImage:'linear-gradient(to left, black 30%, transparent 100%)'}} />
           </div>
-        )}
+        ) : null; })()}
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
             <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-4xl shadow-lg overflow-hidden p-1">
-              <img src={featured.flag} alt="" className="w-full h-full object-cover rounded-xl" />
+              <img src={getFlagPath(featured.team) || featured.flag} alt="" className="w-full h-full object-cover rounded-xl" />
             </div>
             <span className="badge text-[9px] px-2 py-0.5 bg-white/20 text-white backdrop-blur font-semibold">{t('home.tournamentTopScorer', language)}</span>
           </div>
