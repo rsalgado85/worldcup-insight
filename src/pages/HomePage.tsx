@@ -106,27 +106,51 @@ export function HomePage() {
   const totalGoals = matches?.reduce((s,m) => s+(m.home_score??0)+(m.away_score??0), 0)??0;
   const finished = matches?.filter(m => m.finished).length??0;
 
-  // KPI cards with palette colors
-  const kpiCards = [
+  // Rankings from real player data (fallback to static)
+  const rankedScorers = useMemo(() => {
+    if (players && players.length > 0) {
+      const withGoals = players.filter(p => (p.goals||0) > 0).sort((a,b) => (b.goals||0)-(a.goals||0));
+      if (withGoals.length > 0) return withGoals;
+    }
+    return TOP_SCORERS.map(p => ({...p, assists: p.assists||0, goals: p.goals||0, rating: p.rating||0}));
+  }, [players]);
+
+  const rankedAssists = useMemo(() => {
+    if (players && players.length > 0) {
+      const withAst = players.filter(p => (p.assists||0) > 0).sort((a,b) => (b.assists||0)-(a.assists||0));
+      if (withAst.length > 0) return withAst;
+    }
+    return [...TOP_ASSISTS].sort((a,b) => (b.value||0)-(a.value||0)).map(p => ({...p, goals: 0, assists: p.value||0, rating: 0}));
+  }, [players]);
+
+  const rankedRatings = useMemo(() => {
+    if (players && players.length > 0) {
+      const withRating = players.filter(p => (p.rating||0) > 0).sort((a,b) => (b.rating||0)-(a.rating||0));
+      if (withRating.length > 0) return withRating;
+    }
+    return [...TOP_RATINGS].sort((a,b) => (b.value||0)-(a.value||0)).map(p => ({...p, goals: 0, assists: 0, rating: p.value||0}));
+  }, [players]);
+
+  // Tournament top scorer
+  const featured = useMemo(() => {
+    if (players && players.length > 0) {
+      const sorted = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0));
+      if (sorted[0] && sorted[0].goals && sorted[0].goals > 0) return sorted[0];
+    }
+    return [...TOP_SCORERS].sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
+  }, [players]);
+
+  // KPI cards
+  const kpiCards = useMemo(() => [
     { label: t('home.matchesPlayed', language), value: finished, icon: Swords, color: 'var(--color-primary)' },
     { label: t('home.goalsScored', language), value: totalGoals, icon: Goal, color: 'var(--color-live)' },
     { label: t('home.avgGoalsMatch', language), value: finished ? (totalGoals/finished).toFixed(1) : '—', icon: TrendingUp, color: 'var(--color-success)' },
     { label: t('home.countries', language), value: 48, icon: Users, color: 'var(--color-warm)' },
     { label: t('home.liveNow', language), value: matches?.filter(m => !m.finished&&m.time_elapsed).length??0, icon: Activity, color: 'var(--color-live)' },
     { label: t('home.totalAttendance', language), value: '3.5M+', icon: Users, color: 'var(--color-primary-light)' },
-    { label: t('home.topScorer', language), value: `${TOP_SCORERS[0].name.split(' ').pop()} (${TOP_SCORERS[0].goals})`, icon: Star, color: 'var(--color-accent)' },
-    { label: t('home.topAssists', language), value: 'De Bruyne (6)', icon: Zap, color: 'var(--color-success)' },
-  ];
-
-  // Tournament top scorer — real data first, fallback to static
-  const featured = useMemo(() => {
-    if (players && players.length > 0) {
-      const sorted = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0));
-      if (sorted[0] && sorted[0].goals && sorted[0].goals > 0) return sorted[0];
-    }
-    // Fallback: sort TOP_SCORERS by goals
-    return [...TOP_SCORERS].sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
-  }, [players]);
+    { label: t('home.topScorer', language), value: `${featured.name.split(' ').pop()} (${featured.goals||0})`, icon: Star, color: 'var(--color-accent)' },
+    { label: t('home.topAssists', language), value: `${(rankedAssists[0]?.name||'').split(' ').pop()} (${rankedAssists[0]?.assists||0})`, icon: Zap, color: 'var(--color-success)' },
+  ], [language, finished, totalGoals, matches, featured, rankedAssists]);
 
   // Loading
   if (isLoading) return (
@@ -269,9 +293,9 @@ export function HomePage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            {t:t('home.topScorers',language),d:TOP_SCORERS,ic:Goal,c:'var(--color-live)', s:TOP_SCORERS.reduce((a,p)=>a+(p.goals||0),0), u:t('home.goals',language), sf:(p:any)=>p.goals},
-            {t:t('home.topAssistsSub',language),d:TOP_ASSISTS,ic:Zap,c:'var(--color-primary-light)', s:TOP_ASSISTS.reduce((a,p)=>a+(p.value||0),0), u:t('home.assists',language), sf:(p:any)=>p.value},
-            {t:t('home.topRatings',language),d:TOP_RATINGS,ic:Star,c:'var(--color-warm)', s:(TOP_RATINGS.reduce((a,p)=>a+(p.value||0),0)/TOP_RATINGS.length).toFixed(1), u:'', sf:(p:any)=>p.value},
+            {t:t('home.topScorers',language),d:rankedScorers,ic:Goal,c:'var(--color-live)', s:rankedScorers.reduce((a:any,p:any)=>a+(p.goals||0),0), u:t('home.goals',language), sf:(p:any)=>p.goals},
+            {t:t('home.topAssistsSub',language),d:rankedAssists,ic:Zap,c:'var(--color-primary-light)', s:rankedAssists.reduce((a:any,p:any)=>a+(p.assists||0),0), u:t('home.assists',language), sf:(p:any)=>p.assists},
+            {t:t('home.topRatings',language),d:rankedRatings,ic:Star,c:'var(--color-warm)', s:rankedRatings.length>0?(rankedRatings.reduce((a:any,p:any)=>a+(p.rating||0),0)/rankedRatings.length).toFixed(1):'—', u:'', sf:(p:any)=>p.rating},
             {t:t('home.cleanSheets',language),d:TOP_CLEAN_SHEETS,ic:Shield,c:'var(--color-success)', s:TOP_CLEAN_SHEETS.reduce((a,p)=>a+(p.value||0),0), u:'', sf:(p:any)=>p.value},
           ].map(section => (
             <div key={section.t} className="card p-4">
