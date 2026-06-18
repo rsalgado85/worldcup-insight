@@ -7,7 +7,7 @@ const API_BASE_URL = '/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,  // 10s — proxy adds a hop
+  timeout: 30000,  // 30s — worldcup26.ir is slow (12-15s); cache makes it fast after 1st hit
   // No Content-Type default: axios auto-sets it for POST/PUT;
   // sending it on GET confuses worldcup26.ir through the Vercel proxy.
 });
