@@ -147,38 +147,41 @@ export function normalizeStadium(raw: RawStadium): Stadium {
  */
 export interface PlayerStat {
   name: string;
-  teamId: number;
+  teamName: string;
   goals: number;
 }
 
 export function extractPlayerStats(matches: Match[]): PlayerStat[] {
-  const playerMap = new Map<string, { name: string; teamId: number; goals: number }>();
+  const playerMap = new Map<string, { name: string; teamName: string; goals: number }>();
 
   for (const match of matches) {
+    const homeTeam = match.home_team_name_en || `Team ${match.home_team_id}`;
+    const awayTeam = match.away_team_name_en || `Team ${match.away_team_id}`;
+
     // Parse home scorers
-    if (match.home_scorers) {
-      const names = parseScorerNames(match.home_scorers, match.home_team_id);
+    if (match.home_scorers && match.home_scorers !== 'null') {
+      const names = parseScorerNames(match.home_scorers);
       for (const name of names) {
-        const key = `${name}::${match.home_team_id}`;
+        const key = `${name}::${homeTeam}`;
         const existing = playerMap.get(key);
         if (existing) {
           existing.goals++;
         } else {
-          playerMap.set(key, { name, teamId: match.home_team_id, goals: 1 });
+          playerMap.set(key, { name, teamName: homeTeam, goals: 1 });
         }
       }
     }
 
     // Parse away scorers
-    if (match.away_scorers) {
-      const names = parseScorerNames(match.away_scorers, match.away_team_id);
+    if (match.away_scorers && match.away_scorers !== 'null') {
+      const names = parseScorerNames(match.away_scorers);
       for (const name of names) {
-        const key = `${name}::${match.away_team_id}`;
+        const key = `${name}::${awayTeam}`;
         const existing = playerMap.get(key);
         if (existing) {
           existing.goals++;
         } else {
-          playerMap.set(key, { name, teamId: match.away_team_id, goals: 1 });
+          playerMap.set(key, { name, teamName: awayTeam, goals: 1 });
         }
       }
     }
@@ -193,7 +196,7 @@ export function extractPlayerStats(matches: Match[]): PlayerStat[] {
  * "B. Khoukhi 90'+5' (p)"
  * Strips minute markers and penalty indicators.
  */
-function parseScorerNames(scorers: string, _teamId: number): string[] {
+function parseScorerNames(scorers: string): string[] {
   if (!scorers) return [];
 
   // Split by comma
