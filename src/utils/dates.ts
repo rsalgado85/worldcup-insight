@@ -7,7 +7,7 @@
 /** Parse API date string "MM/DD/YYYY" or "MM/DD/YYYY HH:MM" into a Date (local TZ) */
 export function parseApiDate(dateStr: string): Date {
   if (!dateStr) return new Date(NaN);
-  const parts = dateStr.trim().split(/[\/\-\sT]/);
+  const parts = dateStr.trim().split(/[\/\-\sT:]/);
   const m = Number(parts[0]), d = Number(parts[1]), y = Number(parts[2]);
   if (isNaN(m) || isNaN(d) || isNaN(y)) return new Date(dateStr);
   const hh = Number(parts[3]) || 0, mm = Number(parts[4]) || 0;
