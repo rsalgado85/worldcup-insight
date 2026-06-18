@@ -62,7 +62,9 @@ export function MainLayout() {
           </button>
           <div className="flex items-center gap-2">
             <img src="/images/logos/wc2026-official.jpg" alt="World Cup 2026" className="h-7 w-auto object-contain rounded-md" />
-            <span className="text-base font-black tracking-tight text-text">WC26INSIGHT</span>
+            <span className="text-base font-black tracking-tight text-text">
+              WC<span className="text-primary-light">26</span> INSIGHT
+            </span>
           </div>
           <div className="w-9" />
         </header>
