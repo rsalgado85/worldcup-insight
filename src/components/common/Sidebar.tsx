@@ -19,7 +19,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
 function navLabelToKey(label: string): string {
   const map: Record<string, string> = {
     Home: 'nav.home', Matches: 'nav.matches', LiveScores: 'nav.liveScores',
-    Standings: 'nav.standings', Groups: 'nav.groups', Teams: 'nav.teams',
+    Groups: 'nav.groups', Teams: 'nav.teams',
     Players: 'nav.players', Statistics: 'nav.statistics', TopScorers: 'nav.topScorers',
     Stadiums: 'nav.stadiums', Countries: 'nav.countries', Predictions: 'nav.predictions',
     About: 'nav.about', Donate: 'nav.donate',

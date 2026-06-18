@@ -8,7 +8,6 @@ import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User } from 'lucide-re
 const MOBILE_NAV_ITEMS = [
   { path: '/', icon: LayoutDashboard, label: 'Home' },
   { path: '/matches', icon: Trophy, label: 'Matches' },
-  { path: '/standings', icon: BarChart3, label: 'Standings' },
   { path: '/teams', icon: Users, label: 'Teams' },
   { path: '/about', icon: User, label: 'About' },
 ];

@@ -6,7 +6,6 @@ import { ErrorPage } from '@/components/common/ErrorPage';
 const HomePage = lazy(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })));
 const MatchesPage = lazy(() => import('@/pages/MatchesPage').then(m => ({ default: m.MatchesPage })));
 const LiveScoresPage = lazy(() => import('@/pages/LiveScoresPage').then(m => ({ default: m.LiveScoresPage })));
-const StandingsPage = lazy(() => import('@/pages/StandingsPage').then(m => ({ default: m.StandingsPage })));
 const GroupsPage = lazy(() => import('@/pages/GroupsPage').then(m => ({ default: m.GroupsPage })));
 const TeamsPage = lazy(() => import('@/pages/TeamsPage').then(m => ({ default: m.TeamsPage })));
 const PlayersPage = lazy(() => import('@/pages/PlayersPage').then(m => ({ default: m.PlayersPage })));
@@ -37,7 +36,6 @@ export const router = createBrowserRouter([
       { index: true, element: <SuspenseWrapper><HomePage /></SuspenseWrapper> },
       { path: 'matches', element: <SuspenseWrapper><MatchesPage /></SuspenseWrapper> },
       { path: 'live-scores', element: <SuspenseWrapper><LiveScoresPage /></SuspenseWrapper> },
-      { path: 'standings', element: <SuspenseWrapper><StandingsPage /></SuspenseWrapper> },
       { path: 'groups', element: <SuspenseWrapper><GroupsPage /></SuspenseWrapper> },
       { path: 'teams', element: <SuspenseWrapper><TeamsPage /></SuspenseWrapper> },
       { path: 'players', element: <SuspenseWrapper><PlayersPage /></SuspenseWrapper> },

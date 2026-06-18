@@ -55,7 +55,7 @@ export const NAV_ITEMS = [
   { label: 'Home', path: ROUTES.HOME, icon: 'LayoutDashboard' },
   { label: 'Matches', path: ROUTES.MATCHES, icon: 'Swords' },
   { label: 'LiveScores', path: ROUTES.LIVE_SCORES, icon: 'Radio' },
-  { label: 'Standings', path: ROUTES.STANDINGS, icon: 'BarChart3' },
+  // Standings removed (redundant with Groups)
   { label: 'Groups', path: ROUTES.GROUPS, icon: 'Grid3x3' },
   { label: 'Teams', path: ROUTES.TEAMS, icon: 'Users' },
   { label: 'Players', path: ROUTES.PLAYERS, icon: 'UserRound' },
