@@ -1,8 +1,9 @@
 // ─── Group Service ───────────────────────────────────
 import { apiClient } from './apiClient';
 import { normalizeGroup, normalizeGroupStanding } from './normalize';
-import { fetchTeamsMap } from './teamService';
-import type { Group, GroupStanding, GroupsResponse, RawGroup, RawGroupTeam, Team } from '@/types/worldcup';
+import { fetchTeamsMap, fetchTeams } from './teamService';
+import { fetchMatches } from './matchService';
+import type { Group, GroupStanding, GroupsResponse, Team } from '@/types/worldcup';
 
 export async function fetchGroups(): Promise<Group[]> {
   // Try API first
@@ -38,28 +39,15 @@ export async function fetchGroupStandings(groupName: string): Promise<GroupStand
   return group?.teams ?? [];
 }
 
-// ─── Fallback: Build groups from teams + matches ─────
+// ─── Fallback: Build groups from static teams + match data ─────
 async function buildGroupsFromTeamsAndMatches(): Promise<Group[]> {
-  const teamsResp = await apiClient.get<any>('/get/teams');
-  const teamsData = teamsResp.data.teams ?? [];
-  
+  const teamsList = await fetchTeams();
   let gamesData: any[] = [];
   try {
-    const gamesResp = await apiClient.get<any>('/get/games');
-    gamesData = gamesResp.data.games ?? [];
+    gamesData = await fetchMatches();
   } catch {
-    // games failed too, proceed without standings
     console.warn('/get/games also failed — groups will have zero standings');
   }
-
-  const teamsList: Team[] = teamsData.map((t: any) => ({
-    id: Number(t.id),
-    name_en: t.name_en,
-    flag: t.flag,
-    fifa_code: t.fifa_code,
-    iso2: t.iso2,
-    groups: t.groups,
-  }));
 
   // Group teams by group letter
   const groupMap = new Map<string, Team[]>();

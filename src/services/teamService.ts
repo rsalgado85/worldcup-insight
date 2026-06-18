@@ -1,12 +1,21 @@
 // ─── Team Service ────────────────────────────────────
 import { apiClient } from './apiClient';
 import { normalizeTeam } from './normalize';
+import { STATIC_TEAMS } from '@/constants';
 import type { Team, TeamsResponse } from '@/types/worldcup';
 
 export async function fetchTeams(): Promise<Team[]> {
-  const { data } = await apiClient.get<TeamsResponse>('/get/teams');
-  const rawTeams = data.teams ?? [];
-  return rawTeams.map(normalizeTeam);
+  try {
+    const { data } = await apiClient.get<TeamsResponse>('/get/teams');
+    const rawTeams = data.teams ?? [];
+    if (rawTeams.length > 0) {
+      return rawTeams.map(normalizeTeam);
+    }
+  } catch {
+    console.warn('/get/teams failed — using static team data');
+  }
+  // Fallback: static data
+  return STATIC_TEAMS as Team[];
 }
 
 export async function fetchTeamById(id: number): Promise<Team | null> {
