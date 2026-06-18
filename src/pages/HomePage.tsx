@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, ChevronDown, Clock, Goal, MapPin, Swords, Trophy, Users, Activity, TrendingUp, Star, Zap, Shield } from 'lucide-react';
+import { Calendar, ChevronDown, Clock, Goal, MapPin, Swords, Trophy, Users, Activity, TrendingUp, Star, Zap, Shield, Radio } from 'lucide-react';
 import { useMatches } from '@/hooks/useMatches';
 import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
@@ -225,7 +225,16 @@ export function HomePage() {
         <div className="flex items-center gap-2 mb-4">
           <Calendar size={20} className="text-primary-light" />
           <h2 className="text-lg font-black text-text">{t('home.todaysMatches', language)}</h2>
-          <span className="text-[10px] text-text-muted ml-2">({todayApi} · {todayMatches.length})</span>
+          <span className="text-[10px] text-text-muted">({todayApi} · {todayMatches.length})</span>
+          <a
+            href="https://fifa.piodeportes.com/transmision"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-live text-white text-[11px] font-bold hover:bg-live/90 transition-colors"
+          >
+            <Radio size={12} />
+            {language === 'es' ? 'Ver en vivo' : 'Watch Live'}
+          </a>
         </div>
         {todayMatches.length===0 ? (
           <div className="card p-10 text-center">
