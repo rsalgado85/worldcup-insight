@@ -1,10 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/proxy?upstream=$1" }
-  ],
-  "functions": {
-    "api/proxy.js": {
-      "runtime": "@vercel/node@3.2.24"
-    }
-  }
+    { "source": "/api/(.*)", "destination": "https://worldcup26.ir/$1" }
+  ]
 }
