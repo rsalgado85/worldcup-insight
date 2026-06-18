@@ -16,6 +16,7 @@ import {
   Shield,
   Sparkles,
   Award,
+  User,
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { t, tf } from '@/constants/translations';
@@ -79,7 +80,7 @@ export function AboutPage() {
                 className="w-full h-full rounded-2xl flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: isDark ? '#0F1416' : '#ffffff' }}
               >
-                <Trophy size={56} className="text-[#F2A900]" />
+                <span className="text-5xl font-black text-[#F2A900]">RS</span>
               </div>
             </div>
           </motion.div>
@@ -90,15 +91,23 @@ export function AboutPage() {
               transition={{ delay: 0.2 }}
               className="text-3xl md:text-4xl font-black tracking-tight text-white"
             >
-              World Cup <span className="text-[#F2A900]">Insight</span> v2
+              Robinson <span className="text-[#F2A900]">Salgado</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-white/70 mt-3 max-w-lg leading-relaxed text-sm"
+              transition={{ delay: 0.3 }}
+              className="text-white/80 text-sm font-semibold mt-1"
             >
-              {t('about.tagline', language)}
+              {t('about.role', language)}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-white/60 mt-3 max-w-lg leading-relaxed text-sm"
+            >
+              {t('about.bio', language)}
             </motion.p>
             <motion.p
               initial={{ opacity: 0 }}
@@ -106,7 +115,7 @@ export function AboutPage() {
               transition={{ delay: 0.5 }}
               className="text-white/50 text-xs mt-3"
             >
-              {t('about.techLine', language)}
+              World Cup Insight v2 · {t('about.techLine', language)}
             </motion.p>
           </div>
         </div>
