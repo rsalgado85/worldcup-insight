@@ -80,7 +80,7 @@ export function AboutPage() {
                 className="w-full h-full rounded-2xl flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: isDark ? '#0F1416' : '#ffffff' }}
               >
-                <span className="text-5xl font-black text-[#F2A900]">RS</span>
+                <img src="/avatar.png" alt="Robinson Salgado" className="w-full h-full object-cover" />
               </div>
             </div>
           </motion.div>
