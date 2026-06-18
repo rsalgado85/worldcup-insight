@@ -3,13 +3,14 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/common/Sidebar';
 import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User } from 'lucide-react';
+import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User, Heart } from 'lucide-react';
 
 const MOBILE_NAV_ITEMS = [
-  { path: '/', icon: LayoutDashboard, label: 'Home' },
-  { path: '/matches', icon: Trophy, label: 'Matches' },
-  { path: '/teams', icon: Users, label: 'Teams' },
-  { path: '/about', icon: User, label: 'About' },
+  { path: '/', icon: LayoutDashboard, label: 'Inicio' },
+  { path: '/matches', icon: Trophy, label: 'Partidos' },
+  { path: '/teams', icon: Users, label: 'Equipos' },
+  { path: '/about', icon: User, label: 'Acerca' },
+  { path: '/donate', icon: Heart, label: 'Donar' },
 ];
 
 export function MainLayout() {
