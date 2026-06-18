@@ -4,13 +4,14 @@ import { Sidebar } from '@/components/common/Sidebar';
 import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, LayoutDashboard, Users, BarChart3, Trophy, User, Heart } from 'lucide-react';
+import { t } from '@/constants/translations';
 
 const MOBILE_NAV_ITEMS = [
-  { path: '/', icon: LayoutDashboard, label: 'Inicio' },
-  { path: '/matches', icon: Trophy, label: 'Partidos' },
-  { path: '/teams', icon: Users, label: 'Equipos' },
-  { path: '/about', icon: User, label: 'Acerca' },
-  { path: '/donate', icon: Heart, label: 'Donar' },
+  { path: '/', icon: LayoutDashboard, labelKey: 'nav.home' },
+  { path: '/matches', icon: Trophy, labelKey: 'nav.matches' },
+  { path: '/teams', icon: Users, labelKey: 'nav.teams' },
+  { path: '/about', icon: User, labelKey: 'nav.about' },
+  { path: '/donate', icon: Heart, labelKey: 'nav.donate' },
 ];
 
 export function MainLayout() {
@@ -94,22 +95,24 @@ export function MainLayout() {
 function MobileBottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { language } = useAppStore();
 
   return (
     <nav className="lg:hidden flex items-center justify-around px-2 py-1 border-t border-divider bg-bg/95 backdrop-blur-xl" aria-label="Mobile navigation">
       {MOBILE_NAV_ITEMS.map((item) => {
         const Icon = item.icon;
         const isActive = item.path === '/' ? location.pathname === '/' : location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+        const label = t(item.labelKey as any, language);
         return (
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
             className={`flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 transition-all active:scale-90 ${isActive ? 'text-primary-light' : 'text-text-muted'}`}
-            aria-label={item.label}
+            aria-label={label}
             aria-current={isActive ? 'page' : undefined}
           >
             <Icon size={20} />
-            <span className="text-[9px] font-semibold truncate max-w-full">{item.label}</span>
+            <span className="text-[9px] font-semibold truncate max-w-full">{label}</span>
           </button>
         );
       })}
