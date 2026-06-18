@@ -1,1 +1,11 @@
-{}
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/proxy?upstream=$1" }
+  ],
+  "functions": {
+    "api/proxy.js": {
+      "runtime": "nodejs22.x",
+      "maxDuration": 30
+    }
+  }
+}
