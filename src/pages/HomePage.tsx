@@ -118,6 +118,16 @@ export function HomePage() {
     { label: t('home.topAssists', language), value: 'De Bruyne (6)', icon: Zap, color: 'var(--color-success)' },
   ];
 
+  // Tournament top scorer — real data first, fallback to static
+  const featured = useMemo(() => {
+    if (players && players.length > 0) {
+      const sorted = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0));
+      if (sorted[0] && sorted[0].goals && sorted[0].goals > 0) return sorted[0];
+    }
+    // Fallback: sort TOP_SCORERS by goals
+    return [...TOP_SCORERS].sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
+  }, [players]);
+
   // Loading
   if (isLoading) return (
     <div className="space-y-6">
@@ -130,16 +140,6 @@ export function HomePage() {
       </div>
     </div>
   );
-
-  // Tournament top scorer — real data first, fallback to static
-  const featured = useMemo(() => {
-    if (players && players.length > 0) {
-      const sorted = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0));
-      if (sorted[0] && sorted[0].goals && sorted[0].goals > 0) return sorted[0];
-    }
-    // Fallback: sort TOP_SCORERS by goals
-    return [...TOP_SCORERS].sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
-  }, [players]);
 
   return (
     <div className="space-y-6 lg:space-y-8">
