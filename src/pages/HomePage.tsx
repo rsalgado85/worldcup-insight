@@ -4,6 +4,7 @@ import { Calendar, ChevronDown, Clock, Goal, MapPin, Swords, Trophy, Users, Acti
 import { useMatches } from '@/hooks/useMatches';
 import { useTeams } from '@/hooks/useTeams';
 import { useGroups } from '@/hooks/useGroups';
+import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
 import { FlagImage } from '@/components/common/FlagImage';
 import { getLocalFlag } from '@/constants/crests';
@@ -70,6 +71,7 @@ export function HomePage() {
   const { data: matches, isLoading: matchesLoading } = useMatches();
   const { data: teams, isLoading: teamsLoading } = useTeams();
   const { data: groups } = useGroups();
+  const { data: players } = usePlayers();
   const [activeGroupTab, setActiveGroupTab] = useState('A');
   const [expandedMatch, setExpandedMatch] = useState<number | null>(null);
   const { language } = useAppStore();
@@ -129,7 +131,15 @@ export function HomePage() {
     </div>
   );
 
-  const featured = TOP_SCORERS[0];
+  // Tournament top scorer — real data first, fallback to static
+  const featured = useMemo(() => {
+    if (players && players.length > 0) {
+      const sorted = [...players].sort((a, b) => (b.goals || 0) - (a.goals || 0));
+      if (sorted[0] && sorted[0].goals && sorted[0].goals > 0) return sorted[0];
+    }
+    // Fallback: sort TOP_SCORERS by goals
+    return [...TOP_SCORERS].sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
+  }, [players]);
 
   return (
     <div className="space-y-6 lg:space-y-8">
@@ -156,7 +166,7 @@ export function HomePage() {
             <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-4xl shadow-lg overflow-hidden p-1">
               <img src={featured.flag} alt="" className="w-full h-full object-cover rounded-xl" />
             </div>
-            <span className="badge text-[9px] px-2 py-0.5 bg-white/20 text-white backdrop-blur font-semibold">{t('home.playerOfTournament', language)}</span>
+            <span className="badge text-[9px] px-2 py-0.5 bg-white/20 text-white backdrop-blur font-semibold">{t('home.tournamentTopScorer', language)}</span>
           </div>
           <div className="flex-1">
             <button
