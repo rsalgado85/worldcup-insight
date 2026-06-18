@@ -104,6 +104,115 @@ export const TOP_CLEAN_SHEETS = [
   { id: 5, name: 'Mike Maignan', team: 'France', flag: '/images/flags/FRA.png', avatar: '/images/players/france-mbappe.jpg', value: 2 },
 ];
 
+/* ─── Static stadium data (used when API is offline) ─── */
+export const STATIC_STADIUMS = [
+  { id: 1, name_en: 'Estadio Azteca', city_en: 'Mexico City', country_en: 'Mexico', capacity: 87523 },
+  { id: 2, name_en: 'MetLife Stadium', city_en: 'East Rutherford', country_en: 'United States', capacity: 82500 },
+  { id: 3, name_en: 'AT&T Stadium', city_en: 'Arlington', country_en: 'United States', capacity: 80000 },
+  { id: 4, name_en: 'Arrowhead Stadium', city_en: 'Kansas City', country_en: 'United States', capacity: 76416 },
+  { id: 5, name_en: 'NRG Stadium', city_en: 'Houston', country_en: 'United States', capacity: 72220 },
+  { id: 6, name_en: 'Mercedes-Benz Stadium', city_en: 'Atlanta', country_en: 'United States', capacity: 71000 },
+  { id: 7, name_en: 'SoFi Stadium', city_en: 'Inglewood', country_en: 'United States', capacity: 70240 },
+  { id: 8, name_en: 'Lincoln Financial Field', city_en: 'Philadelphia', country_en: 'United States', capacity: 69796 },
+  { id: 9, name_en: 'Lumen Field', city_en: 'Seattle', country_en: 'United States', capacity: 69000 },
+  { id: 10, name_en: "Levi's Stadium", city_en: 'Santa Clara', country_en: 'United States', capacity: 68500 },
+  { id: 11, name_en: 'Gillette Stadium', city_en: 'Foxborough', country_en: 'United States', capacity: 65878 },
+  { id: 12, name_en: 'Hard Rock Stadium', city_en: 'Miami Gardens', country_en: 'United States', capacity: 64767 },
+  { id: 13, name_en: 'BC Place', city_en: 'Vancouver', country_en: 'Canada', capacity: 54500 },
+  { id: 14, name_en: 'Estadio BBVA', city_en: 'Monterrey', country_en: 'Mexico', capacity: 53500 },
+  { id: 15, name_en: 'BMO Field', city_en: 'Toronto', country_en: 'Canada', capacity: 45736 },
+  { id: 16, name_en: 'Estadio Akron', city_en: 'Guadalajara', country_en: 'Mexico', capacity: 48071 },
+];
+
+/* ─── FIFA Rankings (approximate, used for predictions when groups haven't played) ─── */
+export const FIFA_RANKING: Record<string, number> = {
+  Argentina: 1, France: 2, Spain: 3, England: 4, Brazil: 5,
+  Portugal: 6, Netherlands: 7, Belgium: 8, Germany: 10,
+  Uruguay: 11, Colombia: 12, Croatia: 13, Morocco: 14,
+  Japan: 15, 'United States': 16, Senegal: 17, Iran: 18,
+  Mexico: 19, Switzerland: 20, Austria: 22, 'South Korea': 23,
+  Australia: 24, Sweden: 27, Egypt: 30, Norway: 31,
+  Canada: 32, "Côte d'Ivoire": 33, Tunisia: 35, Scotland: 36,
+  Turkey: 37, Panama: 38, Algeria: 39, Qatar: 40,
+  'Saudi Arabia': 41, Ghana: 42, Paraguay: 43, Ecuador: 44,
+  'South Africa': 45, 'New Zealand': 46, 'Cape Verde': 47,
+  'Bosnia and Herzegovina': 48, 'Czech Republic': 49,
+  'DR Congo': 50, Uzbekistan: 51, Iraq: 52, Jordan: 53,
+  Haiti: 54, Curaçao: 55, 'Costa Rica': 56, Jamaica: 57,
+  Honduras: 58,
+};
+
+/** Resolve FIFA rank for a team name, with fallback aliases */
+export function getFifaRank(teamName: string): number {
+  if (FIFA_RANKING[teamName]) return FIFA_RANKING[teamName];
+  // Alias mappings
+  const aliases: Record<string, string> = {
+    'Korea Republic': 'South Korea',
+    'Türkiye': 'Turkey',
+    'Bosnia & Herzegovina': 'Bosnia and Herzegovina',
+    'RD Congo': 'DR Congo',
+    'Cabo Verde': 'Cape Verde',
+    'Arabia Saudita': 'Saudi Arabia',
+    'República Checa': 'Czech Republic',
+    'Costa de Marfil': "Côte d'Ivoire",
+    'Nueva Zelanda': 'New Zealand',
+  };
+  const canonical = aliases[teamName];
+  if (canonical && FIFA_RANKING[canonical]) return FIFA_RANKING[canonical];
+  return 99; // unranked fallback
+}
+
+/* ─── Static groups for offline predictions ─── */
+export const STATIC_GROUPS: Record<string, string[]> = {
+  A: ['Mexico', 'South Korea', 'Czech Republic', 'Senegal'],
+  B: ['Brazil', 'Sweden', 'Ecuador', 'Uzbekistan'],
+  C: ['Germany', 'Paraguay', 'Cape Verde', 'Haiti'],
+  D: ['France', 'Croatia', 'Scotland', 'Qatar'],
+  E: ['Colombia', 'Morocco', 'Curaçao', 'Australia'],
+  F: ['Uruguay', 'Japan', 'Panama', 'Costa Rica'],
+  G: ['Spain', 'Norway', 'Turkey', 'Tunisia'],
+  H: ['Portugal', 'DR Congo', 'Saudi Arabia', 'Egypt'],
+  I: ['Argentina', 'Austria', 'Iraq', 'New Zealand'],
+  J: ['England', 'Iran', 'Algeria', 'Ghana'],
+  K: ['Netherlands', 'Switzerland', 'Jordan', 'Bosnia and Herzegovina'],
+  L: ['Belgium', 'United States', 'Canada', 'South Africa'],
+};
+
+/** Map team name → 3-letter country code for local flag images */
+const TEAM_TO_ISO3: Record<string, string> = {
+  Argentina: 'ARG', France: 'FRA', Spain: 'ESP', England: 'ENG', Brazil: 'BRA',
+  Portugal: 'POR', Netherlands: 'NED', Belgium: 'BEL', Germany: 'GER',
+  Uruguay: 'URY', Colombia: 'COL', Croatia: 'CRO', Morocco: 'MAR',
+  Japan: 'JPN', 'United States': 'USA', Senegal: 'SEN', Iran: 'IRN',
+  Mexico: 'MEX', Switzerland: 'SUI', Austria: 'AUT', 'South Korea': 'KOR',
+  Australia: 'AUS', Sweden: 'SWE', Egypt: 'EGY', Norway: 'NOR',
+  Canada: 'CAN', "Côte d'Ivoire": 'CIV', Tunisia: 'TUN', Scotland: 'SCO',
+  Turkey: 'TUR', Panama: 'PAN', Algeria: 'ALG', Qatar: 'QAT',
+  'Saudi Arabia': 'KSA', Ghana: 'GHA', Paraguay: 'PAR', Ecuador: 'ECU',
+  'South Africa': 'RSA', 'New Zealand': 'NZL', 'Cape Verde': 'CPV',
+  'Bosnia and Herzegovina': 'BIH', 'Czech Republic': 'CZE',
+  'DR Congo': 'COD', Uzbekistan: 'UZB', Iraq: 'IRQ', Jordan: 'JOR',
+  Haiti: 'HAI', Curaçao: 'CUW', 'Costa Rica': 'CRC', Jamaica: 'JAM',
+  Honduras: 'HON',
+};
+
+export function getFlagPath(teamName: string): string {
+  const iso3 = TEAM_TO_ISO3[teamName];
+  if (iso3) return `/images/flags/${iso3}.png`;
+  // Fallback aliases
+  const aliases: Record<string, string> = {
+    'Korea Republic': 'KOR', 'Türkiye': 'TUR', 'Bosnia & Herzegovina': 'BIH',
+    'RD Congo': 'COD', 'Cabo Verde': 'CPV', 'Arabia Saudita': 'KSA',
+    'República Checa': 'CZE', 'Costa de Marfil': 'CIV', 'Nueva Zelanda': 'NZL',
+    'Alemania': 'GER', 'Croacia': 'CRO', 'Suiza': 'SUI', 'Argelia': 'ALG',
+    'Sudáfrica': 'RSA', 'Paraguay': 'PAR', 'Haití': 'HAI', 'Portugal': 'POR',
+    'Países Bajos': 'NED', 'Costa Rica': 'CRC', 'Jamaica': 'JAM', 'Honduras': 'HON',
+  };
+  const alias = aliases[teamName];
+  if (alias) return `/images/flags/${alias}.png`;
+  return `/images/flags/${teamName.slice(0, 3).toUpperCase()}.png`;
+}
+
 export const AVATAR_BY_TEAM: Record<string, string> = {
   France: '/images/players/france-mbappe.jpg',
   Argentina: '/images/players/argentina-messi.jpg',
@@ -143,6 +252,28 @@ export const AVATAR_BY_TEAM: Record<string, string> = {
   Iran: '/images/players/iran-20.jpg',
   'Saudi Arabia': '/images/players/saudiarabia-10.jpg',
   'Arabia Saudita': '/images/players/saudiarabia-10.jpg',
+  Qatar: '/images/players/qatar-10.jpg',
+  'Bosnia and Herzegovina': '/images/players/bosnia-11.jpg',
+  'Bosnia & Herzegovina': '/images/players/bosnia-11.jpg',
+  Austria: '/images/players/austria-10.jpg',
+  'Czech Republic': '/images/players/czech-10.jpg',
+  'República Checa': '/images/players/czech-10.jpg',
+  Tunisia: '/images/players/tunisia-10.jpg',
+  Jordan: '/images/players/jordan-10.jpg',
+  'New Zealand': '/images/players/newzealand-10.jpg',
+  'Nueva Zelanda': '/images/players/newzealand-10.jpg',
+  Uzbekistan: '/images/players/uzbekistan-10.jpg',
+  'DR Congo': '/images/players/drcongo-10.jpg',
+  'RD Congo': '/images/players/drcongo-10.jpg',
+  'Cape Verde': '/images/players/capeverde-10.jpg',
+  'Cabo Verde': '/images/players/capeverde-10.jpg',
+  'Costa Rica': '/images/players/costarica-10.jpg',
+  Jamaica: '/images/players/jamaica-10.jpg',
+  Honduras: '/images/players/honduras-10.jpg',
+  Haiti: '/images/players/haiti-10.jpg',
+  Curaçao: '/images/players/curacao-10.jpg',
+  Iraq: '/images/players/iraq-10.jpg',
+  Algeria: '/images/players/algeria-10.jpg',
 };
 
 export function getPlayerAvatar(team: string): string | undefined {

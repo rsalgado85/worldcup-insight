@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Building2, MapPin, Users, Globe, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Building2, MapPin, Users, Globe, X, ChevronLeft, ChevronRight, WifiOff } from 'lucide-react';
 import { useStadiums } from '@/hooks/useStadiums';
 import { Skeleton } from '@/components/common/Skeleton';
 import { t, tf } from '@/constants/translations';
 import { useAppStore } from '@/store/useAppStore';
+import { STATIC_STADIUMS } from '@/constants';
 import type { Stadium } from '@/types/worldcup';
 
 const HOST_COUNTRIES = ['United States', 'Canada', 'Mexico'];
@@ -51,16 +52,30 @@ export function StadiumsPage() {
   const [search, setSearch] = useState('');
   const [countryFilter, setCountryFilter] = useState<string>('all');
   const { language } = useAppStore();
-
-  /* ─── Carousel state ──────────────────────────────── */
+  const [isOffline, setIsOffline] = useState(false);
   const [carouselIdx, setCarouselIdx] = useState(0);
 
+  // Transition to offline mode if loading takes > 12s
+  useEffect(() => {
+    if (!isLoading || isOffline) return;
+    const timer = setTimeout(() => setIsOffline(true), 6000);
+    return () => clearTimeout(timer);
+  }, [isLoading, isOffline]);
+
+  // Trigger offline mode on error
+  useEffect(() => {
+    if (error) setIsOffline(true);
+  }, [error]);
+
+  // Use fallback data when offline
+  const effectiveStadiums = (stadiums && stadiums.length > 0) ? stadiums : (isOffline ? STATIC_STADIUMS as Stadium[] : stadiums);
+
   const carouselImages = useMemo(() => {
-    if (!stadiums) return [];
-    return stadiums
+    if (!effectiveStadiums) return [];
+    return effectiveStadiums
       .map((s) => ({ src: getStadiumImage(s.name_en), name: s.name_en, city: s.city_en, country: s.country_en }))
       .filter((img) => img.src);
-  }, [stadiums]);
+  }, [effectiveStadiums]);
 
   const goNext = useCallback(() => {
     setCarouselIdx((prev) => (prev + 1) % carouselImages.length);
@@ -79,8 +94,8 @@ export function StadiumsPage() {
 
   /* ─── Filtered stadiums ────────────────────────────── */
   const filtered = useMemo(() => {
-    if (!stadiums) return [];
-    let result = [...stadiums];
+    if (!effectiveStadiums) return [];
+    let result = [...effectiveStadiums];
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -94,15 +109,15 @@ export function StadiumsPage() {
       result = result.filter((s) => s.country_en === countryFilter);
     }
     return result;
-  }, [stadiums, search, countryFilter]);
+  }, [effectiveStadiums, search, countryFilter]);
 
   const totalCapacity = useMemo(
-    () => stadiums?.reduce((s, st) => s + (st.capacity ?? 0), 0) ?? 0,
-    [stadiums]
+    () => effectiveStadiums?.reduce((s, st) => s + (st.capacity ?? 0), 0) ?? 0,
+    [effectiveStadiums]
   );
 
   /* ─── Loading state ────────────────────────────────── */
-  if (isLoading) {
+  if (isLoading && !isOffline) {
     return (
       <div className="space-y-6">
         <Skeleton className="h-9 w-56" />
@@ -128,8 +143,8 @@ export function StadiumsPage() {
     );
   }
 
-  /* ─── Error state ──────────────────────────────────── */
-  if (error) {
+  /* ─── Error / Offline banner ──────────────────────── */
+  if (isOffline && (!effectiveStadiums || effectiveStadiums.length === 0)) {
     return (
       <div className="card p-12 text-center">
         <X size={40} className="mx-auto mb-4 text-live/50" />
@@ -141,10 +156,10 @@ export function StadiumsPage() {
 
   /* ─── KPI data ─────────────────────────────────────── */
   const kpiCards = [
-    { label: t('stadiums.totalVenues', language), value: stadiums?.length ?? 0, icon: Building2, color: 'var(--color-primary)' },
+    { label: t('stadiums.totalVenues', language), value: effectiveStadiums?.length ?? 0, icon: Building2, color: 'var(--color-primary)' },
     { label: t('stadiums.totalCapacity', language), value: formatCapacity(totalCapacity), icon: Users, color: 'var(--color-primary-light)' },
     { label: t('stadiums.hostCountries', language), value: 3, icon: Globe, color: 'var(--color-warm)' },
-    { label: t('stadiums.cities', language), value: new Set(stadiums?.map((s) => s.city_en) ?? []).size, icon: MapPin, color: 'var(--color-live)' },
+    { label: t('stadiums.cities', language), value: new Set(effectiveStadiums?.map((s) => s.city_en) ?? []).size, icon: MapPin, color: 'var(--color-live)' },
   ];
 
   return (
@@ -153,9 +168,21 @@ export function StadiumsPage() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
         <h1 className="text-2xl sm:text-3xl font-black text-gradient">{t('stadiums.title', language)}</h1>
         <p className="text-sm text-text-secondary">
-          {tf('stadiums.subtitleLine', language, stadiums?.length ?? 0, HOST_COUNTRIES.join(', '), formatCapacity(totalCapacity))}
+          {tf('stadiums.subtitleLine', language, effectiveStadiums?.length ?? 0, HOST_COUNTRIES.join(', '), formatCapacity(totalCapacity))}
         </p>
       </motion.div>
+
+      {/* Offline banner */}
+      {isOffline && (
+        <motion.div
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-warm/10 border border-warm/20 text-sm text-warm font-medium"
+        >
+          <WifiOff size={16} />
+          <span>{t('common.offlineBanner', language)}</span>
+        </motion.div>
+      )}
 
       {/* ═══ KPI Summary Row ═══ */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

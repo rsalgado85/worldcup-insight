@@ -120,120 +120,175 @@ export function PlayersPage() {
         <>
           <p className="text-sm text-text-secondary">{tf('players.showingOf',language,processed.length,players?.length??0)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {processed.map((player,idx) => (
+            {processed.map((player,idx) => {
+              const avatar = getPlayerAvatar(player.team);
+              return (
               <motion.button key={player.id||idx} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:idx*.02}}
                 onClick={() => setSelectedPlayer(player)}
-                className="card p-4 hover:shadow-card-hover hover:-translate-y-0.5 transition-all text-left cursor-pointer w-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary-subtle flex items-center justify-center flex-shrink-0">
-                    <FlagImage flag={player.flag} size="md" />
+                className="card p-4 hover:shadow-card-hover hover:-translate-y-0.5 transition-all text-left cursor-pointer w-full relative overflow-hidden group">
+                
+                {/* Avatar background with gradient mask */}
+                {avatar && (
+                  <div className="absolute right-0 top-0 bottom-0 w-[45%] overflow-hidden opacity-15 group-hover:opacity-25 transition-opacity">
+                    <img
+                      src={avatar}
+                      alt=""
+                      className="absolute right-0 top-1/2 -translate-y-1/2 h-[130%] w-auto max-w-none object-cover"
+                      style={{
+                        maskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
+                      }}
+                    />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <button
-                      onClick={() => usePlayerModalStore.getState().open({
-                        name: player.name,
-                        team: player.team,
-                        flag: player.flag,
-                        avatar: getPlayerAvatar(player.team),
-                        goals: player.goals,
-                        assists: player.assists,
-                        rating: player.rating,
-                      })}
-                      className="text-sm font-black text-text truncate text-left hover:text-primary-light transition-colors cursor-pointer"
-                    >
-                      {player.name}
-                    </button>
-                    <p className="text-[10px] text-text-secondary">{player.team}</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-divider">
-                  {[{v:player.goals??0,l:t('players.goals',language),c:'text-live'},{v:player.assists??0,l:t('players.assists',language),c:'text-primary-light'},{v:player.rating?player.rating.toFixed(1):'—',l:t('players.rating',language),c:'text-warm'}].map(s=>(
-                    <div key={s.l} className="text-center flex-1">
-                      <span className={`text-lg font-black ${s.c}`}>{s.v}</span>
-                      <p className="text-[9px] uppercase tracking-wider text-text-muted">{s.l}</p>
+                )}
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3">
+                    {/* Avatar image in circle */}
+                    <div className="w-10 h-10 rounded-xl bg-primary-subtle flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {avatar ? (
+                        <img src={avatar} alt={player.team} className="w-full h-full object-cover" />
+                      ) : (
+                        <FlagImage flag={player.flag} size="md" />
+                      )}
                     </div>
-                  ))}
+                    <div className="flex-1 min-w-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          usePlayerModalStore.getState().open({
+                            name: player.name,
+                            team: player.team,
+                            flag: player.flag,
+                            avatar: avatar,
+                            goals: player.goals,
+                            assists: player.assists,
+                            rating: player.rating,
+                          });
+                        }}
+                        className="text-sm font-black text-text truncate text-left hover:text-primary-light transition-colors cursor-pointer"
+                      >
+                        {player.name}
+                      </button>
+                      <p className="text-[10px] text-text-secondary">{player.team}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-divider">
+                    {[{v:player.goals??0,l:t('players.goals',language),c:'text-live'},{v:player.assists??0,l:t('players.assists',language),c:'text-primary-light'},{v:player.rating?player.rating.toFixed(1):'—',l:t('players.rating',language),c:'text-warm'}].map(s=>(
+                      <div key={s.l} className="text-center flex-1">
+                        <span className={`text-lg font-black ${s.c}`}>{s.v}</span>
+                        <p className="text-[9px] uppercase tracking-wider text-text-muted">{s.l}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </motion.button>
-            ))}
+            )})}
           </div>
         </>
       )}
 
       {/* ═══ Player Detail Modal ═══ */}
       <AnimatePresence>
-        {selectedPlayer && (
+        {selectedPlayer && (() => {
+          const selAvatar = getPlayerAvatar(selectedPlayer.team);
+          return (
           <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
             onClick={() => setSelectedPlayer(null)}>
             <motion.div initial={{opacity:0,scale:.95,y:20}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.95,y:20}}
-              className="card w-full max-w-md max-h-[85vh] overflow-y-auto"
+              className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)' }}
               onClick={e => e.stopPropagation()}>
 
-              {/* Header */}
-              <div className="sticky top-0 z-10 card border-b border-divider rounded-b-none px-5 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary-subtle flex items-center justify-center">
-                    <FlagImage flag={selectedPlayer.flag} size="lg" />
+              {/* Avatar background with gradient mask */}
+              {selAvatar && (
+                <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden">
+                  <img
+                    src={selAvatar}
+                    alt=""
+                    className="absolute right-0 top-1/2 -translate-y-1/2 h-[130%] w-auto max-w-none object-cover opacity-25"
+                    style={{
+                      maskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
+                      WebkitMaskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedPlayer(null)}
+                className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/10 backdrop-blur flex items-center justify-center hover:bg-white/20 transition-colors"
+              >
+                <X size={16} className="text-white" />
+              </button>
+
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="px-5 py-4 flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center overflow-hidden flex-shrink-0">
+                    {selAvatar ? (
+                      <img src={selAvatar} alt={selectedPlayer.team} className="w-full h-full object-cover" />
+                    ) : (
+                      <FlagImage flag={selectedPlayer.flag} size="md" />
+                    )}
                   </div>
-                  <div>
-                    <h2 className="text-lg font-black text-text">{selectedPlayer.name}</h2>
-                    <p className="text-[10px] text-text-muted uppercase">{selectedPlayer.team}</p>
+                  <div className="min-w-0">
+                    <h2 className="text-lg font-black text-white truncate">{selectedPlayer.name}</h2>
+                    <p className="text-sm text-white/60">{selectedPlayer.team}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedPlayer(null)} className="p-1.5 rounded-lg hover:bg-primary-subtle text-text-muted transition-colors">
-                  <X size={20} />
-                </button>
-              </div>
 
-              {/* Stats Grid */}
-              <div className="p-5 space-y-5">
-                <div className="grid grid-cols-4 gap-3">
-                  {[
-                    {l:'GL',v:selectedPlayer.goals??0,ic:Goal,c:'var(--color-live)'},
-                    {l:'AS',v:selectedPlayer.assists??0,ic:Zap,c:'var(--color-primary-light)'},
-                    {l:'RT',v:selectedPlayer.rating?.toFixed(1)??'—',ic:Star,c:'var(--color-warm)'},
-                    {l:'PJ',v:playerMatches.length,ic:Calendar,c:'var(--color-text-secondary)'},
-                  ].map(s => (
-                    <div key={s.l} className="bg-primary-subtle rounded-xl p-3 text-center">
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-text-muted mb-1">{s.l}</p>
-                      <p className="text-xl font-black" style={{color:s.c}}>{s.v}</p>
+                {/* Stats Grid */}
+                <div className="p-5 pt-0 space-y-5">
+                  <div className="grid grid-cols-4 gap-3">
+                    {[
+                      {l:'GL',v:selectedPlayer.goals??0,ic:Goal,c:'var(--color-live)'},
+                      {l:'AS',v:selectedPlayer.assists??0,ic:Zap,c:'var(--color-primary-light)'},
+                      {l:'RT',v:selectedPlayer.rating?.toFixed(1)??'—',ic:Star,c:'var(--color-warm)'},
+                      {l:'PJ',v:playerMatches.length,ic:Calendar,c:'var(--color-text-secondary)'},
+                    ].map(s => (
+                      <div key={s.l} className="bg-white/10 rounded-xl p-3 text-center backdrop-blur">
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1">{s.l}</p>
+                        <p className="text-xl font-black" style={{color:'white'}}>{s.v}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tournament Matches */}
+                  {playerMatches.length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 flex items-center gap-1.5">
+                        <Calendar size={12} /> {language==='es'?'Partidos en el torneo':'Tournament Matches'}
+                      </h3>
+                      <div className="space-y-1.5">
+                        {playerMatches.map(pm => (
+                          <div key={pm.match.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 backdrop-blur">
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="text-white/50">{fmtDateCompact(pm.date)}</span>
+                              <span className="text-white font-semibold">{pm.opponent || `Match ${pm.match.id}`}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {pm.goals > 0 && <span className="badge bg-live/30 text-white text-[9px] flex items-center gap-0.5"><Goal size={8}/> {pm.goals}</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
+                  )}
+
+                  {playerMatches.length === 0 && (
+                    <div className="text-center py-6">
+                      <Activity size={32} className="mx-auto mb-2 text-white/30" />
+                      <p className="text-xs text-white/50">{language==='es'?'Sin datos de partidos aún':'No match data yet'}</p>
+                    </div>
+                  )}
                 </div>
-
-                {/* Tournament Matches */}
-                {playerMatches.length > 0 && (
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3 flex items-center gap-1.5">
-                      <Calendar size={12} /> {language==='es'?'Partidos en el torneo':'Tournament Matches'}
-                    </h3>
-                    <div className="space-y-1.5">
-                      {playerMatches.map(pm => (
-                        <div key={pm.match.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-primary-subtle/50">
-                          <div className="flex items-center gap-2 text-xs">
-                            <span className="text-text-muted">{fmtDateCompact(pm.date)}</span>
-                            <span className="text-text font-semibold">{pm.opponent || `Match ${pm.match.id}`}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {pm.goals > 0 && <span className="badge bg-live/15 text-live text-[9px] flex items-center gap-0.5"><Goal size={8}/> {pm.goals}</span>}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {playerMatches.length === 0 && (
-                  <div className="text-center py-6">
-                    <Activity size={32} className="mx-auto mb-2 text-text-muted" />
-                    <p className="text-xs text-text-muted">{language==='es'?'Sin datos de partidos aún':'No match data yet'}</p>
-                  </div>
-                )}
               </div>
             </motion.div>
           </motion.div>
-        )}
+        )})()}
       </AnimatePresence>
     </div>
   );

@@ -1,31 +1,26 @@
 // ─── API Client ──────────────────────────────────────
 import axios from 'axios';
 
-const API_BASE_URL = 'https://worldcup26.ir';
+// Proxy local para evitar CORS — Vercel rewrites /api/* → https://worldcup26.ir/*
+// En desarrollo local, vite.config.ts hace el proxy.
+const API_BASE_URL = '/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000,
+  timeout: 5000,  // 5s — API is unreliable, fallback fast to local data
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Retry interceptor for unstable API
+// No retries — API is down permanently. Fall through to cached/static data.
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const config = error.config;
-    config.retryCount = config.retryCount || 0;
-    if (config.retryCount < 2 && (!error.response || error.response.status >= 500)) {
-      config.retryCount++;
-      await new Promise(r => setTimeout(r, 1000));
-      return apiClient(config);
-    }
     if (error.response) {
       console.error(`API Error [${error.response.status}]:`, error.response.data);
     } else if (error.request) {
-      console.error('Network Error: No response received (timeout or CORS)');
+      console.warn('🌐 API offline — using cached/local data');
     }
     return Promise.reject(error);
   }

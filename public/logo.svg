@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFF27A"/>
-      <stop offset="50%" stop-color="#FFD700"/>
-      <stop offset="100%" stop-color="#C79A00"/>
+    <linearGradient id="trophyGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F9E076"/>
+      <stop offset="40%" stop-color="#E2B84C"/>
+      <stop offset="60%" stop-color="#F9E076"/>
+      <stop offset="100%" stop-color="#B8860B"/>
     </linearGradient>
+    <linearGradient id="navyBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A1F44"/>
+      <stop offset="50%" stop-color="#0F2D6A"/>
+      <stop offset="100%" stop-color="#0A1F44"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
 
-  <!-- Top triangle -->
-  <polygon points="256,40 346,196 166,196"
-           fill="url(#gold)" stroke="#B8860B" stroke-width="8"/>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#navyBlue)" stroke="#E2B84C" stroke-width="3"/>
 
-  <!-- Bottom left triangle -->
-  <polygon points="156,216 246,372 66,372"
-           fill="url(#gold)" stroke="#B8860B" stroke-width="8"/>
+  <!-- FIFA World Cup Trophy (stylized) -->
+  <g transform="translate(256, 175)" filter="url(#glow)">
+    <!-- Globe/base of trophy -->
+    <ellipse cx="0" cy="48" rx="22" ry="10" fill="url(#trophyGold)" stroke="#8B6914" stroke-width="1.5"/>
+    <rect x="-16" y="42" width="32" height="10" rx="2" fill="url(#trophyGold)" stroke="#8B6914" stroke-width="1"/>
 
-  <!-- Bottom right triangle -->
-  <polygon points="356,216 446,372 266,372"
-           fill="url(#gold)" stroke="#B8860B" stroke-width="8"/>
+    <!-- Trophy body -->
+    <path d="M-18,38 L-20,10 Q-22,-8 -12,-18 L-8,-36 Q-6,-42 0,-44 Q6,-42 8,-36 L12,-18 Q22,-8 20,10 L18,38 Z"
+          fill="url(#trophyGold)" stroke="#8B6914" stroke-width="1.5"/>
+
+    <!-- Globe on top -->
+    <circle cx="0" cy="-50" r="14" fill="url(#trophyGold)" stroke="#8B6914" stroke-width="1.5"/>
+    <path d="M-10,-50 Q-5,-60 0,-62 Q5,-60 10,-50" fill="none" stroke="#8B6914" stroke-width="1"/>
+    <ellipse cx="0" cy="-50" rx="4" ry="10" fill="none" stroke="#8B6914" stroke-width="1" transform="rotate(30)"/>
+
+    <!-- Trophy handles -->
+    <path d="M-18,10 Q-30,5 -32,15 Q-32,22 -18,20" fill="none" stroke="url(#trophyGold)" stroke-width="3"/>
+    <path d="M18,10 Q30,5 32,15 Q32,22 18,20" fill="none" stroke="url(#trophyGold)" stroke-width="3"/>
+  </g>
+
+  <!-- FIFA text -->
+  <text x="256" y="310" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-weight="900"
+        font-size="56" letter-spacing="8" fill="#FFFFFF">FIFA</text>
+
+  <!-- WORLD CUP text -->
+  <text x="256" y="365" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-weight="600"
+        font-size="30" letter-spacing="10" fill="#E2B84C">WORLD CUP</text>
+
+  <!-- 2026 -->
+  <text x="256" y="425" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-weight="900"
+        font-size="64" letter-spacing="4" fill="url(#trophyGold)"
+        stroke="#8B6914" stroke-width="1">2026</text>
 </svg>

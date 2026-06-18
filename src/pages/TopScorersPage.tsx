@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Trophy, Medal, Goal, Zap, Star, Swords, X,
+  Trophy, Medal, Goal, Zap, Star, Swords, X, WifiOff, AlertTriangle,
 } from 'lucide-react';
 import { usePlayers } from '@/hooks/usePlayers';
 import { Skeleton } from '@/components/common/Skeleton';
@@ -79,6 +79,19 @@ function ScorerRow({ player, rank, highlight, language }: { player: Player & { c
 export function TopScorersPage() {
   const { data: players, isLoading, error } = usePlayers();
   const { language } = useAppStore();
+  const [isOffline, setIsOffline] = useState(false);
+
+  // Transition to offline mode if loading takes > 12s
+  useEffect(() => {
+    if (!isLoading || isOffline) return;
+    const timer = setTimeout(() => setIsOffline(true), 6000);
+    return () => clearTimeout(timer);
+  }, [isLoading, isOffline]);
+
+  // Trigger offline mode on error
+  useEffect(() => {
+    if (error) setIsOffline(true);
+  }, [error]);
 
   const sortedPlayers = useMemo(() => {
     if (!players || players.length === 0) return null;
@@ -94,13 +107,12 @@ export function TopScorersPage() {
     byRating: TOP_RATINGS,
   };
 
-  // ─── Loading ───────────────────────────────────
-  if (isLoading) {
+  // ─── Loading skeleton ──────────────────────────
+  if (isLoading && !isOffline) {
     return (
       <div className="space-y-6">
         <Skeleton className="h-9 w-56" />
         <Skeleton className="h-5 w-80" />
-        {/* Podium skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="card p-5 space-y-3 text-center">
@@ -115,7 +127,6 @@ export function TopScorersPage() {
             </div>
           ))}
         </div>
-        {/* Leaderboard skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="card p-4 space-y-2">
@@ -126,17 +137,6 @@ export function TopScorersPage() {
             </div>
           ))}
         </div>
-      </div>
-    );
-  }
-
-  // ─── Error ─────────────────────────────────────
-  if (error) {
-    return (
-      <div className="card p-12 text-center">
-        <X size={48} className="mx-auto mb-4 text-live" />
-        <h3 className="text-lg font-bold text-text mb-2">{t('topScorers.failedLoad', language)}</h3>
-        <p className="text-text-secondary text-sm">{t('topScorers.fallbackNote', language)}</p>
       </div>
     );
   }
@@ -176,6 +176,18 @@ export function TopScorersPage() {
         </p>
       </motion.div>
 
+      {/* Offline banner */}
+      {isOffline && (
+        <motion.div
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-warm/10 border border-warm/20 text-sm text-warm font-medium"
+        >
+          <WifiOff size={16} />
+          <span>{t('common.offlineBanner', language)}</span>
+        </motion.div>
+      )}
+
       {/* Podium — Top 3 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {podium.map((p, idx) => {
@@ -197,8 +209,21 @@ export function TopScorersPage() {
                   <Trophy size={28} className="text-warm drop-shadow-lg" />
                 </div>
               )}
-              <div className="w-16 h-16 mx-auto mt-2 rounded-2xl bg-primary-subtle flex items-center justify-center">
-                <span className="text-3xl"><FlagImage flag={p.avatar || p.flag} size="xl" /></span>
+              {/* Player avatar — full image like other cards */}
+              <div className="relative w-24 h-24 mx-auto mt-2 rounded-2xl overflow-hidden bg-primary-subtle ring-2 ring-border/50 shadow-lg">
+                <img
+                  src={getPlayerAvatar(p.team) || p.avatar || p.flag}
+                  alt={p.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                {(!getPlayerAvatar(p.team) && !p.avatar) && (
+                  <span className="absolute inset-0 flex items-center justify-center text-3xl">
+                    <FlagImage flag={p.flag} size="xl" />
+                  </span>
+                )}
               </div>
               <button
                 onClick={() => usePlayerModalStore.getState().open({
